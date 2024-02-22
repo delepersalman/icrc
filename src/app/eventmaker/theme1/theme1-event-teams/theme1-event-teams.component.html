@@ -1,0 +1,66 @@
+<section class="pySec teamSection" (click)="ChangeDetect($event, eventTeams)" [ngClass]="{virtualEventSec:eventTeams.EditMode}"
+[style]="getSectionStyleString(eventTeams)"
+    [ngClass]="{virtualEventSec:eventTeams.EditMode}" id="teams">
+    <section-designer-toolbar *ngIf="eventTeams.EditMode" [ngStyle]="ngStyle"
+        (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <div class="w-75 mx-auto text-center">
+                    <h2 #appendItem *ngIf="heading" class="titleH2"[style]="getStyleString(heading)"
+                        [ngClass]="{formatEditToolbarWrapper:eventTeams.EditMode}"
+                        (click)="showHideToolbar($event,heading)" (input)="onChange($event.target.innerHTML, heading)">
+                        {{heading.CustomPropertyName}}
+                    </h2>
+                    <p #appendItem [ngClass]="{formatEditToolbarWrapper:eventTeams.EditMode}" *ngIf="description"
+                        (click)="showHideToolbar($event,description)"
+                        [style]="getStyleString(description)"
+                        class="f3 py-2 line-height2 text-center">
+                        {{description.CustomPropertyName}}
+                    </p>
+
+                </div>
+            </div>
+            <div class="row w-75 mx-auto">
+                <div class="col-12">
+                    <div *ngIf="eventTeams.EditMode && eventTeams.eventTeams.length == 0" class="blankDataMsgBox">
+                        Please add data in <span class="fw-bold">Manage Teams under Event Dashboard</span> or turn this
+                        <span class="fw-bold">section off.</span>
+                    </div>
+                    <div class="pl-sm-4">
+                        <div class="card border-0 mb-3" *ngFor="let team of eventTeams.eventTeams;">
+                            <div class="card-header border-0 bg-blue-light">
+                                <h5 class="mb-0 f3 cursor-pointer font-weight-bold dark d-flex align-items-center"
+                                    aria-expanded="true" aria-controls="collapseTeamOne" data-toggle="collapse"
+                                    href="#collapseTeamOne">
+                                    <span class="material-icons icon-md mr-3">group</span>
+                                    <span class="text-truncate" *ngIf="enableTeams" [style]="getStyleString(enableTeams)"
+                                    [ngClass]="{formatEditToolbarWrapper:eventTeams.EditMode}" #appendItem  (click)="showHideToolbar($event,enableTeams)">{{team.TeamName}}</span>
+                                    <div class="ml-auto d-flex align-items-center"  *ngIf="enableTeamsMember"  [style]="getStyleString(enableTeamsMember)"
+                                    [ngClass]="{formatEditToolbarWrapper:eventTeams.EditMode}" (click)="team.addAttendeeInfoToggle = !team.addAttendeeInfoToggle">
+                                        <span class="f2 pr-3 d-none d-sm-block" #appendItem  (click)="showHideToolbar($event,enableTeamsMember)">{{team.TeamMembers.length}}
+                                            Members</span>
+                                        <span
+                                            class="arrowExpandCollapsed mr-2 material-icons icon-md">expand_less</span>
+                                    </div>
+                                </h5>
+                            </div>
+                            <div *ngIf="team.TeamMembers.length > 0" id="collapseTeamOne"
+                                class="collapse multi-collapse show">
+                                <div class="card-body pb-0">
+                                    <div class="d-flex flex-wrap align-items-center">
+                                        <div *ngFor="let member of team.TeamMembers;"
+                                            class="media align-items-center pr-4 pr-md-5 pb-3">
+                                            <span class="material-icons icon-md mr-3">person</span>
+                                            <div class="media-body f2">{{member.BuyerName}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

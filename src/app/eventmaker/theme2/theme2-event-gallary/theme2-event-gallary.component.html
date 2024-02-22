@@ -1,0 +1,107 @@
+    <section class="banner2st pageBanner py-5" [ngClass]="{virtualEventSec:eventGalleryData.EditMode}" *ngIf="isFullPage && sectionBanner"   [style]="getBannerSectionStyleString(eventGalleryData)" >
+      <section-banner-designer-toolbar *ngIf="eventGalleryData.EditMode" (click)="ChangeDetect($event, eventGalleryData, 'SectionBanner')" [ngStyle]="ngStyle"
+    (eventTextFormatAlignment)="changeAlignment($event)"></section-banner-designer-toolbar>
+        
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h1 #appendItem [ngClass]="{formatEditToolbarWrapper:eventGalleryData.EditMode}" (click)="showHideToolbar($event,sectionHeading)"
+            [style]="getStyleString(sectionHeading)"
+            *ngIf="sectionHeading">{{sectionHeading.CustomPropertyName}}
+          </h1>
+          </div>
+        </div>
+      </div>
+    </section>
+        
+	<section  [ngClass]="{virtualEventSec:eventGalleryData.EditMode}" (click)="ChangeDetect($event, eventGalleryData)" id="gallery"  [style]="getSectionStyleString(eventGalleryData)" >
+    <section-designer-toolbar ngDefaultControl *ngIf="eventGalleryData.EditMode" [ngStyle]="ngStyle" (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+  <section>
+        <div class="container image-grid">
+      <div class="row gy-4">
+        <div class="col-md-12" *ngIf="!isFullPage">        
+            <h2 class="titleH2" #appendItem [ngClass]="{formatEditToolbarWrapper:eventGalleryData.EditMode}"
+              (click)="showHideToolbar($event,heading)" [style]="getStyleString(heading)" *ngIf="heading">
+              {{heading.CustomPropertyName}}</h2>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6" *ngFor="let gallery of eventGalleryData.eventGallery; let i = index ">
+          <figure class="galleryImg" *ngIf="i==0">
+            <a class="d-block" href="javascript:void(0)">
+              <img width="1920" height="1280" src="{{domainUrl+gallery.ImagePath}}" alt="{{gallery.Filename}}"
+                class="img-fluid image-grid1st" data-caption="Image 1">
+              <div class="overlayImg" *ngIf="zoomButton">
+                <div class="textGallery"><span class="material-icons">add</span></div>
+              </div>
+            </a>
+          </figure>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-12" *ngFor="let gallery of eventGalleryData.eventGallery; let i = index ">
+              <figure class="galleryImg" *ngIf="i==1">
+                <a class="d-block" href="javascript:void(0)">
+                  <img width="1920" height="1280" src="{{domainUrl+gallery.ImagePath}}" alt="{{gallery.Filename}}"
+                    class="img-fluid image-grid2st" data-caption="Image 2">
+                  <div class="overlayImg" *ngIf="zoomButton">
+                    <div class="textGallery"><span class="material-icons">add</span></div>
+                  </div>
+                </a>
+              </figure>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6"  *ngFor="let gallery of eventGalleryData.eventGallery; let i = index">
+              <figure class="galleryImg">
+                <a class="d-block" href="javascript:void(0)">
+                  <img width="1920" height="1280" src="{{domainUrl+gallery.ImagePath}}" alt="{{gallery.Filename}}"
+                    class="img-fluid image-grid2st" data-caption="Image 2">
+                  <div class="overlayImg" *ngIf="zoomButton">
+                    <div class="textGallery"><span class="material-icons">add</span></div>
+                  </div>
+                </a>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal lightbox-modal" id="lightbox-modal" tabindex="-1">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+          <div class="modal-body">
+            <div class="container-fluid p-0">
+              <!-- JS content here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+    
+  <section class="galleryPage" [ngClass]="{virtualEventSec:eventGalleryData.EditMode}" id="gallery" [ngStyle]="{backgroundColor: eventGalleryData.ModuleBGColor, backgroundImage:'url('+domainUrl+eventGalleryData.BGImage?.ImagePath+')'}" >
+    <div class="container">
+      <div class="row">
+        <div *ngIf="eventGalleryData.EditMode && !eventGalleryData.eventGallery || eventGalleryData.eventGallery.length == 0" class="blankDataMsgBox">
+          Please add gallery data in <span class="fw-bold">Edit Event page</span> or turn this <span class="fw-bold">section off.</span>
+      </div>
+        <div class="gy-4" [ngClass]="{'gridWrapper': !isFullPage, 'row': isFullPage}">     
+          <div [ngClass]="{'gridCol': !isFullPage, 'col-sm-4 col-md-3': isFullPage}" *ngFor="let gallery of eventGalleryData.eventGallery; let i = index">
+            <figure class="galleryImg" [ngClass]="{'hFixed': isFullPage}" (click)="openLightbox(gallery, domainUrl)" *ngIf="i < 4">
+                <img src="{{domainUrl+gallery.ImagePath}}" alt="{{gallery.Filename}}" class="img-fluid gallery-img">
+                <div class="overlayImg">
+                  <div class="textGallery"><span class="material-icons">add</span></div>
+                </div>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+        
+<div class="lighboxWrapper" id="lighboxWrapper">
+  <button class="close-btn" mat-icon-button (click)="closeLightbox($event)"><mat-icon>close</mat-icon></button>
+  <button class="prev-btn" mat-icon-button id="prev-btn" (click)="prevBtn(domainUrl)"><mat-icon>chevron_left</mat-icon></button>
+  <button class="next-btn" mat-icon-button id="next-btn" (click)="nextBtn(domainUrl)"><mat-icon>chevron_right</mat-icon></button>
+</div>
+</section>

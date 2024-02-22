@@ -1,0 +1,125 @@
+<mat-progress-bar [mode]="'indeterminate'" *ngIf="privateChatLoading"></mat-progress-bar>
+
+<div id="people" *ngIf="!showPrivateChatContainer">
+  <div #chatButton class="roomButtons">
+    <button *ngIf="!isLobbyRoom()" title="Room View" [ngClass]="sharedService.currentView == 'room' ? 'active' : ''"
+      (click)="onViewChange('room')">
+      Room View
+    </button>
+    <button title="Event View" [ngClass]="sharedService.currentView == 'event' ? 'active' : isLobbyRoom() ? 'active' : ''"
+      (click)="onViewChange('event')">Event
+      View</button>
+  </div>
+  <div class="peopleHeader">
+    <form class="searchForm">
+      <mat-form-field>
+        <mat-label>Search {{ getAttendeeCount() }}
+          {{sharedService.virtualEventUser.VirtualEvent.AttendeeLabel.toLowerCase()}}
+        </mat-label>
+        <input [(ngModel)]="txtPeopleSearch" matInput name="txtPeopleSearch">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <div class="onlineOfflineFilter" *ngIf="sharedService.currentView == 'event'">
+        <ul id="filterStatus">
+          <li><a [class.active]="sharedService.filterAttendeeValue=='All'" (click)="filterAttendeesByStatus('All')">All</a></li>
+          <li><a class="online" [class.active]="sharedService.filterAttendeeValue=='online'"(click)="filterAttendeesByStatus('online')">Online</a></li>
+          <li><a class="offline" [class.active]="sharedService.filterAttendeeValue=='offline'" (click)="filterAttendeesByStatus('offline')">Offline</a></li>
+        </ul>
+      </div>
+    </form>
+    <a class="viewButton" title="List view" (click)="gridView=false" [ngClass]="{'active': !gridView}">
+      <span class="material-icons">view_headline</span>
+    </a>
+    <a class="viewButton" title="Tile view" (click)="gridView=true" [ngClass]="{'active': gridView}">
+      <span class="material-icons">view_comfy</span>
+    </a>
+    <div class="peopleHeaderInner">
+    </div>
+  </div>
+  <ul [ngClass]="gridView ? 'peopleTileView' : 'peopleListView'" #scrollMe>
+    <li *ngIf="sharedService.hostAndCohost && sharedService.hostAndCohost.length > 0" class="peopleLabel">Host/Co-Host</li>
+    <li id="people_{{member.VirtualEventUserId}}"
+      *ngFor="let member of sharedService.hostAndCohost | people_search:txtPeopleSearch | orderBy: 'FirstName' | meFirst : sharedService.virtualEventUser.VirtualEventUserId">
+      <event-attendee-info (onMemberAction)="callFunctionByType($event)"
+        [member]="member" [gridView]="gridView" [privateMesseges]="newPrivateMessages"></event-attendee-info>
+    </li>
+    <li *ngIf="sharedService.presenters && sharedService.presenters.length > 0" class="peopleLabel">
+      {{sharedService.virtualEventUser.VirtualEvent.SpeakerLabel}}
+    </li>
+    <li id="people_{{member.VirtualEventUserId}}"
+      *ngFor="let member of sharedService.presenters | people_search:txtPeopleSearch | orderBy: 'FirstName' | meFirst : sharedService.virtualEventUser.VirtualEventUserId">
+      <event-attendee-info (onMemberAction)="callFunctionByType($event)"
+        [member]="member" [gridView]="gridView" [privateMesseges]="newPrivateMessages">
+      </event-attendee-info>
+    </li>
+    <li *ngIf="sharedService.attendees && sharedService.attendees.length > 0" class="peopleLabel">
+      {{sharedService.virtualEventUser.VirtualEvent.AttendeeLabel}}
+    </li>
+    <li id="people_{{member.VirtualEventUserId}}"
+      *ngFor="let member of sharedService.attendees | people_search:txtPeopleSearch | orderBy: 'FirstName' | meFirst : sharedService.virtualEventUser.VirtualEventUserId">
+      <event-attendee-info (onMemberAction)="callFunctionByType($event)"
+        [member]="member" [gridView]="gridView" [privateMesseges]="newPrivateMessages">
+      </event-attendee-info>
+    </li>
+  </ul>
+</div>
+
+<div id="privateChat" *ngIf="showPrivateChatContainer">
+  <div class="messageBox" #attendeeInfoSec style="padding:15px; text-align:center; border-bottom:1px solid whitesmoke">
+    <div class="invite" style="text-align: center;">
+      <span mat-stroked-button color="warn" style="cursor:pointer; float:left;" (click)="hideChatContainer()">
+        <span class="material-icons">
+          keyboard_arrow_left
+        </span>
+      </span>
+      <div class="avtar" title="{{activePrivateChatUser.FullName}}" [attr.alt]="activePrivateChatUser.Alt"
+           style="overflow:initial">
+        <img *ngIf="activePrivateChatUser.ProfileImageUrl"
+             src="{{domainURl + '/Images/Profile/Profile_Images/imagepath/' +activePrivateChatUser.ProfileImageUrl}}">
+        <div class="status-circle {{activePrivateChatUser.Online ? 'online' : ''}}">
+        </div>
+      </div>
+      <div *ngIf="activePrivateChatUser.IsBlocked || !sharedService.currentRoomData.AllowPrivateChat">{{activePrivateChatUser.FullName}}</div>
+      <div style="cursor:pointer" *ngIf="!activePrivateChatUser.IsBlocked && sharedService.currentRoomData.AllowPrivateChat"
+           (click)="sendVideoCallLink(activePrivateChatUser)">
+        <span>Invite</span>
+        {{activePrivateChatUser.FullName}}
+      </div>
+    </div>
+  </div>
+  <div class="chatBody chatOuterBox">
+    <ul class="chatMessages" infiniteScroll [scrollWindow]="false" (scrolledUp)="onPrivateChatScrollUp()" #scrollMeChat
+      [scrollTop]="privateChatHistoryPageIndex == 0 ? scrollMeChat.scrollHeight : scrollMeChat.offsetHeight"
+      appScrollDirective>
+      <li class="messageBox {{message.self ? 'self': ''}}" *ngFor="let message of peerMessages;  let i = index;">
+        <div
+          *ngIf="!(i > 0 && peerMessages[i-1].time==message.time && peerMessages[i-1].senderId == message.senderId) && !message.self"
+          class="avtar" [attr.alt]="message.alt" title="{{message.senderName}}">
+        </div>
+        <div class="messageInfo">
+          <span>{{ i > 0 && peerMessages[i-1].time==message.time && peerMessages[i-1].senderId == message.senderId ? ''
+            : message.time}}</span>
+        </div>
+        <div class="message">
+          <span class="messageBubble"
+            [innerHTML]="message.rtmMessage.text | linky : { stripPrefix : false,  className : 'autolink' }"></span>
+        </div>
+      </li>
+    </ul>
+    <div class="chatInputBox" #chatInputBox
+      [ngClass]="(disabledPrivateChatTextbox || activePrivateChatUser.IsBlocked || !sharedService.currentRoomData.AllowPrivateChat) ? 'disabled' : ''"
+      [ngStyle]="{'pointer-events': (disabledPrivateChatTextbox || activePrivateChatUser.IsBlocked || !sharedService.currentRoomData.AllowPrivateChat) ? 'none' : 'all'}">
+      <div class="inputWrapper">
+        <span class="inputTool"><span class="material-icons">mail</span></span>
+        <div #peerMessage class="inputBox" [textContent]="txtPrivateMessage" (keydown)="sendPeerTextMessage($event)"
+             contenteditable
+             [attr.placeholder]="(disabledPrivateChatTextbox || activePrivateChatUser.IsBlocked || !sharedService.currentRoomData.AllowPrivateChat) ? 'Chat disabled' : 'Write something...'">
+        </div>
+        <button class="sendMessage" [disabled]="!isUserLoggedIn || disabledPrivateChatTextbox"
+                (click)="sendMessageToPrivate()">
+          <span class="material-icons">send</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

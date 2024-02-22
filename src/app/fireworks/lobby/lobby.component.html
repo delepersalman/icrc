@@ -1,0 +1,92 @@
+<fireworks-splash-screen *ngIf="resourcesLoading"></fireworks-splash-screen>
+
+<div class="lobyWrapper">
+  <!-- IF SINGLE COLUMN LEFT ADD CLASS singleColumn WITH lobyCol1 + class -->
+  <div class="lobyCol1" *ngIf="simpleRooms.length">
+    <ng-container *ngFor="let r of simpleRooms">
+      <lobby-room-box [roomData]="r"></lobby-room-box>
+    </ng-container>
+  </div>
+  <div class="lobyCol2" *ngIf="multiBoothRoom.length">
+    <ng-container *ngFor="let r of multiBoothRoom">
+      <lobby-room-box [roomData]="r"></lobby-room-box>
+    </ng-container>
+  </div>
+  <div class="lobyCol3" *ngIf="((this.speakerPagedItems?.length > 0)
+  ||
+  ( this.sponsorPagedItems?.length > 0)
+    ||
+  (this.handoutsPagedItems?.length > 0))">
+    <ng-container *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowSpeakers
+    && sharedService.currentRoomData.ShowSpeakers && speakerPagedItems?.length > 0">
+      <h2 class="lobyTitle">{{sharedService.virtualEventUser.VirtualEvent.SpeakerLabel}}</h2>
+      <div class="lobbySpeakers">
+        <div class="lobbyArrows">
+          <ng-container>
+            <a [ngClass]="{disabled:speakerPager.currentPage === 1}"
+              (click)="setSpeakerPage(speakerPager.currentPage - 1)"><span
+                class="material-icons">keyboard_arrow_left</span></a>
+            <a [ngClass]="{disabled:speakerPager.currentPage === speakerPager.totalPages}"
+              (click)="setSpeakerPage(speakerPager.currentPage + 1)">
+              <span class="material-icons">keyboard_arrow_right</span>
+            </a>
+          </ng-container>
+        </div>
+        <div class="lobbySpeakerBox" *ngFor="let speaker of speakerPagedItems">
+          <img class="lspImg" [attr.src]="sharedService.domainUrl + speaker.MemberImageInfo.ImagePath" />
+          <ng-container *ngIf="speaker && speaker.FirstName">
+            <div class="lspName ellipsis">{{speaker.FirstName}}</div>
+            <div class="lspLink ellipsis" *ngIf="speaker.Description">{{speaker.Description}}</div>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowSponsors
+    && sharedService.currentRoomData.ShowSponsors && sponsorPagedItems?.length > 0">
+      <h2 class="lobyTitle">{{sharedService.virtualEventUser.VirtualEvent.SponsorLabel}}</h2>
+      <div class="lobbyPartners">
+        <div class="lobbyArrows">
+          <ng-container>
+            <a [ngClass]="{disabled:sponsorPager.currentPage === 1}"
+              (click)="setSponsorPage(sponsorPager.currentPage - 1)"><span
+                class="material-icons">keyboard_arrow_left</span></a>
+            <a [ngClass]="{disabled:sponsorPager.currentPage === sponsorPager.totalPages}"
+              (click)="setSponsorPage(sponsorPager.currentPage + 1)">
+              <span class="material-icons">keyboard_arrow_right</span>
+            </a>
+          </ng-container>
+        </div>
+        <div class="lobbyPartner" *ngFor="let p of sponsorPagedItems">
+          <a [attr.title]="p.MemberName" [attr.href]="p.WebsiteURL" target="_blank">
+            <img [src]="sharedService.domainUrl + p.MemberImageInfo.ImagePath">
+          </a>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="sharedService.currentRoomData.AllowHandouts && handoutsPagedItems?.length > 0">
+      <h2 class="lobyTitle">Handouts</h2>
+      <div class="lobbyHandouts">
+        <div class="lobbyArrows">
+          <ng-container>
+            <a [ngClass]="{disabled:handoutsPager.currentPage === 1}"
+              (click)="setHandoutsPage(handoutsPager.currentPage - 1)"><span
+                class="material-icons">keyboard_arrow_left</span></a>
+            <a [ngClass]="{disabled:handoutsPager.currentPage === handoutsPager.totalPages}"
+              (click)="setHandoutsPage(handoutsPager.currentPage + 1)">
+              <span class="material-icons">keyboard_arrow_right</span>
+            </a>
+          </ng-container>
+        </div>
+        <div [title]="h.FileName" class="lobbyHandout" [attr.file]="getFileNameExtention(h.Extension)"
+          *ngFor="let h of handoutsPagedItems">
+          <div class="lhName ellipsis"> {{h.FileName}}</div>
+          <span *ngIf="!h.IsAccessible">Not accessible</span>
+          <a *ngIf="h.IsAccessible" class="lhDownload" download="{{h.FileName}}" href="{{currentDownloadUrl}}"
+            (click)="downloadDocument($event, h.FilePath)">
+            <span class="material-icons">file_download</span>
+          </a>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

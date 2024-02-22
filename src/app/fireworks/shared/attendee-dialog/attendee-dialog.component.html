@@ -1,0 +1,29 @@
+<h2 mat-dialog-title *ngIf="attendeeData.VirtualEvent">
+  {{attendeeData.VirtualEvent.EventTitle}} {{attendeeData.VirtualEvent.AttendeeLabel}}
+  <!--<small style="margin-left:30px; font-weight:normal !important">
+    <button mat-button (click)="toggleGridColumns()" fxHide.lt-md>
+      <span *ngIf="gridColumns === 10">10 Columns</span>
+      <span *ngIf="gridColumns === 15">15 Columns</span>
+    </button>
+  </small>-->
+  <mat-form-field class="attendeeSearch">
+    <mat-label>Search</mat-label>
+    <input [(ngModel)]="attendeeSearch" type="search" placeholder="Search Attendees" class="search-input" matInput name="attendeeSearch">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+</h2>
+
+<mat-dialog-content style="min-height:300px">
+  <div class="content" *ngIf="attendeeData.Attendees">
+    <div class="attendeeBox" *ngFor="let attendee of attendeeData.Attendees | people_search:attendeeSearch">
+      <div id="avtar_{{attendee.VirtualEventUserId}}" class="avtar" title="{{attendee.Name}}" [attr.alt]="attendee.Alt">
+        <img *ngIf="attendee.ProfileImageUrl" src="{{domainUrl + '/Images/Profile/Profile_Images/imagepath/' + attendee.ProfileImageUrl}}">
+      </div>
+      <br>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial>Close</button>
+</mat-dialog-actions>

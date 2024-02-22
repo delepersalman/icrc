@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Select Date/Time Format</h2>
+<mat-dialog-content>
+<mat-radio-group class = "tp-radio-group" [(ngModel)]="dateFormat" aria-label="Select an option">
+    <mat-radio-button class = "tp-radio-button"   value="EEEE, MMMM d, y, h:mm a">DDDD, MMMM DD, YYYY, HH:MM AM/PM <strong>(Saturday, June 15, 2019, 10:54 PM)</strong></mat-radio-button>
+    <mat-radio-button class = "tp-radio-button"   value="MMM d, y, h:mm a">MMM DD, YYYY, HH:MM AM/PM <strong>(Jun 15, 2019, 10:54 PM)</strong></mat-radio-button>    
+    <mat-radio-button class = "tp-radio-button"   value="EEEE, MMMM d, y">DDDD, MMM DD, YYYY  <strong>(Saturday, June 15, 2019)</strong></mat-radio-button>   
+    <mat-radio-button class = "tp-radio-button"   value="MMMM d, y">MMM DD, YYYY  <strong>(June 15, 2019)</strong></mat-radio-button>
+    <mat-radio-button class = "tp-radio-button"   value="M/d/yy	">MM/DD/YY  <strong>(6/15/19)</strong></mat-radio-button>
+    <mat-radio-button class = "tp-radio-button"   value="h:mm:ss a">HH:MM AM/PM  <strong>(10:54 PM)</strong></mat-radio-button>
+  </mat-radio-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="btn">Cancel</button>
+  <button mat-raised-button  cdkFocusInitial color="primary" (click)="saveDateFormat()" class="btn">Update</button>
+</mat-dialog-actions> 

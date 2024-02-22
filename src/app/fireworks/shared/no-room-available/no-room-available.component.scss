@@ -1,0 +1,12 @@
+@import "~src/app/fireworks/shared/fw-room/fw-room.component.scss";
+
+.showAfter {
+  animation: cssAnimation 0s 1s forwards;
+  visibility: hidden;
+}
+
+@keyframes cssAnimation {
+  to {
+    visibility: visible;
+  }
+}

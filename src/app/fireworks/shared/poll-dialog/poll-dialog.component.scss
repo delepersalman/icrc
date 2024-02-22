@@ -1,0 +1,12 @@
+.pollOptions { display:flex; flex-direction:column; margin:15px 0;
+  .mat-radio-button { margin:5px;}
+}
+.timer {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  span {
+    font-size: 14px;
+    margin: 0 3px 0 5px;
+    color: red;
+  }
+}

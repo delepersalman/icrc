@@ -1,0 +1,15 @@
+.sidebarSearch { width:100%; padding:10px 15px 0 15px;}
+.Handouts { margin:0; padding:0; max-height:calc(100vh - 178px); overflow-y:auto;
+  .handout { width:100%; display:block; list-style:none; border-bottom:1px solid #e5e5e5; color:#888; font-size:14px; line-height:20px; padding:10px 45px; background-repeat:no-repeat; background-position:15px center; background-image:url(/s/assets/fireworks/icons/File.svg); position:relative;
+    a { width:40px; height:40px; display:inline-block; text-align:center; position:absolute; top:0; right:0; cursor:pointer;
+      .material-icons { line-height:40px; color:#000;}
+      &:hover { background-color:#f4f4f4; color:var(--theme-color);}
+    }
+    &[file="PDF"] { background-image:url(/s/assets/fireworks/icons/PDF.svg);}
+    &[file="XLS"] { background-image:url(/s/assets/fireworks/icons/XLS.svg);}
+    &[file="DOC"] { background-image:url(/s/assets/fireworks/icons/DOC.svg);}
+    &[file="JPG"] { background-image:url(/s/assets/fireworks/icons/JPG.svg);}
+    &[file="TXT"] { background-image:url(/s/assets/fireworks/icons/TEXT.svg);}
+    &[file="PPT"] { background-image:url(/s/assets/fireworks/icons/PPT.svg);}
+  }
+}

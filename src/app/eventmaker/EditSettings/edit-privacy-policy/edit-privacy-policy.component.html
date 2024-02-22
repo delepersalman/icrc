@@ -1,0 +1,18 @@
+<h2 mat-dialog-title><span >{{pageInfo.PageTitle}}</span> </h2>
+<mat-dialog-content class="mat-typography modelContentPageSetting">
+	  <div class="contentEditableWrapper">
+		<form class="flex">
+					<mat-label>Enter Privacy Policy </mat-label>					
+                        <ckeditor [editor]="editor" name="Description" matInput [(ngModel)]="customPageInfo.Description" [data]="customPageInfo.Description"></ckeditor>				
+			<div class="slideToggle input50 flex justify-between align-center">
+				<span mat-line>Show as Link in Header</span>
+				<mat-slide-toggle [(ngModel)]="customPageInfo.ShowOnHeader" name="ShowOnHeader"></mat-slide-toggle>
+			</div>
+		</form>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<button mat-button mat-dialog-close class="btn">Cancel</button>
+	<button mat-raised-button  (click)="savePageData()" cdkFocusInitial color="primary"
+		class="btn">Save</button>
+</mat-dialog-actions>

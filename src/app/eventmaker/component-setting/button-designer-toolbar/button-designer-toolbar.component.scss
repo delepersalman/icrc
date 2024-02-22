@@ -1,0 +1,22 @@
+.toggleSameBtn { padding:0; line-height:48px; vertical-align:bottom; min-width:48px; background:white }
+.toggleSameBtn mat-icon { color:#212121 }
+.toggleSameBtn.active { background:#e0e0e0 }
+.formatButtonEditToolbar { display:inline-flex }
+.formatButtonEditToolbar input[type='color'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+.formatButtonEditToolbar input[type='file'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+.fontSizeSelect { border:solid 1px transparent; padding-left:2px; min-width:48px; font-weight:bold; font-size:14px !important; height:44px; background:transparent; outline:none }
+
+.mat-button-toggle { line-height:48px }
+
+::ng-deep button-designer-toolbar { position:absolute; right:0; display:none; top:48px; z-index:99; animation:slide-in 0.1s ease-in }
+// .formatEditToolbarWrapper.Clicked button-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.svgIcon { 
+  svg { vertical-align:bottom }
+}
+
+@keyframes slide-in {
+    from {
+      transform: translate(0, -5px);
+      opacity: 0;
+    }
+  }

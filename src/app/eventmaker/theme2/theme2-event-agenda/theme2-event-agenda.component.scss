@@ -1,0 +1,39 @@
+@import '../../../../variable.scss';
+.formatEditToolbarWrapper { position:relative; border:2px dashed transparent; transition:all .3s }
+.formatEditToolbarWrapper:hover { border-color:#888 }
+section { position:relative; border:2px dashed transparent; padding:3rem 0; transition:all .3s }
+section.virtualEventSec:hover { border-color:#00ff95 }
+
+
+designer-toolbar { position:absolute; top:-51px; display:none }
+button-designer-toolbar { display:none }
+// section-designer-toolbar { position:absolute; top:-51px; right:16px; display:none; z-index:9999 }
+.formatEditToolbarWrapper.Clicked ~ designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.formatEditToolbarWrapper.Clicked button-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+section:hover section-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+section-banner-designer-toolbar { position:absolute; top:-51px; right:16px; display:none; z-index:9999 }
+// section:hover section-banner-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.formatButtonEditToolbar input[type='color'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+
+.speakerTitle { font:normal normal bold 16px/20px $font-style }
+.mat-tab-label-content { font-family:$font-style }
+mat-tab-group::ng-deep .mat-tab-body-content { overflow-x:hidden }
+
+.eventSponsorsBox { padding:5px 10px; background:rgba($color: #000000, $alpha: 0.01);
+    img { object-fit:contain }
+}
+
+.homepageView {  background:$theme-colour2; color:#fff;
+    .aboutTitle { color:#fff }
+    mat-content.mat-default-theme, mat-content { color:#fff; background-color:transparent !important;}
+    a.text-uppercase { color:#fff }
+    .eventScheduleTabBox h4, .eventScheduleTabBox p, .eventScheduleTabBox .d-flex a, h5.lineClamp1, .eventScheduleTabBox .d-sm-flex .fs7, .eventScheduleTabBox span, .eventScheduleTabBox .speakerTitle {
+        color:#fff
+    }
+    .eventScheduleTabBox::ng-deep p p { color:inherit !important }
+    .eventSponsorsBox { background-color:#fff }
+    mat-tab-group::ng-deep mat-tab-header .mat-tab-label-content { color:#fff }
+    // .eventScheduleSec { background:$theme-colour2; color:#fff }
+}
+.editorWrapper { position:absolute; left:0; top:0; z-index:9; height:100%; width:100% }
+.z11 { z-index:11 } 

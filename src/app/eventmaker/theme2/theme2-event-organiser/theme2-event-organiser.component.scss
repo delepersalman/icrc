@@ -1,0 +1,36 @@
+@import '../../../../variable.scss';
+.eventDiscrition { position:relative; z-index:1 }
+.eventDiscrition .eventImage { position:absolute; left:0; top:0; width:100%; height:48%; z-index:-1; overflow:hidden }
+.eventDiscrition .card { max-width:80%; border:0; border-radius:0; margin-top:16% }
+
+.mat-flat-button.btnStyle1 { padding:4px 1.2rem }
+.formatEditToolbarWrapper { position:relative; border:2px dashed transparent; transition:all .3s }
+.formatEditToolbarWrapper:hover { border-color:#888 }
+.organisedBySec { position:relative; transition:all .3s }
+.organisedBySec:hover { border-color:#00ff95 }
+section { position:relative; border:2px dashed transparent; transition:all .3s }
+section.organisedBySec:hover { border-color:#00ff95 }
+
+designer-toolbar { position:absolute; top:-51px; display:none }
+button-designer-toolbar { display:none }
+// section-designer-toolbar { position:absolute; top:-51px; right:16px; display:none; z-index:9999 }
+.formatEditToolbarWrapper.Clicked ~ designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.formatEditToolbarWrapper.Clicked button-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+// .organisedBySec:hover section-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+
+.formatButtonEditToolbar input[type='color'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+
+.cdk-drag-preview { box-sizing:border-box; border-radius:4px; box-shadow:0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) }
+.cdk-drag-placeholder { opacity:0 }
+.cdk-drag-animating { transition:transform 250ms cubic-bezier(0, 0, 0.2, 1)  }
+.example-box:last-child { border:none }
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) { transition:transform 250ms cubic-bezier(0, 0, 0.2, 1) }
+
+.user72 { width:72px; height:72px; object-fit:cover }
+
+svg path { fill:$theme-colour3 }
+.editorWrapper { position:absolute; left:0; top:0; z-index:9; height:100%; width:100% }
+.z11 { z-index:11 }
+
+.flex05 { flex:0.5 0 }
+.flex1 { flex:1 0 }

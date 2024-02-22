@@ -1,0 +1,12 @@
+.handoutsSearch { width:240px; font-size:14px; float:right; margin-top:-10px;}
+.handoutsTable { width:100%;
+  .mat-header-row { background:var(--theme-color);
+    .mat-header-cell { color:#fff; font-size:100%;}
+  }
+}
+table.fixed { table-layout:fixed;}
+table.fixed td { overflow: hidden;}
+.tdCenter { text-align:center;}
+.tdImgDeta  { display:flex; align-items:center;}
+.tdImgDeta img { width:24px; margin-right:10px;}
+.downloadBtn { color:var(--theme-color);}

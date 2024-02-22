@@ -1,0 +1,14 @@
+<mat-dialog-content class="mat-typography modelContentPageSetting">
+	  <div class="contentEditableWrapper">
+		<form class="flex">
+			<mat-form-field >
+			  <mat-label>Enter Label Text</mat-label>
+			  <input matInput placeholder="Label Text" [(ngModel)]="LableName" name="Lable" >
+			</mat-form-field>		
+		</form>
+	  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="btn">Cancel</button>
+  <button mat-raised-button  cdkFocusInitial color="primary" (click)="saveLabel()" class="btn">Update</button>
+</mat-dialog-actions> 

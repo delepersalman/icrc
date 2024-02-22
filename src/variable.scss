@@ -1,0 +1,19 @@
+$primary :var(--theme-colour1);
+$textMute : #b7bcc3;
+$theme-colour1: var(--theme-colour1);
+$theme-colour2: var(--theme-colour2);
+$theme-colour3: var(--theme-colour3);
+$theme-colour4: var(--theme-colour4);
+$theme-colour5: var(--theme-colour5);
+$font-style: var(--font-style);
+$custom-css: var(--custom-css);
+:root{
+    --theme-colour1: #3b3b3b;
+    --theme-colour2: #1076fb;
+    --theme-colour3: #ff008a;
+    --theme-colour4: #000000;
+    --theme-colour5: #ebf4ff;
+    --font-style:'Inter', sans-serif;
+    --custom-css:none;
+    // --theme-accent-color-500 :#ff008a;
+ }

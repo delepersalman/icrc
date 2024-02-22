@@ -1,0 +1,138 @@
+<!-- Event Speakers -->
+<section class="pySec" (click)="ChangeDetect($event, eventSpeakers)" [ngClass]="{virtualEventSec:eventSpeakers.EditMode}"
+[style]="getSectionStyleString(eventSpeakers)"
+    [ngClass]="{virtualEventSec:eventSpeakers.EditMode}" id="Speaker">
+    <section-designer-toolbar *ngIf="eventSpeakers.EditMode" [ngStyle]="ngStyle"
+        (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 #appendItem *ngIf="heading" class="titleH2"[style]="getStyleString(heading)"
+                    [ngClass]="{formatEditToolbarWrapper:eventSpeakers.EditMode}"
+                    (click)="showHideToolbar($event,heading)" (input)="onChange($event.target.innerHTML, heading)">
+                    {{heading.CustomPropertyName}}
+                </h2>
+            </div>
+            <div class="col-12">
+                <ng-container *ngFor="let grpSpeaker of groupArr;trackBy:trackBysFn">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 class="groupCategoryName mt-4" #appendItem *ngIf="grpSpeaker.CategoryName && Category"
+                            [style]="getStyleString(Category)"
+                                [ngClass]="{formatEditToolbarWrapper:eventSpeakers.EditMode}"
+                                (click)="showHideToolbar($event,Category)">{{grpSpeaker.CategoryName}}</h3>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div *ngIf="eventSpeakers.EditMode && eventSpeakers.eventSpeakers.length == 0"
+                            class="blankDataMsgBox">
+                            Please add data in <span class="fw-bold">Edit Event page</span> or turn this <span
+                                class="fw-bold">section off.</span>
+                        </div>
+                        <div class="col-md-3 my-3" *ngFor="let speaker of grpSpeaker.groupItem;trackBy: trackByFn">
+
+                            <div class="eventSpeakersBox" *ngIf="SpeakerBox"
+                                [ngStyle]="{backgroundColor: speaker.BGColor, color:speaker.TextColor}">
+                                <div class="speakerDescription" *ngIf="speaker.Description"><p [innerHTML]="speaker.Description"></p>
+                                </div>
+                                <div class="editorWrapper" *ngIf="eventSpeakers.EditMode" #appendItem
+                                    (click)="showHideButtonToolbar($event, SpeakerBox, speaker)"
+                                    [ngClass]="{formatEditToolbarWrapper:eventSpeakers.EditMode}"></div>
+                                <ng-container *ngFor="let prop of eventSpeakers.SectionProperties">
+                                    <img *ngIf="speaker.ImagePath && prop.Name == 'ProfileImage'"
+                                        src="{{domainUrl+speaker.ImagePath}}" alt="{{speaker.SpeakerName}}"
+                                        class="user180 rounded-circle">
+                                    <h4 #appendItem *ngIf="prop.Name == 'Name'"
+                                    [style]="getStyleString(prop)"
+                                        [ngClass]="{formatEditToolbarWrapper:eventSpeakers.EditMode}"
+                                        (click)="showHideToolbar($event,prop)" class="z11">{{speaker.SpeakerName}}</h4>
+
+                                    <p #appendItem *ngIf="prop.Name == 'Title' && speaker.Title"
+                                    [style]="getStyleString(prop)"
+                                        [ngClass]="{formatEditToolbarWrapper:eventSpeakers.EditMode}"
+                                        (click)="showHideToolbar($event,prop)" class="z11 mb-0">{{speaker.Title}}</p>
+
+                                    <p class="z11 op8" #appendItem
+                                        *ngIf="prop.Name == 'CompanyName' &&  speaker.CompanyName"
+                                        [style]="getStyleString(prop)"
+                                        [ngClass]="{formatEditToolbarWrapper:eventSpeakers.EditMode}"
+                                        (click)="showHideToolbar($event,prop)">{{speaker.CompanyName}}</p>
+
+                                    <ul *ngIf="prop.Name == 'SocialMediaBox'" class="mt-3 mb-0">
+                                        <ng-container *ngFor="let sib of prop.SiblingList">
+                                        <li *ngIf="speaker.WebsiteURL && sib.Name === 'WebsiteUrl'"><a href="{{speaker.WebsiteURL}}" target="_blank"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="23.32"
+                                                    viewBox="0 0 24 23.32">
+                                                    <path id="Path_41107" data-name="Path 41107"
+                                                        d="M12,0A11.834,11.834,0,0,0,0,11.66,11.834,11.834,0,0,0,12,23.32,11.834,11.834,0,0,0,24,11.66,11.834,11.834,0,0,0,12,0ZM1.48,12.541H4.827a17.936,17.936,0,0,0,.507,3.5H2.453a9.958,9.958,0,0,1-.973-3.5Zm11.427-7v-4a5.454,5.454,0,0,1,2.96,2.591,10.978,10.978,0,0,1,.72,1.4ZM17.2,7.294a16.2,16.2,0,0,1,.547,3.5h-4.84v-3.5H17.2ZM11.093,1.542v4H7.413a10.93,10.93,0,0,1,.72-1.4,5.453,5.453,0,0,1,2.96-2.6Zm0,5.752v3.5H6.267a16.2,16.2,0,0,1,.547-3.5ZM4.827,10.779H1.48a9.958,9.958,0,0,1,.973-3.5h2.88a17.82,17.82,0,0,0-.507,3.5Zm1.44,1.762h4.827v3.5H6.813a16.249,16.249,0,0,1-.547-3.5Zm4.84,5.182v4a5.454,5.454,0,0,1-2.96-2.591,10.929,10.929,0,0,1-.72-1.4Zm1.8,4V17.788h3.68a10.93,10.93,0,0,1-.72,1.4,5.454,5.454,0,0,1-2.96,2.591Zm0-5.752v-3.5h4.827a16.249,16.249,0,0,1-.547,3.5Zm6.28-3.5h3.347a9.958,9.958,0,0,1-.973,3.5H18.667a17.914,17.914,0,0,0,.507-3.433Zm0-1.749a17.823,17.823,0,0,0-.52-3.433h2.88a9.963,9.963,0,0,1,.973,3.5l-3.333-.065ZM20.52,5.545H18.133A11.464,11.464,0,0,0,16.28,2.28a10.617,10.617,0,0,1,4.187,3.265ZM7.72,2.28A11.464,11.464,0,0,0,5.867,5.545H3.533A10.617,10.617,0,0,1,7.72,2.28ZM3.52,17.827H5.867A11.464,11.464,0,0,0,7.72,21.091a10.612,10.612,0,0,1-4.187-3.3Zm12.747,3.265a11.464,11.464,0,0,0,1.853-3.265h2.347A10.624,10.624,0,0,1,16.28,21.04Z"
+                                                        fill="#4d5c65" />
+                                                </svg></a>
+                                        </li>
+                                        <li *ngIf="speaker.LinkedInURL && sib.Name === 'LinkedInURL'"><a href="{{speaker.LinkedInURL}}"  target="_blank">
+                                                <svg enable-background="new 0 0 24 24" height="22" viewBox="0 0 24 24"
+                                                    width="24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="m23.994 24v-.001h.006v-8.802c0-4.306-.927-7.623-5.961-7.623-2.42 0-4.044 1.328-4.707 2.587h-.07v-2.185h-4.773v16.023h4.97v-7.934c0-2.089.396-4.109 2.983-4.109 2.549 0 2.587 2.384 2.587 4.243v7.801z" />
+                                                    <path d="m.396 7.977h4.976v16.023h-4.976z" fill="#4d5c65" />
+                                                    <path
+                                                        d="m2.882 0c-1.591 0-2.882 1.291-2.882 2.882s1.291 2.909 2.882 2.909 2.882-1.318 2.882-2.909c-.001-1.591-1.292-2.882-2.882-2.882z"
+                                                        fill="#4d5c65" />
+                                                </svg>
+                                            </a>
+                                        </li>
+                                        <li *ngIf="speaker.FacebookURL && sib.Name === 'FBLink'"><a href="{{speaker.FacebookURL}}"  target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24">
+                                                    <path id="Path_41108" data-name="Path 41108"
+                                                        d="M0,12.067A12.142,12.142,0,0,0,10,24V15.333H7V12h3V9.333a4.34,4.34,0,0,1,4.667-4.666,18.1,18.1,0,0,1,2.666.266V8H15.8C14.333,8,14,8.733,14,9.667V12h3.2l-.533,3.333H14V24A12.091,12.091,0,0,0,12,0,12.069,12.069,0,0,0,0,12.067Z"
+                                                        fill="#4d5c65" fill-rule="evenodd" />
+                                                </svg>
+                                            </a></li>
+                                        <li *ngIf="speaker.TwitterURL && sib.Name === 'TwitterLink'"><a href="{{speaker.TwitterURL}}"  target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25.357" height="20.614"
+                                                    viewBox="0 0 25.357 20.614">
+                                                    <path id="Path_41109" data-name="Path 41109"
+                                                        d="M26.294,5.193a10.418,10.418,0,0,1-2.987.819,5.215,5.215,0,0,0,2.287-2.879,10.386,10.386,0,0,1-3.3,1.262A5.2,5.2,0,0,0,13.426,9.14,14.774,14.774,0,0,1,2.7,3.7a5.211,5.211,0,0,0,1.61,6.946A5.19,5.19,0,0,1,1.957,10v.067a5.2,5.2,0,0,0,4.174,5.1,5.24,5.24,0,0,1-2.35.089,5.205,5.205,0,0,0,4.86,3.612A10.44,10.44,0,0,1,2.179,21.1a10.61,10.61,0,0,1-1.242-.073,14.714,14.714,0,0,0,7.974,2.337,14.7,14.7,0,0,0,14.8-14.8c0-.223-.006-.449-.016-.672A10.576,10.576,0,0,0,26.292,5.2l0,0Z"
+                                                        transform="translate(-0.937 -2.747)" fill="#4d5c65" />
+                                                </svg>
+                                            </a></li>
+                                        <li *ngIf="speaker.InstagramURL && sib.Name === 'InstagramURL'"><a href="{{speaker.InstagramURL}}"  target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                                                    id="Layer_1" x="0px" y="0px" width="24px" height="24px"
+                                                    viewBox="0 0 169.063 169.063"
+                                                    style="enable-background:new 0 0 169.063 169.063;"
+                                                    xml:space="preserve">
+                                                    <g>
+                                                        <path
+                                                            d="M122.406,0H46.654C20.929,0,0,20.93,0,46.655v75.752c0,25.726,20.929,46.655,46.654,46.655h75.752   c25.727,0,46.656-20.93,46.656-46.655V46.655C169.063,20.93,148.133,0,122.406,0z M154.063,122.407   c0,17.455-14.201,31.655-31.656,31.655H46.654C29.2,154.063,15,139.862,15,122.407V46.655C15,29.201,29.2,15,46.654,15h75.752   c17.455,0,31.656,14.201,31.656,31.655V122.407z"
+                                                            fill="#4d5c65" />
+                                                        <path
+                                                            d="M84.531,40.97c-24.021,0-43.563,19.542-43.563,43.563c0,24.02,19.542,43.561,43.563,43.561s43.563-19.541,43.563-43.561   C128.094,60.512,108.552,40.97,84.531,40.97z M84.531,113.093c-15.749,0-28.563-12.812-28.563-28.561   c0-15.75,12.813-28.563,28.563-28.563s28.563,12.813,28.563,28.563C113.094,100.281,100.28,113.093,84.531,113.093z"
+                                                            fill="#4d5c65" />
+                                                        <path
+                                                            d="M129.921,28.251c-2.89,0-5.729,1.17-7.77,3.22c-2.051,2.04-3.23,4.88-3.23,7.78c0,2.891,1.18,5.73,3.23,7.78   c2.04,2.04,4.88,3.22,7.77,3.22c2.9,0,5.73-1.18,7.78-3.22c2.05-2.05,3.22-4.89,3.22-7.78c0-2.9-1.17-5.74-3.22-7.78   C135.661,29.421,132.821,28.251,129.921,28.251z"
+                                                            fill="#4d5c65" />
+                                                    </g>
+                                                </svg>
+                                            </a>
+                                        </li>
+                                    </ng-container>
+                                    </ul>
+                                    <div [ngClass]="{overlay:!eventSpeakers.EditMode}"
+                                        *ngIf="prop.Name == 'Description'">
+                                        <div #appendItem class="text"[style]="getStyleString(prop)"
+                                            [ngClass]="{formatEditToolbarWrapper:eventSpeakers.EditMode}"
+                                            (click)="showHideToolbar($event,prop)"><p  [innerHTML]="speaker.Description"></p></div>
+
+                                    </div>
+                                </ng-container>
+
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</section>

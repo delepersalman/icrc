@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Add to Calendar</h2>
+<mat-dialog-content>
+    <ul class="addToCalendar pl-0">
+        <li><a href="javascript:void(0)" (click)="createNavigationUrl('outlook')"><img src="https://www.eventcombo.com/Images/AMaterial/windows.png"> Microsoft Outlook</a></li>
+        <li><a href="javascript:void(0)" (click)="createNavigationUrl('google')" rel="nofollow"><img src="https://www.eventcombo.com/Images/AMaterial/google.png"> Google Calendar</a></li>
+        <li><a href="javascript:void(0)" (click)="createNavigationUrl('apple')"><img src="https://www.eventcombo.com/Images/AMaterial/apple.png"> Apple iCal</a></li>
+    </ul>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="btn">Cancel</button>
+</mat-dialog-actions> 

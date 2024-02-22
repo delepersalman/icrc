@@ -1,0 +1,13 @@
+<div class="speakerList" [hidden]="eventSpeakers && eventSpeakers.length < 1" #scrollMe>
+  <div class="speaker" *ngFor="let speaker of eventSpeakers">
+    <div class="Image"><span [style.background]="'url('+ sharedService.domainUrl + speaker.MemberImageInfo.ImagePath +')'"></span></div>
+    <div class="Info" *ngIf="speaker && speaker.MemberName || speaker.Title || speaker.Description || speaker.FirstName">
+      <div class="Name ellipsis">{{speaker.FirstName}}</div>
+      <div class="Occupation ellipsis">{{speaker.Title}}</div>
+      <div class="Description">
+        <div class="Occupation pdBottom">{{speaker.MemberName}}</div>
+        {{speaker.Description}}
+      </div>
+    </div>
+  </div>
+</div>

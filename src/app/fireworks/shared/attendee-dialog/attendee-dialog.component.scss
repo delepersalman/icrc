@@ -1,0 +1,11 @@
+.attendeeSearch { width:240px; font-size:14px; float:right; margin-top:-10px;}
+.avtar { width:80px; height:80px; display:inline-block; background-color:rgba(255,255,255,.25); border-radius:50%; position:absolute; left:calc(50% - 40px); top:calc(50% - 40px); z-index:11;
+  img { width:80px; height:80px; border-radius:50%; background-color:#e5e5e5; position:relative;}
+  &:before { content:attr(alt); width:100%; height:100%; color:var(--theme-color); font-size:18px; font-weight:bold; line-height:80px; text-align:center; position:absolute; left:0; top:0;}
+}
+.attendeeBox { width:48px; height:48px; float:left; position:relative; margin:2px; text-align:center;
+  .avtar { width:48px; height:48px; background-color:rgba(0,0,0,.25); border-radius:4px; position:relative; left:auto; top:auto;
+    img { width:48px; height:48px; border-radius:4px; background-color:#e5e5e5; position:relative;}
+    &:before { content:attr(alt); width:100%; height:100%; color:var(--theme-color); font-size:18px; font-weight:bold; line-height:48px; text-align:center; position:absolute; left:0; top:0;}
+  }
+}

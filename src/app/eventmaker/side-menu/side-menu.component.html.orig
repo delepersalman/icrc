@@ -1,0 +1,245 @@
+<mat-toolbar class="toolbarHeader">
+	<div>
+		<button mat-button class="example-icon" (click)="openWindow()" aria-label="Back">
+			<mat-icon>keyboard_backspace</mat-icon>
+		</button>
+		<span class="mat-h3">{{eventWebsiteDetail.Event.EventTitle}}</span>
+	</div>
+	<div>
+		<button mat-button class="example-icon" aria-label="Mobile and Desktop View">
+			<mat-icon>smartphone</mat-icon>
+		</button>
+		<a href="{{previewUrl}}" target="_blank" mat-button class="example-icon" aria-label="Preview">
+			<mat-icon>call_made</mat-icon>
+		</a>
+	</div>
+	<div>
+
+		<button mat-icon-button class="example-icon" aria-label="Save">
+			<mat-icon>save</mat-icon>
+		</button>
+		<button mat-icon-button class="example-icon" aria-label="Undo">
+			<mat-icon>undo</mat-icon>
+		</button>
+		<button mat-icon-button class="example-icon" aria-label="Redo">
+			<mat-icon>redo</mat-icon>
+		</button>
+		<button mat-icon-button class="example-icon" aria-label="Close">
+			<mat-icon>close</mat-icon>
+		</button>
+	</div>
+</mat-toolbar>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+	<mat-tab-group mat-align-tabs="start">
+		<mat-tab label="Sections">
+			<div>
+				<div class="listIcon">
+					<div class="op6">Main Navigation</div>
+					<button mat-icon-button class="example-icon" aria-label="Add Page"
+						(click)="openDialogNewPage(null)">
+						<mat-icon>add</mat-icon>
+					</button>
+				</div>
+				<mat-list  cdkDropList  class="listHoverIcon eventPagesList example-list" (cdkDropListDropped)="drop($event)">
+					<ng-container  *ngFor="let page of eventWebsiteDetail.EventPages"> 
+					<mat-list-item cdkDrag  class="listItem example-box" >					
+						<button mat-list-icon mat-icon-button class="visibilityIcon" (click)="addRemovePage(page)"
+						[ngClass]="{'visibilityOff': !page.Selected}">
+						<mat-icon *ngIf="page.Selected" class="icon">visibility</mat-icon>
+						<mat-icon *ngIf="!page.Selected" class="icon text-mute">visibility_off</mat-icon>
+						<svg width="20px" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+								<path d="M0 0h24v24H0z" fill="none"></path>
+						  </svg>
+					    </button>
+						<div mat-line class="listText">{{page.PageTitle}}</div>
+						<button *ngIf="!page.IsSystemModule && page.Selected" mat-icon-button class="settingsIcon" 
+							(click)="removeSection(page)">
+							<mat-icon class="icon">delete</mat-icon>
+						</button>
+						<button mat-icon-button class="settingsIcon" *ngIf="page.IsSystemModule && page.Selected" (click)="openDialogPageSettings(page,eventWebsiteDetail)">
+							<mat-icon class="icon">settings</mat-icon>
+						</button>
+<<<<<<< HEAD
+						<button mat-icon-button class="settingsIcon" *ngIf="!page.IsSystemModule"
+                            (click)="openDialogPageSettings(page, eventWebsiteDetail)">
+                            <mat-icon class="icon">settings</mat-icon>
+                        </button>				
+=======
+						<button mat-icon-button class="settingsIcon" *ngIf="!page.IsSystemModule && page.Selected"
+						(click)="openDialogNewPage(page, eventWebsiteDetail)">
+						<mat-icon class="icon">settings</mat-icon>
+					</button>							
+>>>>>>> 32ccd968e3032398f264c3bcf1b2ba5f0aaa0074
+					</mat-list-item>
+				</ng-container>	
+				<button mat-icon-button class="settingsIcon" 
+						(click)="openDialogAddNewPage(eventWebsiteDetail.Event.EventId)">
+						<mat-icon class="icon">add</mat-icon>Manage Sections
+					</button>	
+				</mat-list>
+			</div>
+		</mat-tab>
+		<mat-tab label="Design">
+			<div *ngIf="designListView == 0">
+				<mat-list class="listHoverIcon">
+					<mat-list-item *ngFor="let list of designList" (click)="listActionFunc(list.id)"
+						class="listItem pointer">
+						<div mat-line class="listText">{{list.name}}</div>
+						<button mat-icon-button class="settingsIcon">
+							<mat-icon class="icon">keyboard_arrow_right</mat-icon>
+						</button>
+					</mat-list-item>
+				</mat-list>
+				<div class="switchList flex justify-between align-center">
+					<span mat-line class="mat-body">Header Fixed</span>
+					<mat-slide-toggle [(ngModel)]="eventWebsiteDetail.HeaderFixed"></mat-slide-toggle>
+				</div>
+				<div class="switchList flex justify-between align-center">
+					<span mat-line class="mat-body">Auto Save</span>
+					<mat-slide-toggle></mat-slide-toggle>
+				</div>
+			</div>
+			<div *ngIf="designListView == 5">
+				<mat-list class="listHoverIcon">
+					<mat-list-item class="listItem pointer" (click)="listActionFunc(0)">
+						<button mat-icon-button>
+							<mat-icon>keyboard_arrow_left</mat-icon>
+						</button>
+						<div class="listText">Banner</div>
+					</mat-list-item>
+				</mat-list>
+				<mat-radio-group class="customRadioGroup" [(ngModel)]="eventWebsiteDetail.bannerType">
+					<mat-radio-button class="customRadioButton" *ngFor="let type of bannerType" [value]="type"
+						name="LogoTypeList">
+						{{type}}
+					</mat-radio-button>
+				</mat-radio-group>				
+				<file-upload *ngIf="eventWebsiteDetail.bannerType == 'Upload Banner'" [inputImageList]="bannerImages" [multiple]="true" (onImageSelect)="changeBannerImage($event)">
+				</file-upload>
+				<mat-form-field class="w-100 listInputSpacing" *ngIf="eventWebsiteDetail.bannerType == 'Enter URL'">
+					<mat-label>Enter URL</mat-label>
+					<input matInput name="bannerImageUrl" pattern="(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)"
+						(blur)="onBannerDetailChange('url')" [(ngModel)]="eventWebsiteDetail.BannerDetails.ImageUrl" placeholder="Enter URL">
+				</mat-form-field>
+
+				<!-- </form> -->
+			</div>
+			<div *ngIf="designListView == 1">
+				<mat-list class="listHoverIcon">
+					<mat-list-item class="listItem pointer" (click)="listActionFunc(0)">
+						<button mat-icon-button>
+							<mat-icon>keyboard_arrow_left</mat-icon>
+						</button>
+						<div class="listText">Logo</div>
+					</mat-list-item>
+				</mat-list>
+				<mat-radio-group class="customRadioGroup" [(ngModel)]="eventWebsiteDetail.LogoType">
+					<mat-radio-button class="customRadioButton" *ngFor="let type of logoType" [value]="type"
+						name="LogoTypeList">
+						{{type}}
+					</mat-radio-button>
+				</mat-radio-group>
+				<mat-form-field class="w-100 listInputSpacing" *ngIf="eventWebsiteDetail.LogoType == 'Enter Text'">
+					<mat-label>Enter Logo Name</mat-label>
+					<input name="logoText" matInput placeholder="Logo Name" (keypress)="onLogoDetailChange('text')"
+						[(ngModel)]="eventWebsiteDetail.LogoDetails.Text" maxlength="25">
+				</mat-form-field>
+				<file-upload *ngIf="eventWebsiteDetail.LogoType == 'Upload Logo'" [inputImageList]="logoImages" [multiple]="true" (onImageSelect)="changeImage($event)">
+				</file-upload>
+				<mat-form-field class="w-100 listInputSpacing" *ngIf="eventWebsiteDetail.LogoType == 'Enter URL'">
+					<mat-label>Enter URL</mat-label>
+					<input matInput name="logoImageUrl" pattern="(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)"
+						(blur)="onLogoDetailChange('url')" [(ngModel)]="eventWebsiteDetail.LogoDetails.ImageUrl" placeholder="Enter URL">
+				</mat-form-field>
+
+				<!-- </form> -->
+			</div>
+			<div *ngIf="designListView == 2">
+				<mat-list class="listHoverIcon">
+					<mat-list-item class="listItem pointer" (click)="listActionFunc(0)">
+						<button mat-icon-button>
+							<mat-icon>keyboard_arrow_left</mat-icon>
+						</button>
+						<div class="listText">Theme Colors</div>
+					</mat-list-item>
+				</mat-list>
+				<mat-list role="list">
+					<mat-list-item role="listitem"
+						*ngFor="let themeColor of eventWebsiteDetail.ThemeColors;let i = index;" class="pl-1rem">
+						<input type="color" (change)="changeTheme(themeColor.Color,(i + 1))"
+							[(ngModel)]="themeColor.Color" name="favcolor">
+						<label for="favcolor1">{{themeColor.ColorName}}</label>
+					</mat-list-item>
+				</mat-list>
+			</div>
+			<div *ngIf="designListView == 3">
+				<mat-list class="listHoverIcon">
+					<mat-list-item class="listItem pointer" (click)="listActionFunc(0)">
+						<button mat-icon-button>
+							<mat-icon>keyboard_arrow_left</mat-icon>
+						</button>
+						<div class="listText">Font Style</div>
+					</mat-list-item>
+				</mat-list>
+				<mat-radio-group aria-labelledby="Select Font" class="customRadioGroup"
+					[(ngModel)]="eventWebsiteDetail.FontType">
+					<mat-radio-button class="customRadioButton" *ngFor="let font of fontType" [value]="font">
+						{{font}}
+					</mat-radio-button>
+				</mat-radio-group>
+				<div *ngIf="eventWebsiteDetail.FontType == 'Web Safe Fonts'">
+					<mat-form-field class="w-100 listInputSpacing">
+						<mat-label>Choose an option</mat-label>
+						<mat-select [(ngModel)]="eventWebsiteDetail.FontStyle">
+							<mat-option (click)="changeFont(fontStyleOption)"
+								*ngFor="let font of eventWebsiteDetail.FontList" value="{{font.Name}}">
+								{{font.Name}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+				<div *ngIf="eventWebsiteDetail.FontType == 'Custom Font'">
+					<mat-form-field class="w-100 listInputSpacing">
+						<mat-label>Enter Font Family</mat-label>
+						<input matInput placeholder="Enter Font Family" (change)="changeFont(fontStyleOption)"
+							[(ngModel)]="eventWebsiteDetail.FontStyle">
+					</mat-form-field>
+					<mat-form-field class="w-100 listInputSpacing">
+						<mat-label>Font Source</mat-label>
+						<input matInput placeholder="Font Source URL" (change)="changeFont(fontStyleOption)"
+							[(ngModel)]="eventWebsiteDetail.FontSource">
+					</mat-form-field>
+				</div>
+			</div>
+			<div *ngIf="designListView == 4" class="customCssView">
+				<mat-list class="listHoverIcon">
+					<mat-list-item class="listItem pointer" (click)="listActionFunc(0)">
+						<button mat-icon-button>
+							<mat-icon>keyboard_arrow_left</mat-icon>
+						</button>
+						<div class="listText">Custom CSS</div>
+					</mat-list-item>
+				</mat-list>
+				<p>Are you CSS expert? Beautify your page with your own CSS code.</p>
+				<mat-form-field class="w-100 listInputSpacing">
+					<mat-label>Enter CSS Here</mat-label>
+					<textarea matInput (blur)="setStyles()" [(ngModel)]="eventWebsiteDetail.CustomCss"
+						placeholder="Enter CSS Here" rows="5"></textarea>
+				</mat-form-field>
+			</div>
+			<div class="text-right">
+				<button type="submit" (click)="saveUserChanges()" mat-raised-button color="primary">Save</button>
+			</div>
+			<button type="reset" mat-raised-button color="accent" class="fixedBottomButton">Reset All</button>
+		</mat-tab>
+	</mat-tab-group>
+</aside>
+<!-- //SIDEBAR -->
+
+<section [ngStyle]="customStyle" class="themeWrapper">
+	<div class="themeContainer">
+		<event-page-view [eventWebsiteDetail]="eventWebsiteDetail"></event-page-view>
+	</div>
+</section>

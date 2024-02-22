@@ -1,0 +1,8 @@
+<fireworks-splash-screen *ngIf="resourcesLoading"></fireworks-splash-screen>
+
+<room-close-count-down *ngIf="showCountdown" (onRoomClose)="onCountdownFinish($event)" [showTimer]="showCountdown"
+    [roomCloseCountdown]="roomData.RoomCloseCountDown*60" [roomCloseFormat]="roomCloseFormat"></room-close-count-down>
+
+<fw-room *ngIf="roomData" (onLeaveBreakout)="sendAttendeeBackToMainRoom()" [roomData]="roomData"></fw-room>
+
+<fireworks-no-room-available *ngIf="!noRoomAccess"></fireworks-no-room-available>

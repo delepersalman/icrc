@@ -1,0 +1,27 @@
+.manageAttendeeSearch { width:240px; font-size:14px; float:right; margin:16px 24px 0px 0px;}
+.manageAttendeeTable { width:100%;
+  .mat-header-row { background:var(--theme-color);
+    .mat-header-cell { color:#fff; font-size:100%;}
+  }
+}
+.example-rate-limit-reached { color: #980000; max-width: 360px; text-align: center;}
+.eventImage { height: 30px;  border-radius: 15px; float: left;  margin: -8px 4px;}
+.manageAttendeeSelect { width:152px; font-size:14px; border: 1px solid #eee; margin-left: 55%;}
+.status-circle { width: 12px; height: 12px; border-radius: 50%; background-color: grey; border: 2px solid white; bottom: 0; right: 0;position: relative;}
+.online { background-color:#17ce05}
+.online-msg { padding-left: 10px;}
+
+.attendee-filter{
+  width: 25%;
+  display: inline-block;
+}
+
+::ng-deep .mat-dialog-title{margin: 0 !important;}
+
+
+@media screen and (min-width:0) and (max-width:767px) {
+  ::ng-deep .mat-checkbox-inner-container-no-side-margin { margin-right: 20px;}
+  .username { margin-right: 20px; width: 200px; display: flex; align-items: center;}
+  .eventImage { border: 1px solid #999; margin-right: 10px;}
+  .manageAttendeeTable .mat-header-row { white-space: pre;}
+}

@@ -1,0 +1,23 @@
+<div class="timer">
+  <span *ngIf="!data.IsRequired && !data.PushResult && !PollAnswerSaveResponse && data.DisplayTimeRemaining">Poll expires in {{daysToDday}} day(s) and {{hoursToDday}}:{{minutesToDday}}:{{secondsToDday}}</span>
+  <span *ngIf="data.IsRequired && !data.PushResult">This poll is required</span>
+  <span *ngIf="data.PushResult && PollAnswerSaveResponse">Poll results</span>
+</div>
+<br />
+<h1 mat-dialog-title>{{data.Question}}</h1>
+<div mat-dialog-content *ngIf="!PollAnswerSaveResponse">
+  <mat-radio-group class="pollOptions" [(ngModel)]="userAnswerSelected">
+    <mat-radio-button *ngFor="let option of data.Answers" [value]="option.Answer">
+      {{option.Answer}}
+    </mat-radio-button>
+  </mat-radio-group>
+</div>
+<ul>
+  <li *ngFor="let ans of PollAnswerSaveResponse">{{ans.Percentage}} voted: {{ans.PollAnswer}}</li>
+  <li *ngIf="PollAnswerSaveResponse && PollAnswerSaveResponse.length == 0"> Question was edited by Creater</li>
+</ul>
+
+<div mat-dialog-actions align="end">
+  <button *ngIf="!data.IsRequired" mat-button mat-dialog-close>Close</button>
+  <button mat-raised-button *ngIf="!PollAnswerSaveResponse" (click)="submitPollAnswer()">Submit</button>
+</div>

@@ -1,0 +1,14 @@
+@import './../../../variable.scss';
+
+.arrowExpandCollapsed { transition:all .2s }
+.collapsed .arrowExpandCollapsed { transform:rotate(180deg) }
+
+.dividerHori { width:1.8rem; height:3px; border-radius:4px; display:inline-block; vertical-align:middle }
+.dividerVertical { width:3px; height:60px; border-radius:4px; display:inline-block }
+
+.agendaTabs .nav-tabs { border:none }
+.agendaTabs .nav-tabs .nav-item { border:none }
+.agendaTabs .nav-tabs .nav-link { border:none; color:#3b3b3b; padding-left:1.5rem; padding-right:1.5rem }
+.agendaTabs .nav-tabs .nav-link:focus, .agendaTabs .nav-tabs .nav-link:hover { border:none; background:rgba(0,0,0,.08) }
+.agendaTabs .nav-tabs .nav-item.show .nav-link, .agendaTabs .nav-tabs .nav-link.active { background:$theme-colour2 !important; color:#fff }
+.agendaTabs .nav-tabs.sticky-top { top:60px; background:#fff }

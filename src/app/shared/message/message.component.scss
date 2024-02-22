@@ -1,0 +1,14 @@
+.toastMessage { background-color:#3f3f44; color:#fff; width:calc(100% - 30px); max-width:400px; display:flex; padding:12px 15px; border-radius:4px; position:fixed; right:15px; top:15px; z-index:999;
+  .toastContent { width:100%;}
+  .toastClose { color:inherit; padding-left:15px; display:flex; align-items:center; cursor:pointer;}
+  &.theme-color { background-color:var(--theme-color);}
+  &.success { background-color:#4caf50;}
+  &.error { background-color:#f44336;}
+  &[position="top-left"] { top:15px; right:auto; bottom:auto; left:15px;}
+  &[position="top-center"] { top:15px; right:15px; bottom:auto; left:15px; margin:auto;}
+  &[position="top-right"] { top:15px; right:15px; bottom:auto; left:auto;}
+  &[position="center"] { top:15px; right:15px; bottom:15px; left:15px; margin:auto; height:max-content;}
+  &[position="bottom-left"] { top:auto; right:auto; bottom:15px; left:15px;}
+  &[position="bottom-center"] { top:auto; right:15px; bottom:15px; left:15px; margin:auto;}
+  &[position="bottom-right"] { top:auto; right:15px; bottom:15px; left:auto;}
+}

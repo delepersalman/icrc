@@ -1,0 +1,20 @@
+::ng-deep event-schedules { outline:none;}
+::ng-deep .mat-select-panel{outline:none;}
+.schedualBoxOuter { max-height:calc(100vh - 100px); overflow-y:auto;
+  .schedualBox { width:100%; padding:15px; position:relative;
+    .shdTitle { font-size:18px; font-weight:500;}
+    .shdDate { font-size:14px; font-weight:300; color:#666; margin-bottom:7px;}
+    .shdArea,
+    .shdSpeaker { font-size:14px; font-weight:300; color:#666;
+      strong { color:#000; font-weight:500;}
+    }
+    .shdDescription { font-size:14px; font-weight:300; color:#000; margin-top:7px;}
+    .shdJoin,
+    .shdYouHere { display:inline-block; margin-top:10px; padding:5px 10px; text-decoration:none; border-radius:15px;}
+    .shdJoin { background-color:var(--theme-color); color:#fff; cursor:pointer;}
+    .shdYouHere { background-color:#e0e0e0; color:var(--theme-color);}
+    &:after { content:""; width:calc(100% - 30px); height:1px; background:#e0e0e0; position:absolute; left:15px; bottom:0;}
+  }
+}
+
+.sidebarSearch { width:100%; padding:10px 15px 0 15px;}

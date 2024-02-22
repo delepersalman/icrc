@@ -1,0 +1,19 @@
+.broadcastBox { background: #fff; width: 60%; top: 18px; padding: 30px; box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12); margin: 15px;}
+.broadcastRadio2 ::ng-deep.mat-radio-container { margin-top: -6px;}
+.broadcastRadio2 { margin-top: 10px;}
+.broadcastSelect { margin: 0 10px;}
+.broadcastBox h2 { font-size: 20px; margin: 0 0 30px;}
+::ng-deep.mat-radio-button { padding-right: 20px;}
+.broadcastBoxInputBoxdiv { display: flex; align-items: center;}
+.broadcastBoxInput { width: 80%;}
+.broadcastBoxBtn { width: 20%;}
+.broadcastBoxInputBoxdiv .mat-form-field { width: 99%;}
+
+@media screen and (min-width:0) and (max-width:767px){
+    .broadcastBox { width: 96%; padding: 15px;}
+    .broadcastBoxInputBoxdiv { display: block;}
+    .broadcastBoxInput { width: 100%;}
+    .broadcastBox { margin: 2%;}
+    ::ng-deep.mat-radio-label-content { font-size: 14px;}
+    ::ng-deep.mat-radio-button { margin-bottom: 5px;}
+    }

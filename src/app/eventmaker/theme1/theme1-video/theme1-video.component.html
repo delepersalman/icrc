@@ -1,0 +1,36 @@
+
+    <section class="videoSection pySec"  (click)="ChangeDetect($event, dataModel)"  *ngIf="dataModel.eventCustomPages" [ngClass]="{virtualEventSec:dataModel.EditMode}"
+    [style]="getSectionStyleString(dataModel)"
+    id="{{getId(dataModel.eventCustomPages.PageTitle)}}" >
+    <section-designer-toolbar *ngIf="dataModel.EditMode" [ngStyle]="ngStyle"
+        (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="row">
+        
+            <ng-container *ngFor="let prop  of dataModel.SectionProperties">
+            <div class="col-12" *ngIf="prop.Name === 'Heading'">
+                <h2 class="titleH2 " #appendItem [ngClass]="{formatEditToolbarWrapper:dataModel.EditMode}"  (click)="showHideToolbar($event,prop)" [style]="getStyleString(prop)" *ngIf="prop.Name == 'Heading'" >{{dataModel.eventCustomPages.CustomSectionName}}</h2>
+            </div>
+            <div class="col-12 mt-3" id="Image_Video" *ngIf="prop.Name == 'Image_Video'"> 
+                <div #playerContainer *ngIf="VideoSource === 'vimeo'" class="vimeo"></div>
+
+                <youtube-player *ngIf="VideoSource === 'youtube'"
+                videoId="{{videoUrl}}" 
+                suggestedQuality="highres" 
+                [height]="640" 
+                [width]="1140" 
+                [startSeconds]="1">
+              </youtube-player>   
+            </div>
+            <div class="col-12 position-relative" *ngIf="dataModel.eventCustomPages.CustomPageData.Description && prop.Name == 'Description'">
+                <div #appendItem *ngIf="dataModel.EditMode" class="editorWrapper" [ngClass]="{formatEditToolbarWrapper:dataModel.EditMode}" (click)="showHideToolbar($event,prop)" ></div>
+                <p [style]="getStyleString(prop)"  class="pt-3 line-height2 mb-0" [innerHTML]="dataModel.eventCustomPages.CustomPageData.Description"></p>
+            </div>
+           
+            </ng-container>
+            <div *ngIf="dataModel.EditMode && !dataModel.eventCustomPages.CustomPageData.Description && !videoUrl" class="blankDataMsgBox">
+                Please add data in <span class="fw-bold">left Panel</span> or turn this <span class="fw-bold">section off.</span>
+            </div>
+        </div>
+    </div>
+</section>

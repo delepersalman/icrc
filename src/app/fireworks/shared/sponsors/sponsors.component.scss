@@ -1,0 +1,4 @@
+::ng-deep event-sponsors { outline:none;}
+.sponsorsList { width:100%; max-height:calc(100vh - 100px); padding:10px; overflow-y:auto; display:inline-block;
+  .sponsor { width:calc(50% - 20px); margin:10px; float:left;}
+}

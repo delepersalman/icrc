@@ -1,0 +1,45 @@
+<div *ngIf="eventCustomPages">
+    <section  class="customPage pySec" (click)="ChangeDetect($event,customModel)" [ngClass]="{virtualEventSec:IsEditMode}"
+    [style]="getSectionStyleString(customModel)"
+    id="{{getId(customModel.eventCustomPages.CustomSectionName)}}" >
+    <section-designer-toolbar *ngIf="IsEditMode" [ngStyle]="ngStyle"
+        (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mx-auto text-center">
+                    <ng-container *ngFor="let prop  of customModel.SectionProperties">
+                    <h2 #appendItem [ngClass]="{formatEditToolbarWrapper:IsEditMode}"  (click)="showHideToolbar($event,prop)" [style.text-decoration]="prop.TextDecoration"  [style]="getStyleString(prop)" *ngIf="prop.Name == 'Heading'" class="titleH2 mb-4">{{customModel.eventCustomPages.CustomSectionName}}</h2>
+                    <figure  *ngIf="prop.Name == 'Image_Video'" class="position-relative">
+                        <ng-container
+                            *ngIf="customModel.eventCustomPages.CustomPageData.PageImages && customModel.eventCustomPages.CustomPageData.UploadType === 2 || customModel.eventCustomPages.CustomPageData.UploadType === 0">
+                            <img *ngFor="let image of customModel.eventCustomPages.CustomPageData.PageImages"
+                                src="{{domainUrl+image.ImagePath}}" alt="{{image.OrigionalFilename}}" class="w-100">
+                        </ng-container>
+                    <ng-container *ngIf="customModel.eventCustomPages.CustomPageData.UploadType === 1">
+                        <div #playerContainer *ngIf="VideoSource === 'vimeo'" class="vimeo"></div>
+                    
+                        <youtube-player *ngIf="VideoSource === 'youtube'" videoId="{{videoUrl}}" suggestedQuality="highres" [height]="640"
+                            [width]="1140" [startSeconds]="1">
+                        </youtube-player>
+                    </ng-container>
+                    </figure>
+                    <div class="position-relative" *ngIf="prop.Name == 'Description'">
+                        <div *ngIf="IsEditMode" class="editorWrapper" #appendItem (click)="showHideToolbar($event,prop)" [ngClass]="{formatEditToolbarWrapper:IsEditMode}" ></div>
+                        <p [style]="getStyleString(prop)" *ngIf="prop.Name == 'Description'" class="line-height2" [innerHTML]="customModel.eventCustomPages.CustomPageData.Description"></p>
+                    </div>
+                </ng-container>
+                </div>
+                <div [ngClass]="{'text-center':!buttonProp.TextAlignment}" [style.text-align]="buttonProp.TextAlignment" *ngIf="buttonProp" >
+                    <div class="position-relative d-inline-block">
+                      <a #appendItem class="btnStyle1 mat-flat-button" [ngClass]="{formatEditToolbarWrapper:IsEditMode}" (click)="showHideButtonToolbar($event,buttonProp)" [style]="getStyleString(buttonProp)" href="{{IsEditMode?'javascript:void(0)':customModel.eventCustomPages.CustomPageData.ActionLinkUrl}}" target="{{IsEditMode?'_self':customModel.eventCustomPages.CustomPageData.ActionLinkTarget}}">
+                        {{buttonProp.CustomPropertyName}}
+                      </a>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</section>		
+</div>

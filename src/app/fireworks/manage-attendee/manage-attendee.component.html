@@ -1,0 +1,127 @@
+<h2 mat-dialog-title>
+  Manage Attendees ({{dataSource.filteredData.length}})
+  <mat-menu #roomMenu="matMenu">   
+    <button mat-menu-item [matMenuTriggerFor]="room" *ngIf="rooms.length > 0">
+      <span>Move attendee(s)</span>
+    </button>
+    <button mat-menu-item (click)="kickOutAttendee()">
+      <span>Remove from room</span>
+    </button>
+    <mat-menu #room="matMenu">
+      <span *ngFor="let room of rooms">
+        <button
+          *ngIf="room.RoomType != roomType.Handouts && room.RoomType != roomType.Session && room.RoomType != roomType.Expo && room.RoomType != roomType.Networking"
+          (click)="moveAttendeetoAnotherRoom(room)" mat-menu-item>
+          <li mat-menu-item>
+            <span class="roomName">{{room.RoomName}}</span>
+            <span class="arrow"></span>
+          </li>
+        </button>
+        <button
+          *ngIf="room.RoomType != roomType.Handouts && (room.RoomType == roomType.Session || room.RoomType == roomType.Expo || room.RoomType == roomType.Networking) && room.VirtualEventBooths.length > 0"
+          (click)="moveAttendeetoAnotherRoom(room)" mat-menu-item>
+          <li mat-menu-item [matMenuTriggerFor]="childRoom">
+            <a tooltip="Explore">
+              <span class="roomName">{{room.RoomName}}</span>
+              <span class="arrow"></span>
+            </a>
+            <mat-menu #childRoom="matMenu">
+              <span mat-menu-item *ngFor="let childRoom of room.VirtualEventBooths">
+                <button *ngIf="room.RoomType != roomType.Handouts" (click)="moveAttendeetoAnotherRoom(childRoom)"
+                  mat-menu-item>
+                  <span class="roomName">{{childRoom.RoomName}}</span>
+                </button>
+              </span>
+            </mat-menu>
+          </li>
+        </button>
+      </span>
+    </mat-menu>
+  </mat-menu>
+  <div class="pipe-separated-list-container">
+    <div class="attendee-filter">
+      <ul id="filterStatus">
+        <li><a [class.filterSelected]="memberFilter=='All'" (click)="filterAttendeesByStatus('All')">All</a></li>
+        <li><a [class.filterSelected]="memberFilter=='online'" (click)="filterAttendeesByStatus('online')">Online</a>
+        </li>
+        <li><a [class.filterSelected]="memberFilter=='offline'" (click)="filterAttendeesByStatus('offline')">Offline</a>
+        </li>
+      </ul>
+    </div>
+    <div class="attendee-filter">
+      <mat-form-field class="sidebarSearch">
+        <mat-label>Filter attendees</mat-label>
+        <mat-select [(value)]="attendeeTypeFilter" (selectionChange)="filterAttendeesByStatus(memberFilter)">
+          <mat-option value="All">All</mat-option>
+          <mat-option value="host">Co-Host</mat-option>
+          <mat-option value="speaker">{{sharedService.virtualEventUser.VirtualEvent.SpeakerLabel}}</mat-option>
+          <mat-option value="attendee">{{sharedService.virtualEventUser.VirtualEvent.AttendeeLabel}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="attendee-filter">
+      <button *ngIf="data.callFor == 'ManageAttendee'" mat-button mat-flat-button color="primary"
+        [matMenuTriggerFor]="roomMenu">Action  <mat-icon>arrow_drop_down</mat-icon></button>
+    </div>
+    <mat-form-field class="manageAttendeeSearch">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="memberSearch" name="txtmemberSearch" (keyup)="searchMembers()"
+        placeholder="Enter attendee/room name">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+</h2>
+
+<mat-dialog-content class="mat-typography" style="min-height:300px">
+  <table [dataSource]="dataSource" mat-table class="manageAttendeeTable" matSort matSortActive="created"
+    matSortDisableClear matSortDirection="desc">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="VirtualEventUserId">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"></mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"></mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="AttendeeName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="FullName">Attendee Name</th>
+      <td mat-cell *matCellDef="let row">
+        <div class="username">
+          <img class="eventImage" src="./assets/images/fireworks-avatar-400x400.png">
+          <span class="name">{{row.FullName}}</span>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="RoomName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="CurrentRoom">Room Name</th>
+      <td mat-cell *matCellDef="let row">
+        <span class="description">{{row.CurrentRoom ? (row.CurrentRoom == 'privateroom' ? 'Private Room'
+          :row.CurrentRoom ) :'N/A'}}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="Status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let row">
+        <div class="status-circle {{ row.Online ? 'online' : ''}}">
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data found!</td>
+    </tr>
+  </table>
+  <mat-paginator pageSize="20" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" *ngIf="data.callFor == 'breakoutRooms'" cdkFocusInitial
+    (click)="assignAttendees()">Assign</button>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

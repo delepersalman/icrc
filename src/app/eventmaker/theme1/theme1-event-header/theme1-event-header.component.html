@@ -1,0 +1,46 @@
+
+<header (click)="ChangeDetect($event, page)" [ngClass]="{'stickyTop': headerFixed, virtualEventSec:page.EditMode}"  [style]="getSectionStyleString(page)">
+    <section-designer-toolbar *ngIf="page.EditMode" [ngStyle]="ngStyle" (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <nav class="navbar navbar-expand-xl navbar-light">
+            <a *ngIf="logoDetails.LogoTypeId === 2 && logoDetails.Text" class="navbar-brand f4 " ><span  class="blue">{{logoDetails.Text}}</span></a>
+            <a *ngIf="logoDetails.LogoTypeId === 1 && logoDetails.ImageUrl" class="navbar-brand f4 resizeImage" id="resizeImage" (click)="onResizeLogo($event)"><img [ngStyle]="{'width':(logoDetails.LogoWidth>0?logoDetails.LogoWidth+'px':''),'height':(logoDetails.LogoHeight >0?logoDetails.LogoHeight+'px':'')}" src="{{logoDetails.ImageUrl}}"></a>
+            <a *ngIf="logoDetails.LogoTypeId === 0 && logoDetails.Image && logoDetails.Image.ImagePath" class="navbar-brand f4 resizeImage"(click)="onResizeLogo($event)" id="resizeImage"><img [ngStyle]="{'width':(logoDetails.LogoWidth>0?logoDetails.LogoWidth+'px':''),'height':(logoDetails.LogoHeight >0?logoDetails.LogoHeight+'px':'')}" src="{{domainUrl+logoDetails.Image.ImagePath}}"></a>
+                    <a *ngIf="logoDetails.LogoTypeId !== 3 &&  (!logoDetails.Image || !logoDetails.Image.ImagePath) && !logoDetails.Text && !logoDetails.ImageUrl"  class="navbar-brand f4 resizeImage" id="resizeImage" (click)="onResizeLogo($event)"><img [ngStyle]="{'width':(logoDetails.LogoWidth>0?logoDetails.LogoWidth+'px':''),'height':(logoDetails.LogoHeight >0?logoDetails.LogoHeight+'px':'')}"
+                        src="assets/eventmaker/theme1/media/logo.png"></a>
+            <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                <span aria-hidden="true" class="closeNavbarToggler f6">&times;</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav ml-auto example-list flex-wrap" cdkDropListOrientation="horizontal" cdkDropList
+                    (cdkDropListDropped)="drop($event)">
+                    <ng-container *ngFor="let menu of page.SectionProperties">
+                        <li style="--custom_color: {{(menu.HoverColor?menu.HoverColor:'')}}" class="nav-item px-2" *ngIf="menu.LabelName !== 'Home'"  cdkDrag [ngClass]="{active: isActive(menu)}" (click)="select(menu)"
+                            [cdkDragDisabled]="!page.EditMode">
+                            <div class="position-relative">
+                                <a  class="nav-link f2 smoothScrollLink example-box" *ngIf="((State>1 ) ?(menu.LabelName !== 'Tickets'): true)"  #appendItem  [fragment]="menu.Url"
+                                [style]="getStyleString(menu)"
+                                    [ngClass]="{formatEditToolbarWrapper:page.EditMode}" (click)="showHideButtonToolbar($event, menu)">
+                                    {{ menu.CustomPropertyName}}
+                                </a>  
+                            </div>                        
+                        </li>
+                    </ng-container>
+                    <!-- <a *ngIf="bookTicketUrl && bookTicketUrl.type == 'Single'"  (click)="setFocus(bookTicketUrl.url)" mat-flat-button  class="btnStyle1 smoothScrollLink">Book Tickets<span class="sr-only">(current)</span></a> -->
+                    <ng-container *ngFor="let menu of page.SectionProperties">
+                        <li style="--custom_color: {{(menu.HoverColor?menu.HoverColor:'')}}" class="nav-item px-2" [ngClass]="{active: isActiveRoute(menu)}" *ngIf="menu.type === 'Multiple'"
+                            (click)="select(menu)">
+                            <a class="nav-link f2 smoothScrollLink" *ngIf="menu.type === 'Multiple'"
+                                href="{{menu.url}}">{{menu.name}} <span class="sr-only">(current)</span></a>
+                        </li>
+                    </ng-container>
+                    <!-- <a *ngIf="bookTicketUrl && bookTicketUrl.type == 'Multiple'"  (click)="setFocus(bookTicketUrl.url)" mat-flat-button href="{{bookTicketUrl.url}}" class="btnStyle1 smoothScrollLink">Book Tickets <span class="sr-only">(current)</span></a>                -->
+                </ul>
+            
+            </div>
+        </nav>
+    </div>
+</header>
+

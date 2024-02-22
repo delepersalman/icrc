@@ -1,0 +1,35 @@
+.toggleSameBtn { padding:0; line-height:48px; vertical-align:bottom; min-width:48px; background:white }
+.toggleSameBtn mat-icon { color:#212121 }
+.formatEditToolbar { display:inline-flex }
+.formatEditToolbar input[type='color'], .formatEditToolbar input[type='file'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+
+.mat-button-toggle { line-height:48px }
+.paddingEditor { width:232px; background-color:#fff; padding:1rem; border-radius:2px; box-shadow:0 0 14px rgba(0,0,0,.3); position:absolute; right:0;
+  .paddingOption { max-width:96px; display:inline-block; 
+    &:nth-child(1) { padding-right:3px }
+    &:nth-child(2) { padding-left:3px }
+    &:nth-child(3) { padding-right:3px }
+    &:nth-child(4) { padding-left:3px }
+    .paddingTitle { font-size:14px; color:#111; margin-bottom:4px }
+    button { margin:0; min-width:30px; padding:0; background:#fff; border-radius:0; color:#111; min-height:28px; height:28px }
+    input { font-size:12px; padding:0 6px; min-width:10px; background-color:#fff; text-align:center; font-weight:500; min-height:10px; height:28px }
+    .material-icons { font-size:16px; line-height:0; vertical-align:unset }
+  }
+}
+.borderStyleWrapper { max-height:200px; overflow-x:auto; color:black; margin-top:15px;}
+.borderStyleBox { border-style:solid; width:150px; height:40px; font-size:18px; line-height:36px; text-align:center; color:#000;
+  &:hover { background-color:#cacaca;}
+  &.activeBorder { background:#ff2567; color:#fff;} 
+  &.solid { border-style:solid;}
+  &.dashed { border-style:dashed;}
+  &.dotted { border-style:dotted;}
+  &.double { border-style:double;}
+  &.none { border-style:none;}
+}
+.pointer { cursor:pointer }
+@keyframes slide-in {
+    from {
+      transform: translate(0, -5px);
+      opacity: 0;
+    }
+  }

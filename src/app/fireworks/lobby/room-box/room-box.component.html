@@ -1,0 +1,57 @@
+<ng-container *ngIf="sharedService.virtualEventUser && sharedService.virtualEventUser.VirtualEvent">
+
+  <ng-container *ngIf="roomData && isSimpleRoom">
+    <div class="lobbyCol1Outer">
+      <h2 class="lobyTitle">{{roomData.RoomName}}</h2>
+      <div class="lobyCol1Imgbox">
+        <img *ngIf="hasBackgroundImage()" [src]="virtualBackgroundUrl">
+        <img *ngIf="!hasBackgroundImage()" src="./assets/images/default_expo_image.png">
+        <a class="lobyCol1Action button status" [ngClass]="{'glow' : isRoomLive}">{{roomScheduleStatus}}</a>
+        <a [disabled]="!roomData.IsEnabled" class="lobyCol1Action" (click)="goToRoom(roomData)">
+          Go to {{roomData.RoomName}}
+        </a>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="roomData && !isSimpleRoom">
+    <h2 class="lobyTitle">{{roomData.RoomName}}</h2>
+    <div *ngFor="let b of pagedItems" class="lobyCol2Box">
+      <div class="lobyCol2Imgbox">
+        <img *ngIf="b.ThumbnailImage" src="{{sharedService.domainUrl + b.ThumbnailImage.ImagePath}}">
+        <img *ngIf="!b.ThumbnailImage" src="./assets/images/default_expo_image.png">
+      </div>
+      <div class="lobyCol2BoxInfo">
+
+        <ng-container *ngIf="isBooth(b)">
+          <div class="lobyCol2BoxTitle ellipsis">{{b.VendorName}}</div>
+          <div class="lobyCol2BoxDesc">{{b.VendorHeadline}}</div>
+        </ng-container>
+
+        <ng-container *ngIf="!isBooth(b)">
+          <div class="lobyCol2BoxTitle ellipsis">{{b.RoomName}}</div>
+          <div class="lobyCol2BoxDesc">{{b.Description}}</div>
+        </ng-container>
+        <a class="lobyCol2BoxAction status" [ngClass]="{'glow' : isRoomLive}">{{getScheduleStatus(b)}}</a>
+        <div class="text-right">
+          <a (click)="goToRoom(b)" [disabled]="!b.IsEnabled" class="lobyCol2BoxAction">Join</a>
+        </div>
+      </div>
+    </div>
+    <div class="lobyPagination">
+      <div class="lobyPager">
+        <ng-container *ngIf="pager.pages && pager.pages.length">
+          <a [ngClass]="{disabled:pager.currentPage === 1}" (click)="setPage(pager.currentPage - 1)"><span
+              class="material-icons">keyboard_arrow_left</span></a>
+          <a (click)="setPage(page)" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+            {{page}}
+          </a>
+          <a [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="setPage(pager.currentPage + 1)">
+            <span class="material-icons">keyboard_arrow_right</span>
+          </a>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+
+</ng-container>

@@ -1,0 +1,157 @@
+<mat-dialog-content class="mat-typography breakoutModalTitle">
+    <mat-panel-title class="breakoutRoomHeadingTop">
+        {{title}}
+    </mat-panel-title>
+    <div *ngIf="step1" class="breakoutRoom">
+        <mat-panel-description>
+            <span class="brakoutroomHeading">Total Attendee(s): {{attendees.length}}</span>
+        </mat-panel-description>
+        <mat-panel-description class="breakoutRoomDescription">
+            Assign
+            <md-input-container>
+                <input mdInput type="number" [(ngModel)]="breakout.AttendeePerBreakout" min="1" [max]="16"
+                    (keyup)="fillRoomArray(roomNumber)" (change)="fillRoomArray(roomNumber)" class="breakoutRoomInput">
+            </md-input-container>
+            Attendees per room
+        </mat-panel-description>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="breakout.BreakoutAttendeeAllocationType"
+            class="breakoutRoomRadio">
+            <mat-radio-button *ngFor="let allowcation of allocationTypes" class="breakoutRoomRadioLeft"
+                [value]="allowcation">{{allowcation}}</mat-radio-button>
+        </mat-radio-group>
+        <mat-panel-description>
+            <span class="brakoutroomHeading">Total room(s): {{roomNumber}}</span>
+        </mat-panel-description>
+    </div>
+    <div class="breakoutRoomModalOverflow" *ngIf="step2 && breakout">
+        <div class="broadcastmessage">
+            <input matInput placeholder="Broadcast message to all rooms" [(ngModel)]="broadcastMessage" type="text"
+                class="breakoutRoomInput">
+            <button mat-flat-button class="breakoutBtnClr" (click)="broadcastMessagetoAllRooms()">Broadcast</button>
+        </div>
+        <div class="breakout-selectall">
+            <mat-checkbox class="example-margin" [checked]="allChecked" [indeterminate]="someChecked()"
+                (change)="setAll($event.checked)">
+                Select All
+            </mat-checkbox>
+            <button *ngIf="someChecked() || allChecked" mat-flat-button class="breakout-delete-all breakoutBtnClr"
+                (click)="deleteAllRooms()">Delete Selected Room(s)</button>
+        </div>
+        <mat-accordion [displayMode]="flat" *ngFor="let breakoutRoom of breakout.Rooms">
+            <mat-expansion-panel [expanded]="true" #roomPanel hideToggle="true">
+                <mat-expansion-panel-header #panelH (click)="panelH._toggle()" class="accodingMainDiv">
+                    <mat-panel-title>
+                        <div class="accordinLeftArrow">
+                            <i *ngIf="!roomPanel.expanded" class="material-icons app-toolbar-menu"
+                                (click)="panelH._toggle()">keyboard_arrow_right
+                            </i>
+                            <i *ngIf="roomPanel.expanded" class="material-icons app-toolbar-menu"
+                                (click)="panelH._toggle()">keyboard_arrow_down
+                            </i>
+                        </div>
+                        <div class="breakout-checkbox">
+                            <mat-checkbox [(ngModel)]="breakoutRoom.Checked" (ngModelChange)="updateAllComplete()">
+                            </mat-checkbox>
+                        </div>
+                        <span *ngIf="!breakoutRoom.enableEdit" class="accordinTiitle">{{breakoutRoom.RoomName}}
+                            ({{breakoutRoom.RoomParticipants ?
+                            breakoutRoom.RoomParticipants.length : 0}})</span>
+                        <input matInput (keydown)="$event.stopPropagation()" *ngIf="breakoutRoom.enableEdit"
+                            [(ngModel)]="breakoutRoom.RoomName" type="text" class="breakoutRoomInput">
+                        <div class="breakoutRoomActionBtn">
+                            <a *ngIf="breakoutRoom.enableEdit" (click)="renameBreakoutRoom(breakoutRoom)"><span
+                                    class="material-icons"> done </span></a>
+                            <a *ngIf="!breakoutRoom.enableEdit && !breakoutRoom.IsRoomOpen"
+                                (click)="breakoutRoom.enableEdit = true;"><span class="material-icons"> edit </span></a>
+                            <a *ngIf="!breakoutRoom.enableEdit" (click)="deleteRoom(breakoutRoom)"><span
+                                    class="material-icons">
+                                    delete </span>
+                            </a>
+                            <span class="popoverOuter">
+                                <a [matMenuTriggerFor]="menu"><span class="material-icons">
+                                        settings </span>
+                                </a>
+                                <mat-menu md-menu-items #menu="matMenu" [overlapTrigger]="false">
+                                    <div (click)="$event.stopPropagation();">
+                                        <div class="popoverTitle">
+                                            <span class="popovertitle">Breakout Settings</span>
+                                        </div>
+                                        <div class="popoverContainer">
+                                            <div class="popoverConent">
+                                                Countdown to closing
+                                                <md-input-container>
+                                                    <input mdInput type="number"
+                                                        [(ngModel)]="breakoutRoom.RoomCloseCountDownTime" min="1"
+                                                        class="breakoutRoomInput">
+                                                </md-input-container> minute(s)
+                                            </div>
+
+                                            <div class="popoverConent">
+                                                Automatically close in
+                                                <md-input-container>
+                                                    <input mdInput type="number" [(ngModel)]="breakoutRoom.RoomEndTime"
+                                                        min="1" class="breakoutRoomInput">
+                                                </md-input-container> minute(s)
+                                            </div>
+                                            <div class="text-right">
+                                                <button [matMenuTriggerFor]="menu" #trigger="matMenuTrigger" mat-flat-button
+                                                    (click)="trigger.closeMenu()">Close</button>
+                                                <button mat-flat-button class="breakoutBtnClr"
+                                                    (click)="saveBreakoutRoomSettings()">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-menu>
+                            </span>
+                        </div>
+                    </mat-panel-title>
+                    <div *ngIf="!breakoutRoom.enableEdit" class="accordionRename">
+                        <a *ngIf="breakoutRoom.RoomParticipants.length > 0 && breakoutRoom.IsRoomOpen && sharedService.currentRoomData.RoomType != 'breakout'"
+                            (click)="JoinBreakoutRoom(breakoutRoom)">Join</a>
+                        <a (click)="openManageAttendeePopup(breakoutRoom)">Assign</a>
+                        <a *ngIf="breakoutRoom.RoomParticipants"
+                            (click)="OpenCloseSpecificRoom(breakoutRoom)">{{breakoutRoom.IsRoomOpen ? 'Close Room'
+                            :
+                            'Open Room'}}</a>
+                    </div>
+                </mat-expansion-panel-header>
+
+                <div class="mat-expansion-panel-openDiv" *ngFor="let attendee of breakoutRoom.RoomParticipants">
+                    <div class="userLest">
+                        <div class="userLestBox">
+                            <img class="userLestImg" src="./assets/images/fireworks-avatar-400x400.png">
+                            <h3>{{attendee.FullName}}</h3>
+                        </div>
+                    </div>
+                    <div class="userListRigth">
+                        <div class="userListRigthBox">
+                            <a *ngIf="breakoutRoom.RoomParticipants.length > 1 && breakout.Rooms.length > 1" [matMenuTriggerFor]="menu"> <span
+                                    class="material-icons">login</span> Move To</a>
+                            <mat-menu class="room-popover" #menu="matMenu">
+                                <span *ngFor="let room of breakout.Rooms">
+                                    <button
+                                        (click)="moveAttendeetoAnotherRoom(breakoutRoom.VirtualEventPrivateRoomId,room.VirtualEventPrivateRoomId,attendee.VirtualEventUserId)"
+                                        mat-menu-item
+                                        *ngIf="room.VirtualEventPrivateRoomId != breakoutRoom.VirtualEventPrivateRoomId">{{room.RoomName}}</button>
+                                </span>
+                            </mat-menu>
+                            <a *ngIf="breakoutRoom.RoomParticipants.length > 1"
+                                (click)="removeParticipant(attendee,breakoutRoom)"> <span class="material-icons"> close
+                                </span> Remove</a>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="model-footer">
+    <button mat-button mat-dialog-close>Close</button>
+    <button *ngIf="step2" mat-flat-button class="breakoutBtnClr" (click)="createNewBreakoutRoom()">Create New</button>
+    <button *ngIf="step2 && showOpenCloseAllRooms('close')" mat-flat-button class="breakoutBtnClr"
+        (click)="openCloseAllRooms('opened')">Open All Rooms</button>
+    <button *ngIf="step2 && showOpenCloseAllRooms('open')" mat-flat-button class="breakoutBtnClr"
+        (click)="openCloseAllRooms('closed')">Close All Rooms</button>
+    <button *ngIf="step1" mat-flat-button class="breakoutBtnClr" (click)="createBreakoutRooms()" cdkFocusInitial>Create
+        Breakout Room(s)</button>
+</mat-dialog-actions>

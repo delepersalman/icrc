@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>{{data.ModuleName==='event-agenda'?'Agenda':'Ticket'}} Properties <span *ngIf="sectionProperties.length>0">(You can show/hide the below fields in your event site)</span> </h2>
+
+<mat-dialog-content>
+	<mat-checkbox [checked]="allChecked" (change)="setAll(allChecked)" *ngIf="sectionProperties.length>1">Select All</mat-checkbox>
+	 
+	<div class="row ml-3" >
+		<ng-container *ngFor="let module of sectionProperties">		
+		<div class="col-sm-4 margin-1em-top" *ngIf="module.Name !=='AllowCheckoutinPopup' && module.Name !== 'Heart' && !module.Name.includes('Box') ">
+			<mat-checkbox [checked]="exists(module.EventmakerPagePropertyId, selectedComponents)" (change)="checked(module.EventmakerPagePropertyId, selectedComponents)">{{module.LabelName}}</mat-checkbox>
+		</div>  
+
+	 
+	</ng-container>                    
+	</div>
+	
+</mat-dialog-content>
+<mat-dialog-actions align="end">	
+  	<button mat-button mat-dialog-close class="btn">Cancel</button>
+  	<button mat-raised-button cdkFocusInitial color="primary" (click)="saveSectionData()" class="btn">Save</button>
+</mat-dialog-actions>   

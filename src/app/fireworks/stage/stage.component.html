@@ -1,0 +1,4 @@
+<fireworks-splash-screen *ngIf="resourcesLoading"></fireworks-splash-screen>
+<fw-room *ngIf="roomData" [roomData]="roomData" [countdown]="roomCountdown" [roomCountdownFormat]="roomCountdownFormat"></fw-room>
+<fireworks-no-room-available *ngIf="noRoomAccess"></fireworks-no-room-available>
+

@@ -1,0 +1,26 @@
+<section class="pySec" (click)="ChangeDetect($event, eventDesc)" [ngClass]="{virtualEventSec:eventDesc.EditMode}" id="About"  [style]="getSectionStyleString(eventDesc)">
+    <section-designer-toolbar *ngIf="eventDesc.EditMode" [ngStyle]="ngStyle" (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="col-12" cdkDropList (cdkDropListDropped)="drop($event)">
+            <h2 class="titleH2 pb-4" #appendItem [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}"
+                (input)="onChange($event.target.innerHTML, heading)" (click)="showHideToolbar($event,heading)"
+                [style]="getStyleString(heading)"
+                *ngIf="heading">{{heading.CustomPropertyName}}
+            </h2>
+        
+            <div cdkDrag class="listItem" *ngFor="let prop of eventDesc.SectionProperties"
+                [cdkDragDisabled]="!eventDesc.EditMode">
+        
+                <div class="py-4" *ngIf="eventDesc.ImageUrl && prop.Name == 'Flyer'">
+                    <img src="{{domainUrl+eventDesc.ImageUrl}}">
+                </div>
+                <div *ngIf="prop.Name === 'Description'" class="position-relative">
+                    <div *ngIf="eventDesc.EditMode" class="editorWrapper" #appendItem [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}"
+                    (click)="showHideToolbar($event,prop)"></div>
+                    <div [style]="getStyleString(prop)" [innerHTML]="transform(eventDesc.EventDescription )" class="mb-0">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

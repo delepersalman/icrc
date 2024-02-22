@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>
+  Silent Auction(s)
+  <mat-form-field class="auctionSearch">
+    <mat-label>Search</mat-label>
+    <input (keyup)="searchSilentAuctions($event)" matInput>
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+</h2>
+
+<mat-dialog-content class="mat-typography" style="min-height:450px">
+  <div class="saBox" *ngFor="let sa of silentAuctions">
+    <img *ngIf="sa.AuctionImage" src="{{domainUrl + sa.AuctionImage.ImagePath}}" />
+    <div class="saName">{{sa.Title}}</div>
+    <div class="saDateTime">
+      <span *ngIf="sa.TimeRemaining <= 0">Closed at <strong>{{sa.EndDate | date:'MMM d, y h:mm a'}}</strong></span>
+
+      <span *ngIf="sa.TimeRemaining > 0">Closes in <strong>
+          <countdown *ngIf="sa.TotalHoursLeft <= 24" [config]="{leftTime: sa.TimeRemaining, format: sa.countdownFormat }"
+            (event)="onCountdownFinish(sa)">
+          </countdown>
+          <span *ngIf="sa.TotalHoursLeft > 24">{{sa.EndDate | date:'MMM d, y h:mm a'}}</span>
+        </strong>
+      </span>
+    </div>
+    <div class="saAction">
+      <a target="_blank" href="{{domainUrl + sa.FullAuctionUrl}}">View Details</a>
+    </div>
+  </div>
+  <div *ngIf="!dataLoading && silentAuctions.length == 0" class="noAuction">No silent
+    auction available.</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial>Close</button>
+</mat-dialog-actions>

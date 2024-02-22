@@ -1,0 +1,338 @@
+<div class="checkoutPage" (click)="ChangeDetect($event, eventCheckOut)" [ngClass]="{virtualEventSec:eventCheckOut.EditMode}"
+    [style]="getSectionStyleString(eventCheckOut)" [ngClass]="{virtualEventSec:eventCheckOut.EditMode}" id="checkout">
+    <section-designer-toolbar *ngIf="eventCheckOut.EditMode" [ngStyle]="ngStyle"
+        (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <!-- EVENT TICKETS -->
+    <section class="eventCheckOut pt-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 pb-5">
+                    <div class="instructionForAttendee mb-5" *ngIf="instructionAttendee"
+                        [style]="getStyleString(instructionAttendee)"
+                        [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}">
+                        {{instructionAttendee.CustomPropertyName}}
+                        <button mat-icon-button class="ml-auto"><span class="material-icons">close</span></button>
+                        <div class="editorWrapper" *ngIf="eventCheckOut.EditMode" #appendItem
+                            (click)="showHideToolbar($event,instructionAttendee)">
+                        </div>
+                    </div>
+                    <div class="orderReserved" *ngIf="countDown" [ngStyle]="{backgroundColor: countDown.BGColor}">
+                        <p class="timeMessage mb-0" *ngIf="countDown" #appendItem [style]="getStyleString(countDown)"
+                            [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                            (click)="showHideToolbar($event,countDown)"
+                            (input)="onChange($event.target.innerHTML, countDown)">
+                            {{countDown.CustomPropertyName}} <strong>{{eventCheckOut.TimeLimit}}:00 </strong>
+                        </p>
+
+                    </div>
+
+                </div>
+                <div class="col-12">
+                    <h3 *ngIf="heading" #appendItem class="titleH2" [style]="getStyleString(heading)"
+                        [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                        (click)="showHideToolbar($event,heading)" (input)="onChange($event.target.innerHTML, heading)">
+                        {{heading.CustomPropertyName}}
+
+                    </h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <ng-container *ngFor="let ticket of eventCheckOut.Tickets">
+                    <div class="col-12">
+                        <div class="eventTicketBox" [ngStyle]="{backgroundColor: ticket.CheckoutBGColor}">
+                            <div *ngIf="eventCheckOut.EditMode" class="editorWrapper" #appendItem
+                                (click)="showHideButtonToolbar($event, TicketBox, ticket)"
+                                [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"></div>
+                            <div class="eventTicketRow row position-relative">
+                                <div class="col-12 col-md-6">
+                                    <div class="fs4 mb-1 ticketEventTitle f-bold z11" #appendItem
+                                        [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                                        (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Checkout_TicketName'),ticket)"
+                                        [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Checkout_TicketName'))"
+                                        *ngIf="getTicketProperty(ticket.TicketId, 'Checkout_TicketName')">
+                                        {{ticket.Name}}
+                                    </div>
+                                    <div class="fs7 d-flex justify-content-between mb-3 flex-wrap" >
+                                        <div class="mb-2 mb-sm-0 z11" #appendItem *ngIf="getTicketProperty(ticket.TicketId, 'Checkout_VenueName')"
+                                        [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}" (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Checkout_VenueName'),ticket)"
+                                        [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Checkout_VenueName'))">{{ticket.VenueName}}</div>
+                                        <div class="z11" #appendItem *ngIf="getTicketProperty(ticket.TicketId, 'Checkout_Date')"
+                                        [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}" (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Checkout_Date'),ticket)"
+                                        [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Checkout_Date'))">{{ticket.DateString}}</div>
+                                    </div>
+                                </div>
+                                    <div #appendItem (click)="showHideButtonToolbar($event, getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice'), ticket)"
+                                    [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}" [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice'))" class="col-8 col-sm-2 center z11" *ngIf="ticket.TicketTypeId === 2 && getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice')">
+                                        <div class="fs4 mb-2 f-bold">
+                                            {{eventCheckOut.Currency.SymbolAsString}}{{(ticket.Price !=
+                                            ticket.SourcePrice)?SourcePrice: ticket.Price}}</div>
+                                        <div class="mb-3" *ngIf="ticket.TotalFee">
+                                            (+{{eventCheckOut.Currency.SymbolAsString+ticket.TotalFee}} Fee)</div>
+                                    </div>
+                                    <div #appendItem (click)="showHideButtonToolbar($event, getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice'), ticket)"
+                                    [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}" [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice'))" class="col-8 col-sm-2 center z11" *ngIf="ticket.TicketTypeId === 1 && getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice')">
+                                        <div class="fs4 mb-2 f-bold text-uppercase">{{getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice').CustomPropertyName}}</div>
+                                    </div>
+                                    <div #appendItem (click)="showHideButtonToolbar($event, getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice'), ticket)"
+                                    [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}" [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice'))" class="col-8 col-sm-2 center z11" *ngIf="ticket.TicketTypeId === 3 && getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice')">
+                                        <div class="fs4 mb-2 f-bold text-uppercase">{{getTicketProperty(ticket.TicketId, 'Checkout_TicketPrice').CustomPropertyName}}</div>
+                                        <div class="mb-3" *ngIf="ticket.TotalFee">
+                                            {{eventCheckOut.Currency.SymbolAsString+ticket.TotalPrice}}</div>
+                                    </div>
+                                <div  #appendItem (click)="showHideButtonToolbar($event, getTicketProperty(ticket.TicketId, 'Checkout_TicketQuantity'), ticket)" [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Checkout_TicketQuantity'))" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}" *ngIf="getTicketProperty(ticket.TicketId, 'Checkout_TicketQuantity')" class="col-4 col-sm-2 center ticketCount fs4 mb-2 f-bold z11"> {{getTicketProperty(ticket.TicketId, 'Checkout_TicketQuantity').CustomPropertyName}} </div>
+                                <div class="col-12 col-sm-2 text-right fs2 mb-2 f-bold z11"
+                                    *ngIf="getTicketProperty(ticket.TicketId, 'Checkout_TicketTotalPrice') && (ticket.TicketTypeId === 2 || ticket.TicketTypeId === 4)">
+                                    <span  #appendItem (click)="showHideButtonToolbar($event, getTicketProperty(ticket.TicketId, 'Checkout_TicketTotalPrice'), ticket)" [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Checkout_TicketTotalPrice'))" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}" class="col-4 col-sm-2 center ticketCount fs4 mb-2 f-bold z11">{{eventCheckOut.Currency.SymbolAsString}}{{ticket.TotalPrice}}</span>
+                                </div>
+                            </div>
+
+
+                            <form name="addAttendeeInfo" *ngIf="getTicketProperty(ticket.TicketId, 'Checkout_AttendeeInfo')" class="mt-4 mt-sm-0"
+                                [ngStyle]="{textAlign:getTicketProperty(ticket.TicketId, 'Checkout_AttendeeInfo').TextAlignment}">
+                             
+                                <div class="f-bold addAttendeeInfoTitle z11" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                                  [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Checkout_AttendeeInfo'))">
+                                    {{getTicketProperty(ticket.TicketId, 'Checkout_AttendeeInfo').CustomPropertyName}}
+                                    <div class="editorWrapper" #appendItem *ngIf="eventCheckOut.EditMode"
+                                    (click)="showHideButtonToolbar($event, getTicketProperty(ticket.TicketId, 'Checkout_AttendeeInfo'), ticket)"
+                                    [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"></div><span
+                                        [ngClass]="{expanded: ticket.showAttendees}"
+                                        class="material-icons">expand_more</span></div>
+                                <div class="row" *ngIf="ticket.showAttendees">
+
+                                    <div class="col-12 col-md-3">
+                                        <mat-form-field class="md-block">
+                                            <mat-label>First Name</mat-label>
+                                            <input matInput required name="firstName" [(ngModel)]="firstName">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <mat-form-field class="md-block">
+                                            <mat-label>Last Name</mat-label>
+                                            <input matInput required name="lastName" [(ngModel)]="lastName">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <mat-form-field class="md-block">
+                                            <mat-label>Email</mat-label>
+                                            <input matInput type="email" required name="email" [(ngModel)]="email">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-md-3 d-flex">
+                                        <mat-form-field class="phoneNumExt">
+                                            <mat-select [(ngModel)]="phoneNumExtentions">
+                                                <mat-option value="1">+1</mat-option>
+                                                <mat-option value="2">+91</mat-option>
+                                                <mat-option value="3">+21</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <mat-form-field>
+                                            <input matInput type="number" required name="phoneNumber"
+                                                [(ngModel)]="phoneNumber" placeholder="Phone Number">
+                                        </mat-form-field>
+                                    </div>
+                                    <ng-container *ngFor="let quest of ticket.Attendees[0].UserQuestions">
+                                        <custom-question [quest]="quest" class="col-12"></custom-question>
+                                    </ng-container>
+                                    <div class="col-md-12">
+                                        <mat-card class="my-3 text-left"
+                                            *ngIf="CustomQuestionBox && ticket.Attendees[0].QuestionGroupsInfo && ticket.Attendees[0].QuestionGroupsInfo.length>0"
+                                            [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                                            [ngStyle]="{backgroundColor: CustomQuestionBox.BGColor, color:CustomQuestionBox.Color}">
+                                            <div class="editorWrapperCustomQuestionBox" *ngIf="eventCheckOut.EditMode"
+                                                #appendItem (click)="showHideButtonToolbar($event, CustomQuestionBox)">
+                                            </div>
+                                            <ng-container *ngFor="let grp of ticket.Attendees[0].QuestionGroupsInfo">
+                                                <mat-card-header>
+                                                    <mat-card-title class="ml-0 fs4">{{grp.GroupName}}</mat-card-title>
+                                                </mat-card-header>
+                                                <mat-card-content class="fs6 px-3">
+                                                    <ng-container *ngFor="let quest of grp.EditQuestions">
+                                                        <custom-question [quest]="quest"></custom-question>
+                                                    </ng-container>
+
+                                                    <div class="row px-3" style="display:none;">
+                                                        <div class="col-12">
+                                                            <button class="btnStyle1 mat-flat-button me-0 px-4"><span
+                                                                    class="material-icons pr-1">add</span>Add
+                                                                New</button>
+                                                        </div>
+                                                    </div>
+                                                </mat-card-content>
+                                            </ng-container>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row" *ngIf="ticket.addAttendeeInfoToggle && ticket.TicketTypeId === 4">
+                                <div class="col-md-12 my-2" [ngStyle]="{backgroundColor: InstallmentBox.BGColor}">
+
+                                    <mat-radio-group *ngIf="InstallmentBox" [(ngModel)]="paymentMethod"
+                                        aria-labelledby="paymentMethod" class="paymentMethod">
+                                        <div class="editorWrapper" #appendItem *ngIf="eventCheckOut.EditMode"
+                                            (click)="showHideButtonToolbar($event, InstallmentBox)"
+                                            [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"></div>
+                                        <mat-radio-button [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                                            [ngStyle]="{backgroundColor: InstallmentBox.BGColor, color:InstallmentBox.Color}"
+                                            value="1" aria-label="1" checked>
+                                            <h4 class="f3" [ngStyle]="{color:InstallmentBox.Color}">Pay in full</h4>
+                                            <p class="mb-0 fs7" [ngStyle]="{color:InstallmentBox.Color}">Make a one-time
+                                                payment</p>
+                                        </mat-radio-button>
+                                        <mat-radio-button #appendItem
+                                            [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                                            [ngStyle]="{backgroundColor: InstallmentBox.BGColor, color:InstallmentBox.Color}"
+                                            value="2" aria-label="2">
+                                            <h4 class="f3" [ngStyle]="{color:InstallmentBox.Color}">Pay with Installment
+                                                Plan</h4>
+                                            <p class="mb-0 fs7" [ngStyle]="{color:InstallmentBox.Color}">Buy now, pay
+                                                later. By using a installment plan, you can
+                                                pay for your ticket across multiple payments. we will automatically
+                                                charge your payment method based on the following schedule. Or you can
+                                                manually pay in advance.</p>
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="ticket.addAttendeeInfoToggle && ticket.TicketTypeId === 4">
+                                <div class="col-12">
+                                    <div class="fs5 fw-bold">Current payment</div>
+                                    <mat-form-field class="md-block w-100">
+                                        <mat-label>You need to pay at least $19.00 but no more than
+                                            {{eventCheckOut.Currency.SymbolAsString}}{{ticket.TotalPrice}}</mat-label>
+                                        <input matInput required name="currentPayment"
+                                            value="{{eventCheckOut.Currency.SymbolAsString+ticket.TotalPrice}}">
+                                    </mat-form-field>
+                                    <div class="fs7">Pay Today</div>
+                                    <hr class="hrInvestment">
+                                </div>
+
+                                <div class="col-12" *ngFor="let installM of ticket.Attendees[0].InstallmentPlans">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="fs5 fw-bold">{{installM.Name}}</div>
+                                        <div class="fs5"><span class="mr-3">Paid :</span> Debt: <span
+                                                class="fw-bold">${{installM.Amount}}</span></div>
+                                    </div>
+                                    <div class="fs7">{{installM.DueDate}}</div>
+                                    <hr class="hrInvestment">
+                                </div>
+                            </div>
+
+                            <div class="col-12 text-center" *ngIf="ticket.TicketTypeId === 4"
+                                (click)="ticket.addAttendeeInfoToggle = !ticket.addAttendeeInfoToggle">
+                                <span class="material-icons me-2 fs3 colorIcon">{{ticket.addAttendeeInfoToggle ?
+                                    'keyboard_arrow_up' : 'keyboard_arrow_down'}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <div class="col-12">
+                    <ng-container
+                        *ngIf="eventCheckOut.PurchaseInfo && eventCheckOut.PurchaseInfo.VariableChargeGroups && VariableBox">
+                        <mat-card class="my-3"
+                            *ngFor="let itm of eventCheckOut.PurchaseInfo.VariableChargeGroups[0].VariableCharges"
+                            [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                            [ngStyle]="{backgroundColor: VariableBox.BGColor, color:VariableBox.Color}">
+                            <div class="editorWrapperVariableBox" *ngIf="eventCheckOut.EditMode" #appendItem
+                                (click)="showHideButtonToolbar($event, VariableBox)"></div>
+
+                            <mat-card-content class="fs6 d-flex align-items-center">
+                                <mat-checkbox>{{itm.VariableDesc}}</mat-checkbox>
+                                <span
+                                    class="ml-auto fw-bold">{{eventCheckOut.Currency.SymbolAsString}}{{itm.Price}}</span>
+                            </mat-card-content>
+                        </mat-card>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="row mt-3 align-items-center">
+                <div class="col-12" *ngIf="MemberEnabled" #appendItem [style.text-align]="MemberEnabled.TextAlignment"
+                    (click)="showHideToolbar($event,MemberEnabled)"
+                    [ngClass]="{'align-items-center justify-content-end d-flex':!MemberEnabled.TextAlignment, formatEditToolbarWrapper:eventCheckOut.EditMode}">
+                    <mat-checkbox class="becomeMember" [style]="getStyleString(MemberEnabled)"
+                        (change)="eventCheckOut.memberEnabled = !eventCheckOut.memberEnabled"
+                        *ngIf="eventCheckOut.PurchaseInfo">Become {{eventCheckOut.PurchaseInfo.FirstName+"
+                        "+eventCheckOut.PurchaseInfo.LastName}} member now!</mat-checkbox>
+                    <button [style]="getStyleString(MemberEnabled)" mat-icon-button matTooltipPosition="above"
+                        matTooltip="Members are a special type of attendees. They can have special access to member-only tickets and events, and their account include membership-related features such as renewal and member status. For more info, you can email tickets@eventcombo.com with your order number."><span
+                            class="material-icons">info</span></button>
+                </div>
+                <div class="col-12">
+                    <mat-card class="my-3 membershipCard"
+                        *ngIf="MembershipBox && eventCheckOut.Memberships && eventCheckOut.memberEnabled"
+                        [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                        [ngStyle]="{backgroundColor: MembershipBox.BGColor, color:MembershipBox.Color}">
+                        <div class="editorWrapperMembershipBox" *ngIf="eventCheckOut.EditMode" #appendItem
+                            (click)="showHideButtonToolbar($event, MembershipBox)"></div>
+                        <mat-card-header class="d-flex align-items-center justify-content-between">
+                            <mat-card-title class="ml-0">Choose membership plan</mat-card-title>
+                            <button mat-icon-button><span class="material-icons">close</span></button>
+                        </mat-card-header>
+                        <mat-card-content class="fs6">
+                            <mat-radio-group aria-label="Select an option" class="row">
+                                <mat-radio-button *ngFor="let member of eventCheckOut.Memberships" value="1"
+                                    class="col-sm-6 mb-3">
+                                    <div class="fs5 fw-bold">{{member.Title}}</div>
+                                    <div class="membershipPrice fw-bold" [ngStyle]="{color:MembershipBox.Color}">Price:
+                                        {{eventCheckOut.Currency.SymbolAsString}}{{member.Price}}</div>
+                                    <div class="membershipPrice" [ngStyle]="{color:MembershipBox.Color}">Fees:
+                                        {{eventCheckOut.Currency.SymbolAsString}}{{member.ECFee}}</div>
+                                    <p class="fs7 mb-0" [ngStyle]="{ color:MembershipBox.Color}">{{member.Description}}
+                                    </p>
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div class="col-12">
+                    <mat-card class="my-3"
+                        *ngIf="CustomQuestionBox && eventCheckOut.PurchaseInfo && eventCheckOut.PurchaseInfo.QuestionGroupsInfo && eventCheckOut.PurchaseInfo.QuestionGroupsInfo.length>0"
+                        [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                        [ngStyle]="{backgroundColor: CustomQuestionBox.BGColor, color:CustomQuestionBox.Color}">
+                        <div class="editorWrapperCustomQuestionBox" *ngIf="eventCheckOut.EditMode" #appendItem
+                            (click)="showHideButtonToolbar($event, CustomQuestionBox)"></div>
+                        <ng-container *ngFor="let grp of eventCheckOut.PurchaseInfo.QuestionGroupsInfo">
+                            <mat-card-header>
+                                <mat-card-title class="ml-0 fs4">{{grp.GroupName}}</mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content class="fs6">
+                                <ng-container *ngFor="let quest of grp.EditQuestions">
+                                    <custom-question [quest]="quest"></custom-question>
+                                </ng-container>
+
+                                <div class="row px-3" style="display:none;">
+                                    <div class="col-12">
+                                        <button class="btnStyle1 mat-flat-button me-0 px-4"><span
+                                                class="material-icons pr-1">add</span>Add New</button>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </ng-container>
+                    </mat-card>
+                </div>
+                <div class="col-12 accessCodeFeild" *ngIf="PromoCode" [style.text-align]="PromoCode.TextAlignment"
+                    #appendItem (click)="showHideToolbar($event, PromoCode)"
+                    [ngClass]="{'text-right':!PromoCode.TextAlignment, formatEditToolbarWrapper:eventCheckOut.EditMode}">
+
+                    <mat-form-field [ngStyle]="{color: PromoCode.Color, backgroundColor: PromoCode.BGColor}">
+                        <mat-label [style]="getStyleString(PromoCode)">{{PromoCode.CustomPropertyName}}</mat-label>
+                        <input matInput [(ngModel)]="accessCode" name="accessCode" required>
+
+                    </mat-form-field>
+
+                    <!-- <button mat-button (click)="accessCodeApplyToggle = !accessCodeApplyToggle" [ngClass]="{applied: accessCodeApplyToggle}"><span *ngIf="!accessCodeApplyToggle">Apply</span><span *ngIf="accessCodeApplyToggle">Applied</span></button> -->
+                </div>
+                <div class="col-12 " *ngIf="TotalLabel" #appendItem [style.text-align]="TotalLabel.TextAlignment"
+                    (click)="showHideToolbar($event,TotalLabel)"
+                    [ngClass]="{'text-right':!TotalLabel.TextAlignment, formatEditToolbarWrapper:eventCheckOut.EditMode}">
+                    <span class="fs4 f-bold" [style]="getStyleString(TotalLabel)">{{TotalLabel.CustomPropertyName}}
+                        $50</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

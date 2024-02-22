@@ -1,0 +1,119 @@
+<!-- HERO SECTION -->
+<section class="banner2st" (click)="ChangeDetect($event, eventIntro)" [ngClass]="{virtualEventSec:eventIntro.EditMode}" 
+[style]="getSectionStyleString(eventIntro)">
+<section-designer-toolbar *ngIf="eventIntro.EditMode" [ngStyle]="ngStyle"
+    (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12" cdkDropList (cdkDropListDropped)="drop($event)">
+        <div cdkDrag class="listItem" *ngFor="let prop of eventIntro.SectionProperties"
+          [cdkDragDisabled]="!eventIntro.EditMode">
+
+          <div *ngIf="prop.Name == 'Hashtags#'"
+          [style]="getStyleString(prop)">
+            <div class="editorWrapper" *ngIf="eventIntro.EditMode"  [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" #appendItem
+            (click)="showHideToolbar($event, prop)"></div>
+            <ul class="hashtagList mb-0 d-sm-inline-flex" [style]="getStyleString(prop)">
+              <li><a  [ngStyle]="{color: prop.Color, textDecoration:prop.TextDecoration, fontFamily:prop.FontStyle}"
+                  href="{{eventIntro.EditMode?'javascript:void(0)':(domainUrl+'/et/'+eventIntro.EventID+'/evc/ALL/page/lat/long/rel/none')}}"
+                  target="{{eventIntro.EditMode?'_self':'_blank'}}">{{eventIntro.EventType ? '#' + eventIntro.EventType
+                  :'' }}</a></li>
+              <li><a [ngStyle]="{color: prop.Color, textDecoration:prop.TextDecoration,fontFamily:prop.FontStyle}"
+                  href="{{eventIntro.EditMode?'javascript:void(0)':(domainUrl+'/et/evt/'+eventIntro.EventCategoryId+'/ALL/page/lat/long/rel/none')}}"
+                  target="{{eventIntro.EditMode?'_self':'_blank'}}">{{eventIntro.EventCategory? '#'
+                  +eventIntro.EventCategory :'' }}</a></li>
+              <li [ngStyle]="{color: prop.Color, textDecoration:prop.TextDecoration, fontFamily:prop.FontStyle}">
+                {{eventIntro.EventSubCategory?eventIntro.EventSubCategory:'' }}</li>
+            </ul>
+          </div>
+          <h1 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" *ngIf="prop.Name == 'EventTitle'"
+            (click)="showHideToolbar($event, prop)"
+            [style]="getStyleString(prop)">
+            {{eventIntro.EventTitle}}
+
+          </h1>
+          <ng-container *ngIf="prop.Name == 'Address' && !IsVenueNameEnabled">   
+            <h4 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">
+                 {{eventIntro.Address }}
+           </h4>
+           </ng-container>
+           <ng-container *ngIf="prop.Name == 'VenueName' && !IsAddressEnabled">   
+           <h4 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" *ngIf="!IsAddressEnabled && IsVenueNameEnabled" (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">
+               {{eventIntro.VenueName }} 
+           </h4>
+           </ng-container>
+           <ng-container *ngIf="(prop.Name == 'VenueName') &&  IsVenueNameEnabled && IsAddressEnabled">   
+               <h4 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">
+                   {{eventIntro.VenueName }} {{eventIntro.Address }}
+               </h4>
+               </ng-container>
+           
+           <div *ngIf="prop.Name == 'Price'" class="py-3">
+               <div class="f5" #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">{{eventIntro.PriceRange}}
+                  
+               </div>
+           </div>    
+            <ng-container *ngIf="prop.Name == 'DateInfo'">     
+              <p #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" *ngIf="prop.Name == 'DateInfo'"
+              (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">
+              {{eventIntro.EventDateTimeInfoString}}</p>
+               
+             </ng-container>  
+             <ng-container *ngIf="prop.Name == 'EndDateInfo' && !IsDateEnabled">     
+                
+              <p #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" *ngIf="prop.Name == 'EndDateInfo'"
+              (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">
+              {{eventIntro.EventDateTimeInfoString}}</p>
+                </ng-container>     
+          <div class="shareBtn" *ngIf="prop.Name == 'ShareAddShareBox'" [style.text-align]="prop.TextAlignment">
+            
+            <ng-container *ngFor="let sib of prop.SiblingList">  
+              <div class="position-relative" *ngIf="sib.Name == 'Share'">
+                <a #appendItem (click)="showHideButtonToolbar($event, sib)" href="javascript:void(0)"
+                  class="mr-3 mat-stroked-button mdf-hide" [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}"
+                  [style]="getStyleString(sib)"><span class="material-icons">share</span>
+                  {{sib.CustomPropertyName}}
+                </a>
+              </div>         
+              <div class="position-relative" *ngIf="sib.Name == 'AddtoCalendar'">
+                <a  #appendItem href="javascript:void(0)"
+                  (click)="showHideButtonToolbar($event, sib)"
+                  [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" class="mr-3 mat-stroked-button mdf-hide"
+                  [style]="getStyleString(sib)"><span class="material-icons">event</span>
+                  {{sib.CustomPropertyName}}
+
+                </a>
+              </div>
+              <!-- href="{{ EditMode?'javascript:void(0)':addtoCalender}}" -->
+            </ng-container>
+          </div>
+          
+          <div *ngIf="prop.Name == 'BookTicket'" class="position-relative editorLeft" [style.text-align]="prop.TextAlignment">
+            <a  #appendItem class="mat-flat-button btn black"
+              (click)="showHideButtonToolbar($event, prop)" [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}"
+              href="javascript:void(0)" [style]="getStyleString(prop)">
+              {{prop.CustomPropertyName}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT Event -->
+<section *ngIf="showEventDescription" >
+  
+  <div class="container">
+    <div class="row">
+      <event-description *ngIf="websiteDetails && eventDescPage" [eventId]="websiteDetails.Event.EventId"
+        [eventCustomPages]="eventDescPage" [websiteDetails]="websiteDetails" [themeName]="websiteDetails.TemplateId"
+        [isFullPage]="isFullPage"></event-description>
+    </div>
+  </div>
+</section>
+
+<!-- Organised By -->
+<section class="organisedBySec mt-4" *ngIf="showEventDescription">
+  <event-organiser *ngIf="websiteDetails && eventorganiserPage" [eventId]="websiteDetails.Event.EventId"
+    [eventCustomPages]="eventorganiserPage" [websiteDetails]="websiteDetails" [themeName]="websiteDetails.TemplateId"></event-organiser>
+</section>

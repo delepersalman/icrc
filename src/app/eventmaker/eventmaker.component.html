@@ -1,0 +1,2 @@
+<side-menu *ngIf="IsEditMode" [outputEvent]="outputValue"></side-menu>
+<app-view-event *ngIf="!IsEditMode" (outputEvent)="synchValue($event)" [IsEditMode]="IsEditMode"></app-view-event>

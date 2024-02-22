@@ -1,0 +1,65 @@
+.expoBox { width:400px; margin:15px; float:left;
+  .expoHeaderImage { background-size:cover; background-repeat:no-repeat;}
+  ::ng-deep.mat-card-header-text { display:grid;}
+  .expoContent { position:relative;}
+  .socialAndBtn { display:flex; justify-content:space-between; align-items:center;
+    .mat-button { color:#fff; background:var(--theme-color);}
+    .socialLinks {
+      a { padding:2px 8px; display:inline-block; float:left;
+        img { width:24px; float:left;}
+      }
+    }
+  }
+  .desc { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; height:50px;}
+  .more { position:absolute; right:0; bottom:0; z-index:1; padding-left:20px; color:var(--theme-color); background:linear-gradient(to right, rgba(255,255,255,.1) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 100%);}
+  .close { position:absolute; right:6px; top:6px; z-index:3; padding:5px; border-radius:50%; background:rgba(0,0,0,.8); color:var(--theme-color);
+    .material-icons { float:left;}
+  }
+  .fullDesc { width:100%; height:100%; background:rgba(50,50,50,.8); color:#fff; padding:10px; position:absolute; top:0; left:0; z-index:2; display:none; overflow-y:auto; scrollbar-face-color:rgba(220,225,225,.6); scrollbar-track-color:rgba(220,225,225,.8); scrollbar-arrow-color:rgba(220,225,225,.6);
+    &::-webkit-scrollbar { width:12px; background:rgba(220,225,225,.2);}
+    &::-webkit-scrollbar-thumb { background:rgba(220,225,225,.6); border-radius:15px;}
+    &:hover::-webkit-scrollbar { background:rgba(220,225,225,.4);}
+  }
+  input[type=checkbox] { width:95px; height:17px; display:inline-block; position:absolute; right:0; bottom:0; z-index:4; opacity:0; cursor:pointer;}
+  input[type=checkbox]:checked { width:38px; height:38px; top:0; bottom:auto;}
+  input[type=checkbox]:checked + .fullDesc { display:block;}
+  input[type=checkbox]:checked + div + .more { display:none;}
+  input[type=checkbox]:not(:checked) + div + a + .close { display:none;}
+  &.small { width:240px;
+    .socialAndBtn {
+      .mat-button { min-width:40px; line-height:24px; font-size:10px; padding:0 10px;}
+      .socialLinks {
+        a {
+          img { width:12px;}
+        }
+      }
+    } 
+  }
+  &.medium { width:360px;
+    .socialAndBtn {
+      .socialLinks {
+        a {
+          img { width:20px;}
+        }
+      }
+    } 
+  }
+  &.large { width:480px;
+    .socialAndBtn {
+      .mat-button { min-width:80px;}
+      .socialLinks {
+        a {
+          img { width:24px;}
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width:0) and (max-width:767px){
+  .expoBox { width:100%; 
+    &.small { width:100%;}
+    &.medium { width:100%;}
+    &.large { width:100%;}
+  }
+}

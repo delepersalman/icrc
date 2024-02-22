@@ -1,0 +1,71 @@
+<fireworks-splash-screen *ngIf="resourcesLoading"></fireworks-splash-screen>
+<div class="recepContent" style="padding-bottom:10%">
+  <div id="handoutsData">
+   
+    <div style="padding-left:4%; padding-right:4%" *ngIf="roomData">
+      <h2 class="secHeading">Handouts</h2>
+      <div class="example-loading-shade" *ngIf="resourcesLoading || isRateLimitReached">
+        <mat-spinner *ngIf="resourcesLoading" [diameter]="50"></mat-spinner>
+      </div>
+      <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input matInput (keyup)="applyDocumentFilter($event)" placeholder="Ex. presentation" #searchinput>
+      </mat-form-field>
+      <table mat-table [dataSource]="docuemntsDataSource" matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+       
+        <ng-container matColumnDef="Extension">
+
+          <th style="max-width:60px;" mat-header-cell *matHeaderCellDef mat-sort-header> Docuemnt </th>
+
+          <td mat-cell *matCellDef="let row">
+            <img *ngIf="row.Extension != null && imageExtensions.indexOf(row.Extension) !== -1" src="./assets/fireworks/icons/JPG.svg" width="25" />
+            <img *ngIf="row.Extension != null && (row.Extension == '.doc' || row.Extension == '.docx')" src="./assets/fireworks/icons/DOC.svg" width="25" />
+            <img *ngIf="row.Extension != null && row.Extension == '.pdf'" src="./assets/fireworks/icons/PDF.svg" width="25" />
+            <img *ngIf="row.Extension != null && row.Extension == '.txt'" src="./assets/fireworks/icons/TEXT.svg" width="25" />
+            <img *ngIf="row.Extension != null && (row.Extension == '.ppt' || row.Extension == '.pptx')" src="./assets/fireworks/icons/PPT.svg" width="25" />
+            <img *ngIf="row.Extension != null && (row.Extension == '.csv' || row.Extension == '.xls' || row.Extension == '.xlsx')" src="./assets/fireworks/icons/XLS.svg" width="25" />
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="FileName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <td mat-cell *matCellDef="let row">
+            {{row.FileName}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+          <td mat-cell *matCellDef="let row"> {{row.Description}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="RoomType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Area </th>
+          <td mat-cell *matCellDef="let row"> {{row.RoomType}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Action">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Download </th>
+          <td mat-cell *matCellDef="let row">
+            <a download="{{row.FileName}}" href="{{currentDownloadUrl}}" (click)="downloadDocument($event, row.FilePath)">
+              <span class="material-icons">get_app</span>
+            </a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+      </table>
+      <mat-paginator [length]="totalRecords"
+                     [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 15, 20,25,50,100]">
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+<fireworks-no-room-available *ngIf="noRoomAccess"></fireworks-no-room-available>

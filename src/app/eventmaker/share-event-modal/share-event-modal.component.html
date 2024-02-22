@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Share Event</h2>
+<mat-dialog-content>
+    <div class="socialIcon text-left">
+        <a href="javascript:void(0)" (click)="createNavigationUrl('facebook')" title="Share event name on Facebook"><img width="32" alt="Share  on Facebook" src="https://www.eventcombo.com/Images/AMaterial/facebook.svg"></a>
+        <a href="javascript:void(0)" (click)="createNavigationUrl('twitter')" title="Share event name on Twitter"><img width="32" alt="Share  on Twitter" src="https://www.eventcombo.com/Images/AMaterial/twitter.svg"></a>
+        <a href="javascript:void(0)" (click)="createNavigationUrl('linkedin')" title="Share event name on LinkedIn"><img width="32" alt="Share  on LinkedIn" src="https://www.eventcombo.com/Images/AMaterial/linkedin.svg"></a>
+    </div>
+    
+    <mat-form-field class="w-100 mt-4">
+        <mat-label>Event URL</mat-label>
+        <input matInput name="eventUrl" [(ngModel)]="eventUrl">
+    </mat-form-field>
+    <button class="copyClipboard" mat-stroked-button [cdkCopyToClipboard]="eventUrl">Copy to clipboard</button>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="btn">Cancel</button>
+</mat-dialog-actions> 

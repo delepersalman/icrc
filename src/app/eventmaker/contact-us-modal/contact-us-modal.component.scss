@@ -1,0 +1,10 @@
+.phoneNumExt { width:52px; margin-right:0.5rem }
+.mat-error { color: #f44336 !important }
+.phoneNumField {
+    .countryCode { width:40px; margin-top:16px; position:absolute; left:80px; z-index:1;}
+}
+.phoneNumberInput::ng-deep {
+    input { padding-left:55px }
+    .mat-form-field-label { left:56px }
+}
+.phoneNumberInput.mat-form-field-should-float::ng-deep .mat-form-field-label{ left:0 }

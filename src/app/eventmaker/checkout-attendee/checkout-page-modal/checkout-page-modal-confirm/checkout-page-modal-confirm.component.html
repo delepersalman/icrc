@@ -1,0 +1,6 @@
+<h3 mat-dialog-title>Confirm</h3>
+<div mat-dialog-content>Are you sure you want to close?</div>
+<mat-dialog-actions align="end" style="padding-bottom:16px">
+  <button md-button mat-raised-button cdkFocusInitial (click)="dialogRef.close(true)">Yes</button>
+  <button md-button mat-raised-button (click)="dialogRef.close(false)">No</button>
+</mat-dialog-actions>

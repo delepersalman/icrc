@@ -1,0 +1,15 @@
+.formatEditToolbarWrapper { position:relative; border:2px dashed transparent; transition:all .3s }
+.formatEditToolbarWrapper:hover { border-color:#888 }
+section { position:relative; border:2px dashed transparent; transition:all .3s }
+section.virtualEventSec:hover { border-color:#00ff95 }
+
+designer-toolbar { position:absolute; top:-51px; display:none }
+button-designer-toolbar { display:none }
+// section-designer-toolbar { position:absolute; top:-51px; right:16px; display:none; z-index:9999 }
+.formatEditToolbarWrapper.Clicked ~ designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.formatEditToolbarWrapper.Clicked button-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+section:hover section-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+
+.formatButtonEditToolbar input[type='color'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+
+::ng-deep ul li,::ng-deep ol li { list-style:inherit }

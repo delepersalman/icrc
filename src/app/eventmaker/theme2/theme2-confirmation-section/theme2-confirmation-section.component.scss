@@ -1,0 +1,40 @@
+@import '../../../../variable.scss';
+.confirmationSection { background-color:#f7f8fa; color:#001623; padding-top:3rem; padding-bottom:3rem }
+.confirmationSection .orderDetails { background-color:#fff; border:1px solid #e6e8e9; box-shadow:none }
+.confirmationSection h3.red-heading { line-height:35px; font-style:normal; font-weight:bold; color:#001623 }
+.confirmationSection .orderDetails .orderNumber { color:#001623; font-weight:bold; font-size:24px }
+.confirmationSection .orderDetails .orderNumber span { font-weight:normal }
+.confirmationSection .orderSbuline { font-size:14px }
+.confirmationSection .orderList .orderBox { padding:8px 50px 8px 15px; position:relative }
+.confirmationSection .orderList .orderTitle { font-weight:500; color:#000; font-size:20px }
+.ocAdd2CalHeading { font-weight:500 }
+.whatsNext .nextLink:first-child { padding-left:0 }
+.flRightN { position:absolute; right:1rem; top:1rem; font-size:24px }
+.nextLink { color:$theme-colour1; display:inline-block }
+.evtLink { color:$theme-colour1 }
+.shareLink { margin-left:0.3rem }
+.orderList .orderBox:nth-child(odd) { background:#f8f8f8 }
+
+.ocAdd2CalList { width:100%; margin:0; padding:0; display:inline-block;
+    li { list-style:none; display:inline-block; margin-right:15px;
+        a { display:inline-block; color:$theme-colour2; font-size:14px; line-height:16px }
+        a:hover { color:$theme-colour1 }
+        a img { width:16px; float:left; margin-right:10px }
+    }
+}
+.formatEditToolbarWrapper { position:relative; border:2px dashed transparent; transition:all .3s }
+.formatEditToolbarWrapper:hover { border-color:#888 }
+section { position:relative; border:2px dashed transparent; transition:all .3s }
+section.virtualEventSec:hover { border-color:#00ff95 }
+
+
+designer-toolbar { position:absolute; top:-51px; display:none }
+button-designer-toolbar { display:none }
+// section-designer-toolbar { position:absolute; top:-51px; right:16px; display:none; z-index:9999 }
+.formatEditToolbarWrapper.Clicked ~ designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.formatEditToolbarWrapper.Clicked button-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+section:hover section-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+
+.formatButtonEditToolbar input[type='color'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+.editorWrapper { position:absolute; left:0; top:0; z-index:9; height:100%; width:100% }
+

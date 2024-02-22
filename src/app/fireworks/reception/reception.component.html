@@ -1,0 +1,7 @@
+<fireworks-splash-screen *ngIf="resourcesLoading"></fireworks-splash-screen>
+
+<div *ngIf="roomData">
+  <fireworks-lobby [whenLobbyHasData]="whenLobbyHasData()"></fireworks-lobby>
+</div>
+
+<fireworks-no-room-available *ngIf="noRoomAccess"></fireworks-no-room-available>

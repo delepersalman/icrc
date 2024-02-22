@@ -1,0 +1,40 @@
+<!-- Broadcast announcements by Host -->
+<div class="broadcastBox">
+    <h2>Broadcast message</h2>
+    <mat-radio-group class="adminRadiobutton" [(ngModel)]=broadcastMessageModel.MessageType aria-label="Select an option">
+        <mat-radio-button value="event">Display message to entire event</mat-radio-button>
+        <mat-radio-button value="room">Display message to
+        </mat-radio-button>
+        <mat-form-field>
+            <mat-label>Select room(s)</mat-label>
+            <mat-select [(ngModel)]="broadcastMessageModel.RoomIds" multiple>
+                <ng-container *ngFor="let room of rooms">
+                    <mat-option
+                        *ngIf="room.RoomType != roomType.Handouts && room.RoomType != roomType.Session && room.RoomType != roomType.Expo"
+                        [value]="room.VirtualEventRoomId">
+                        {{room.RoomName}}
+                    </mat-option>
+                    <mat-optgroup
+                        *ngIf="room.RoomType != roomType.Handouts && (room.RoomType == roomType.Session || room.RoomType == roomType.Expo) && room.VirtualEventBooths.length > 0"
+                        [label]="room.RoomName">
+                        <mat-option *ngFor="let childRoom of room.VirtualEventBooths"
+                            [value]="childRoom.VirtualEventRoomId">
+                            {{childRoom.RoomName}}
+                        </mat-option>
+                    </mat-optgroup>
+                </ng-container>
+            </mat-select>
+        </mat-form-field> &nbsp;&nbsp;room(s)
+    </mat-radio-group>
+    <div class="broadcastBoxInputBoxdiv">
+        <div class="broadcastBoxInput">
+            <mat-form-field>
+                <mat-label>Message</mat-label>
+                <textarea [(ngModel)]="broadcastMessageModel.Notification" matInput placeholder="Enter message"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="broadcastBoxBtn">
+            <button mat-raised-button color="primary" (click)="broadcastMessage()">Broadcast</button>
+        </div>
+    </div>
+</div>

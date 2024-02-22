@@ -1,0 +1,15 @@
+<div class="w-100 listInputSpacing">
+    <label *ngIf="!(inputImageList) || inputImageList.length === 0" for="logoUpload" class="uploadFileBox">
+        <div class="title">Drag & Drop File Here</div>
+        <div class="or">or</div>
+        <button mat-raised-button color="primary" for="logoUpload">Browse File</button>
+        <input name="logoFile" [multiple]="multiple" (change)="onFileChange($event)" type="file" id="logoUpload">
+    </label>
+
+    <div *ngFor="let image of inputImageList;" class="position-relative mb-3">
+        <img src="{{domainUrl+image.ImagePath}}" width="100%">
+        <button mat-icon-button class="closeBtn" (click)="deleteImage(image,2)" aria-label="Close">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>

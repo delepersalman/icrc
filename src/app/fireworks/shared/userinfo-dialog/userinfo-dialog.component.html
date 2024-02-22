@@ -1,0 +1,88 @@
+<h2 mat-dialog-title>Profile Information</h2>
+<mat-dialog-content>
+  <form #userInfo="ngForm">
+    <div class="uploadProfilePic text-center">
+      <!-- <div class="uploadInput-dragDrop" *ngIf="!personalInfoPicName || personalInfoPicName"> -->
+      <div class="uploadInput-dragDrop" [hidden]="IsPersonalInfoPic==null||IsPersonalInfoPic">
+        <div class="uploadInput-text">Drag & Drop files here</div>
+        <div class="uploadInput-or">or</div>
+        <div><a class="uploadInput-button">Browse Files</a></div>
+        <input class="uploadInput-input" type="file" accept="image/*" (change)="uploadProfileImage($event)" />
+      </div>
+      <!-- <div class="uploadedImage" *ngIf="personalInfoPicName || personalInfoPicName.length > 0" title="test"> -->
+      <div class="uploadedImage" *ngIf="IsPersonalInfoPic" title="test">
+        <img *ngIf="personalInfoPic" src="{{personalInfoPic}}">
+        <div class="uploadedImageName">
+          <span>{{personalInfoPicName}}</span>
+          <a class="uploadedImageRemove" (click)="deleteImage()"><i class="material-icons">delete</i></a>
+        </div>
+      </div>
+    </div>
+    <div class="formFlexRow">
+      <mat-form-field>
+        <mat-label>First name</mat-label>
+        <input matInput required [(ngModel)]="virtualEventUser.FirstName" name="FirstName" #firstName="ngModel">
+        <div class="alert alert-danger" *ngIf="firstName.touched && !firstName.valid">
+            <mat-error *ngIf="firstName.errors.required">First Name is required.</mat-error>
+        </div>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Last name</mat-label>
+        <input matInput required [(ngModel)]="virtualEventUser.LastName" name="LastName" #lastName="ngModel">
+        <div class="alert alert-danger" *ngIf="lastName.touched && !lastName.valid">
+            <mat-error *ngIf="lastName.errors.required">Last Name is required.</mat-error>
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="formFlexRow">
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="virtualEventUser.Title" name="Title">
+      </mat-form-field>
+    </div>
+    <div class="formFlexRow">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="virtualEventUser.Email" type="email" #email="ngModel" name="Email" [disabled]="!virtualEventUser.IsEmailEnterRequired" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+        <div class="alert alert-danger" *ngIf="email.touched && !email.valid && !virtualEventUser.IsEmailEnterRequired">
+            <mat-error *ngIf="email.errors.pattern">Email is not valid.</mat-error>
+        </div>
+      </mat-form-field>
+      <mat-form-field *ngIf="virtualEventUser.IsEmailEnterRequired">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="virtualEventUser.Password" type="password" #password="ngModel" name="password" required>
+        <div class="alert alert-danger" *ngIf="password.touched && !password.valid">
+            <mat-error *ngIf="password.errors.required">Password is required.</mat-error>
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="formFlexRow" *ngIf="virtualEventUser.IsEmailEnterRequired">
+      <!-- <a (click)="forgotPassword()">FORGOT PASSWORD?</a> -->
+    </div>
+    <div class="formFlexRow">
+      <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput required minlength="4" maxlength="15" [(ngModel)]="virtualEventUser.Phone" name="Phone" #phoneNumber="ngModel" (keypress)="stripText($event)" pattern="[- +()0-9]+">
+        <div class="alert alert-danger" *ngIf="phoneNumber.touched && !phoneNumber.valid">
+            <mat-error *ngIf="phoneNumber.errors.required">Phone Number is required.</mat-error>
+            <mat-error *ngIf="phoneNumber.errors.pattern">Phone Number is not valid.</mat-error>
+            <mat-error *ngIf="phoneNumber.errors.maxlength">Phone Number maximum length must be 15 character.</mat-error>
+            <mat-error *ngIf="phoneNumber.errors.minlength">Phone Number minimum length must be 4 character.</mat-error>
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="formFlexRow">
+      <mat-form-field>
+        <mat-label>About me</mat-label>
+        <textarea matInput [(ngModel)]="virtualEventUser.Description" name="Description"></textarea>
+      </mat-form-field>
+    </div>
+    <!-- <div class="orImportFrom">or import info from</div>
+    <div style="text-align:center;"><a class="linkedInButton" (click)="linkedInClicked()" target="_blank"><img src="assets/fireworks/icons/linked-in-blue.png"> LinkedIn</a></div> -->
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button color="primary" cdkFocusInitial type="submit" (click)="saveAttendeeDetail(userInfo)">Save</button>
+</mat-dialog-actions>

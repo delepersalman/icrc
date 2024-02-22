@@ -1,0 +1,15 @@
+<h2 mat-dialog-title><span>Add Custom  {{data.WebsiteType == 'Multiple'?'Page':'Section'}}</span></h2>
+<mat-dialog-content class="mat-typography modelContentPageSetting">
+	  <div class="contentEditableWrapper">
+		<form class="flex">
+			<mat-form-field >
+			  <mat-label>Enter {{data.WebsiteType == 'Multiple'?'Page':'Section'}} Name</mat-label>
+			  <input matInput placeholder="{{data.WebsiteType == 'Multiple'?'Page':'Section'}} Name" [(ngModel)]="SectionName" name="SectionName" >
+			</mat-form-field>		
+		</form>
+	  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="btn">Cancel</button>
+  <button mat-raised-button  cdkFocusInitial color="primary" (click)="saveSectionName()" class="btn">Save</button>
+</mat-dialog-actions> 

@@ -1,0 +1,18 @@
+<!--<mat-progress-bar [mode]="'indeterminate'" *ngIf="resourcesLoading" id="room-handout">
+</mat-progress-bar>-->
+<form>
+  <mat-form-field class="sidebarSearch">
+    <mat-label>Search</mat-label>
+    <input [(ngModel)]="txtHandoutsSearch" matInput name="txtHandoutsSearch">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+</form>
+<ul class="Handouts" *ngIf="handoutDocuemnts && handoutDocuemnts.length" #scrollMe>
+  <li class="handout" [attr.file]="getFileNameExtention(doc.Extension)" *ngFor="let doc of handoutDocuemnts | handouts_search : txtHandoutsSearch">
+    {{doc.FileName}}
+    <a download="{{doc.FileName}}" href="{{currentDownloadUrl}}" (click)="downloadDocument($event, doc.FilePath)">
+      <span class="material-icons">get_app</span>
+    </a>
+  </li>
+</ul>
+<div class="Handouts" style="padding:5%" *ngIf="!handoutDocuemnts || !handoutDocuemnts.length" #scrollMe>No documents available!</div>

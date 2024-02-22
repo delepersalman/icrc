@@ -1,0 +1,75 @@
+    <!-- HERO SECTION -->
+    <section class="banner2st pageBanner" *ngIf="isFullPage && sectionBanner"  (click)="ChangeDetect($event, eventTeams, 'SectionBanner')" [ngClass]="{virtualEventSec:eventTeams.EditMode}"
+    [style]="getBannerSectionStyleString(eventTeams)"
+      [ngClass]="{virtualEventSec:eventTeams.EditMode}" id="eventTeams">
+      <section-banner-designer-toolbar *ngIf="eventTeams.EditMode" [ngStyle]="ngStyle"
+        (eventTextFormatAlignment)="changeAlignment($event)"></section-banner-designer-toolbar>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h1 #appendItem *ngIf="Sectionheading" [style]="getStyleString(Sectionheading)"
+                [ngClass]="{formatEditToolbarWrapper:eventTeams.EditMode}" (click)="showHideToolbar($event,Sectionheading)"
+                (input)="onChange($event.target.innerHTML, Sectionheading)">
+                {{Sectionheading.CustomPropertyName}}
+              </h1>
+              <p #appendItem [ngClass]="{formatEditToolbarWrapper:eventTeams.EditMode}" *ngIf="description"
+                        (click)="showHideToolbar($event,description)"
+                        [style]="getStyleString(description)">
+                        {{description.CustomPropertyName}}
+                    </p>
+            </div>
+          </div>
+        </div>
+      </section>
+  
+      <section   [ngClass]="{virtualEventSec:eventTeams.EditMode}" (click)="ChangeDetect($event, eventTeams)"   [style]="getSectionStyleString(eventTeams)"
+      [ngClass]="{virtualEventSec:eventTeams.EditMode}" id="teams">
+      <section-designer-toolbar *ngIf="eventTeams.EditMode" [ngStyle]="ngStyle"
+          (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+          <div class="col-md-12">
+            <h1 #appendItem *ngIf="heading" [style]="getStyleString(heading)"
+              [ngClass]="{formatEditToolbarWrapper:eventTeams.EditMode}" (click)="showHideToolbar($event,heading)"
+              (input)="onChange($event.target.innerHTML, heading)">
+              {{heading.CustomPropertyName}}
+            </h1>
+            </div>
+          <div *ngIf="eventTeams.EditMode && eventTeams.eventTeams.length == 0" class="blankDataMsgBox">
+            Please add data in <span class="fw-bold">Manage Teams under Event Dashboard</span> or turn this
+            <span class="fw-bold">section off.</span>
+        </div>
+        <div class="container teamsSec" *ngFor="let team of eventTeams.eventTeams;">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="teamsBox">
+                <div class="teamsBoxLeft">
+                  <img src="assets/eventmaker/theme2/icons/teamsIcon2.svg">
+                  <h3 *ngIf="enableTeams" [style]="getStyleString(enableTeams)"
+                  [ngClass]="{formatEditToolbarWrapper:eventTeams.EditMode}" #appendItem  (click)="showHideToolbar($event,enableTeams)">{{team.TeamName}}</h3>
+                </div>
+                <div class="teamsBoxRight"  *ngIf="enableTeamsMember"  [style]="getStyleString(enableTeamsMember)"
+                [ngClass]="{formatEditToolbarWrapper:eventTeams.EditMode}" (click)="team.addAttendeeInfoToggle = !team.addAttendeeInfoToggle">
+                  {{team.TeamMembers.length}}
+                  Members <span #appendItem  (click)="showHideToolbar($event,enableTeamsMember)" class="material-icons me-2">
+                    {{team.addAttendeeInfoToggle ? 'keyboard_arrow_up'
+                                      : 'keyboard_arrow_down'}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="team.TeamMembers.length > 0">
+              <div class="row" *ngIf="team.addAttendeeInfoToggle">
+                <div class="col-md-3" *ngFor="let member of team.TeamMembers;">
+                  <div class="teamsBoxUser">
+                    <span class="material-icons icon-md mr-3">person</span>
+                    <!-- <img src="~/Images/eventmaker/page2/team7.png"> -->
+                    <h5>{{member.BuyerName}}</h5>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  
+     

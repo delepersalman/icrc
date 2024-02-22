@@ -1,0 +1,67 @@
+.breakoutRoom { display: block; border-radius: 4px; text-align: center; padding: 20x 0;}
+.breakoutRoom .breakoutRoomHeading { font-size: 20px; margin-bottom: 30px; display:block;}
+.breakoutRoomHeadingTop { background: var(--theme-color); color:#fff; display: block; margin: 0px; margin-bottom: 30px; padding: 20px; font-size: 24px;}
+.breakoutModalTitle { font-size: 16px; padding: 0; margin-left: -24px; margin-right: -24px; margin-top: -24px;}
+.breakoutModalTab { background: #f4f6f8;}
+.modalSelectOption { margin: 0px 30px;}
+.modalSelectOption .mat-form-field-appearance-fill .mat-form-field-flex { background: #fff;}
+.modalClosetop { float: right; margin: 5px; cursor: pointer; color: #202020;}
+.mr50 { margin-top: 50px;}
+
+.breakoutRoom .breakoutRoomDescription { font-size: 16px; color: #000; display: block;}
+.breakoutRoom .breakoutRoomInput { width: 60px; padding: 5px; border-radius: 7px; border: 2px solid #9e9a9a; text-align: center;}
+.breakoutRoom .breakoutRoomRadio { padding: 20px 0px; display: block;}
+.breakoutRoom .breakoutRoomRadioLeft { margin-right: 20px;}
+.breakoutRoom .breakoutRoomBtn { margin-top: 40px;}
+.breakoutRoomCheckBox { background: #eaeaea; width: 400px; padding: 20px; border-radius: 4px; position: relative;}
+.breakoutRoomCheckBox .checkBoxAll { padding: 5px; font-size: 15px; }
+.breakoutRoomCheckBox:before { content: ''; width: 23px; height: 23px; background: #eaeaea; position: absolute; bottom: -10px; left: 0; transform: rotate(-45deg); z-index: -1; right: 0; margin: auto; }
+.breakoutRoomCheckBox .checkBoxAllInput { width: 20px; padding: 5px;}
+.breakoutRoomCheckBox .checkBoxAllSelect { width: 50px; padding: 5px 10px;}
+.userLestImg { height: 30px;  border-radius: 15px; float: left;  margin: -8px 4px;}
+.userLestImg img {width: 100%; height: 100%; object-fit: cover;}
+.userLest { display: inline-block; width: 50%;}
+.userListRigth { display: inline-block; width: 50%; float: right; margin-top: 5px;}
+.userLestBox { display: flex; align-items: center;}
+.userLestBox h3 { margin: 0px; width: 80%; font-size: 14px;}
+.userListRigthBox { display: flex; justify-content: flex-end; text-align: right; }
+.userListRigthBox :hover{color:var(--theme-color);}
+.userListRigthBox a { color: #222; text-decoration: none; margin: 5px; font-size: 14px; display: flex; align-items: center; cursor: pointer;}
+.mat-expansion-panel-openDiv { margin-bottom: 10px; border-bottom: 1px solid #6666660d; padding-bottom: 10px;}
+.userListRigthBox a span { font-size: 14px; margin-right: 3px;}
+.accordionRename span.material-icons { font-size: 18px; margin-right: 5px;}
+.accordionRename a{color:#304299; margin-left:10px;}
+.accordionRename a:hover{color:var(--theme-color);}
+.accordionJoin { color:var(--theme-color); justify-content: flex-end;}
+.accordionRename{ justify-content: flex-end; color:#000; font-weight: 500;}
+.model-footer { padding: 10px 0 20px 0;}
+.brakoutroomHeading { padding: 20px 0px; display: block; font-size: 20px;margin: auto;}
+.breakoutRoomInput { border: none; border-bottom: 1px solid #666; padding: 5px; font-size: 20px;}
+.breakoutRoomActionBtn { margin: 5px 0 0 15px; font-size: 20px; color:#000;}
+.breakoutRoomActionBtn a { color:#304299; margin-left:10px;}
+.breakoutRoomActionBtn a:hover { color:var(--theme-color);}
+span.accordinTiitle { font-size: 20px;}
+.accordinLeftArrow i.material-icons { font-size: 35px; color: #000; margin-right: 10px; border-radius: 20px; margin-top: 8px;}
+.accordinLeftArrow i.material-icons:hover { font-size: 35px; color: var(--theme-color);}
+::ng-deep .mat-content { align-items: center;}
+::ng-deep .mat-expansion-panel-header-title,
+.mat-expansion-panel-header-description { align-items: center;}
+::ng-deep .mat-expansion-panel-body { padding: 0 20px 15px 65px !important;}
+.breakoutRoomModalOverflow { height: 400px; overflow-y: auto;}
+.breakoutBtnClr { background-color: var(--theme-color); color: #fff;}
+.broadcastmessage { padding: 0px 0px 16px 30px;}
+.broadcastmessage input { width: 83%; margin-right: 10px;}
+.breakout-checkbox { padding: 10px;}
+.breakout-selectall { padding: 10px 15px 25px 15px; margin-left: 20px;}
+.breakout-delete-all { float: right; margin-right: 20px;}
+.popoverContainer { margin-top: 25px; padding: 11px;}
+.popoverContainer input { width: 50px;font-size: 15px;}
+.popoverContainer .popoverConent { font-size: 14px; margin-bottom: 15px;}
+.popoverTitle { padding: 5px 0px 5px 8px; background: var(--theme-color); color: #fff;  position: absolute; top: 0; width: 280px;}
+
+@media screen and (min-width:0) and (max-width:767px){
+    .breakoutBtnClr { margin-top: 10px;}
+    .breakout-delete-all { float: none;}
+    ::ng-deep mat-accordion.mat-accordion.ng-star-inserted { overflow: scroll; display: -webkit-box;}
+    ::ng-deep .mat-expansion-panel-header { display: flex; white-space: pre;}
+}

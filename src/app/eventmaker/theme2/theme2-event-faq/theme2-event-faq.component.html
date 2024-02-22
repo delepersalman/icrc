@@ -1,0 +1,67 @@
+<section class="faqSec" (click)="ChangeDetect($event, eventFAQ)"  [ngClass]="{virtualEventSec:eventFAQ.EditMode}" id="FAQ" [style]="getSectionStyleString(eventFAQ)">
+  <section-designer-toolbar class="z11" *ngIf="eventFAQ.EditMode" [ngStyle]="ngStyle" (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="aboutTitle" #appendItem  [ngClass]="{formatEditToolbarWrapper:eventFAQ.EditMode}" (input)="onChange($event.target.innerHTML, heading)"   (click)="showHideToolbar($event,heading)" [style]="getStyleString(heading)" *ngIf="heading">{{heading.CustomPropertyName}}</div>	 
+       
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <div class="row">
+          <div *ngIf="eventFAQ.EditMode && eventFAQ.eventFAQs.length == 0" class="blankDataMsgBox">
+            Please add data in <span class="fw-bold">Edit Event page</span> or turn this <span class="fw-bold">section off.</span>
+          </div>
+          <ng-container *ngFor="let item of eventFAQ.eventFAQs">
+            <div class="col-md-12 faqBoxWrapper"  
+          [style]="getStyleString(prop)">
+ 
+              <div class="faqBox" [ngClass]="item.isExpanded ? 'expand' : ''">
+                <div class="pointer" style="position:relative"
+                  (click)="item.isExpanded = !item.isExpanded" [ngStyle]="{textAlign:item.TextAlignment}" >
+                 
+                  <h4  *ngIf="Ques" class="fs4 fw-500 my-0 py-2 pr-5" [style.text-decoration]="item.TextDecoration"  [ngStyle]="{fontStyle: item.TextFormat, fontWeight:item.FontWeight, color: item.Color, backgroundColor: item.BGColor, textAlign:item.TextAlignment,'font-size':(item.FontSize>0?item.FontSize+'px':''),fontFamily:item.FontStyle}" #appendItem [ngClass]="{formatEditToolbarWrapper:eventFAQ.EditMode}"
+                    (click)="showHideToolbar($event,Ques, item, undefined)" >
+                   
+                    {{item.Question}} </h4>
+                  <div  *ngIf="Ques" class="faqIcon plusPosition">
+                    <i [style.color]="item.Color" class="material-icons" *ngIf="!item.isExpanded">add</i>
+                    <i [style.color]="item.Color"class="material-icons" *ngIf="item.isExpanded">remove</i>
+                  </div>
+                </div>
+                <ng-container *ngIf="item.isExpanded && Ans">
+                  <p  #appendItem [ngClass]="{formatEditToolbarWrapper:eventFAQ.EditMode}"
+                  (click)="showHideToolbar($event,Ans, undefined, item)" [style.text-decoration]="item.AnswerTextDecoration"  [ngStyle]="{fontStyle: item.AnswerTextFormat, fontWeight:item.AnswerFontWeight, color: item.AnswerColor, backgroundColor: item.AnswerBGColor, textAlign:item.AnswerTextAlignment,'font-size':(item.AnswerFontSize>0?item.AnswerFontSize+'px':''),fontFamily:item.AnswerFontStyle}">
+                    {{item.Answer}}
+                  </p>
+                </ng-container>
+
+              </div>
+            </div>
+          </ng-container>
+          <!-- <ng-container *ngFor="let item of eventFAQ.eventFAQs">
+          <div class="col-md-12">
+            <div class="faqBox" [ngClass]="item.isExpanded ? 'expand' : ''">
+              <div class="d-flex align-items-center justify-content-between pointer"
+              (click)="item.isExpanded = !item.isExpanded">
+                <h4 class="fs4 fw-500 my-0 py-2">
+                  {{item.Question}}
+                </h4>
+                <div class="faqIcon">
+                  <i class="material-icons" *ngIf="!item.isExpanded">add</i>
+                  <i class="material-icons" *ngIf="item.isExpanded">remove</i>
+                </div>
+              </div>
+              <ng-container *ngIf="item.isExpanded">
+              <p >{{item.Answer}}</p>
+              </ng-container>
+            </div>
+          </div>
+          </ng-container> -->
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

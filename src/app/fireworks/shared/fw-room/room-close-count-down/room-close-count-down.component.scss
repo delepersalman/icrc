@@ -1,0 +1,12 @@
+.roomTimerRemainingWrapper { position:absolute; left:0; top:6px; z-index:99; display:flex; width:100% }
+.roomTimerRemaining { background-color:#ff2567; color:#fff; border-radius:2px; font-size:18px; padding:8px 16px; display:flex; align-items:center; margin:0 auto; position:relative;
+  .warningIcon { float:left; margin-right:7px; font-size:20px; height:20px; width:20px }
+  .time { margin-left:8px; margin-right:6px;
+    ::ng-deep .timeCount { margin-right:2px }
+    ::ng-deep .timeValIn { margin-right:6px }
+  }
+  .closeTimer { position:absolute; right:-12px; top:calc(50% - 12px); width:22px; height:22px; border-radius:50%; background-color:#fff; color:#000; text-align:center; cursor:pointer; transition:all .2s;
+    mat-icon { font-size:18px; width:18px; height:18px; line-height:22px }
+    &:hover { transform:scale(1.03) }
+  }
+}

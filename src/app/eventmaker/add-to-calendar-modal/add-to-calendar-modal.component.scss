@@ -1,0 +1,8 @@
+.addToCalendar { 
+    li { list-style:none }
+    a { color:#000; padding:6px 0; display:inline-block; width:100%;
+        :hover { color:#1076fb }
+    }
+    a:hover { color:#1076fb }
+    img { width:20px; margin-right:6px }
+}

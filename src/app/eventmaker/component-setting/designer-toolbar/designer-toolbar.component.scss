@@ -1,0 +1,16 @@
+.toggleSameBtn { padding:0; line-height:48px; vertical-align:bottom; min-width:48px; background:white }
+.toggleSameBtn.active { background:#e0e0e0 }
+.toggleSameBtn mat-icon { color:#212121 }
+.formatEditToolbar { display:inline-flex }
+.formatEditToolbar input[type='color'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+.fontSizeSelect { border:solid 1px transparent; padding-left:2px; min-width:48px; font-weight:bold; font-size:14px !important; height:44px; background:transparent; outline:none }
+
+.mat-button-toggle { line-height:48px }
+::ng-deep designer-toolbar { display:none; position:absolute; z-index:99; animation:slide-in 0.3s ease-in }
+
+@keyframes slide-in {
+    from {
+      opacity:0;
+      transform: translate(0, -5px);
+    }
+  }

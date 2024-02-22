@@ -1,0 +1,225 @@
+<div class="fwStreaming">
+  <div class="countDownScreen" *ngIf="roomData && countdown > 0">
+    <h1>Fireworks&trade; starting in
+      <countdown [config]="{leftTime: countdown, format: roomCountdownFormat }" (event)="onCountdownFinish($event)">
+      </countdown>
+    </h1>
+  </div>
+</div>
+
+<room-close-count-down *ngIf="roomData && roomCloseCountdown > 0" (onRoomClose)="onRoomCloseCountdownFinish($event)"
+  [roomCloseCountdown]="roomCloseCountdown" [roomCloseFormat]="roomCloseFormat"></room-close-count-down>
+
+<div class="fwStreaming" *ngIf="countdown <= 0
+     && !currentSchedule && !sharedService.isHostOrCoHost(sharedService.virtualEventUser)
+     && !(roomData.RoomType == 'privateroom' || roomData.RoomType == 'breakout')">
+  <div class="countDownScreen">
+    <span style="font-size: 35px;" class="material-icons">visibility_off</span>
+    <h2>This room is currently closed. Please check back for the next scheduled event.</h2>
+  </div>
+</div>
+
+
+<div *ngIf="roomData && countdown <= 0
+     && (currentSchedule || sharedService.isHostOrCoHost(sharedService.virtualEventUser)
+     || roomData.RoomType == 'privateroom' || roomData.RoomType == 'breakout')" (mousemove)="onMouseOver($event)">
+  <img class="fwStreaming" *ngIf="roomData && roomData.MediaType.toLowerCase() == 'image' && roomData.RoomImage"
+    src="{{domainURl + roomData.RoomImage.ImagePath}}" />
+
+  <embed class="fwStreaming"
+    *ngIf="roomData.MediaType.toLowerCase() == 'video' && roomData.VideoSource.toLowerCase() != 'eventcombo' && roomData.VideoSource.toLowerCase() != 'vimeo'"
+    [src]="roomData.VideoUrl | urlsafe:'resourceUrl'" wmode="transparent" type="video/mp4"
+    allow="autoplay; encrypted-media; picture-in-picture" title="roomData.RoomName" />
+
+  <iframe *ngIf="roomData.MediaType.toLowerCase() == 'video' && roomData.VideoSource.toLowerCase() == 'vimeo'"
+    [src]="roomData.VideoUrl | urlsafe:'resourceUrl'" class="fwStreaming" frameborder="0" allow="autoplay; fullscreen"
+    allowfullscreen></iframe>
+
+  <div class="fwStreaming" (change)="AdjustPresenterView()"
+    *ngIf="roomData && roomData.MediaType.toLowerCase() == 'video' && roomData.VideoSource.toLowerCase() == 'eventcombo'">
+    <div id="conferenceLayout" *ngIf="showVirtualBackground()"
+      [style.background-image]="hasBackgroundImage() ? ('url(' + virtualBackgroundUrl + ')') : null"
+      class="conferenceLayout streamLayout {{ hasPinnedVideo && presenters.length > 1 ? 'hasPinnedVideo' : '' }}">
+
+      <ng-container *ngIf="presenters && presenters.length">
+
+        <ng-container *ngFor="let member of presenters">
+
+          <div *ngIf="member" [ngClass]="{'videoBox': true, 'pinnedVideo': member?.PinnedToMainView }" id="{{member?.PlayerId}}">
+            <div
+              *ngIf="member.IsScreenClient && member.VirtualEventUserId == mediaInfoService.getLocalPlayerId(sharedService.virtualEventUser.VirtualEventUserId.toString(), 'screen')"
+              id="selfScreenSharePreview"></div>
+            <div
+              *ngIf="!member.IsScreenClient && (sharedService.isSelfUser(member) ? !mediaInfoService.localTrackState.videoTrackEnabled : !member.hasVideo)"
+              id="volumn-indicator-{{member.VirtualEventUserId}}" class="avtar" title="{{member.FullName}}"
+              [attr.alt]="member.Alt">
+              <img *ngIf="member.ProfileImageUrl"
+                src="{{domainURl + '/Images/Profile/Profile_Images/imagepath/' + member.ProfileImageUrl}}">
+            </div>
+            <div class="videoOptions"
+              [ngClass]="{'actions': presenters.length > 1 || member.hasVideo || (sharedService.isHostOrCoHost(sharedService.virtualEventUser) && (sharedService.virtualEventUser.VirtualEventUserId != member.VirtualEventUserId))}">
+              <span class="chip name" title="{{member.FullName}}">
+                <a class="mic">
+                  <span class="material-icons"
+                    *ngIf="(sharedService.isSelfUser(member) ? !mediaInfoService.localTrackState.audioTrackEnabled : !member.hasAudio) && !member.IsScreenClient">mic_off</span>
+                  <span class="material-icons"
+                    *ngIf="(sharedService.isSelfUser(member) ? mediaInfoService.localTrackState.audioTrackEnabled : member.hasAudio) && !member.IsScreenClient">mic</span>
+                  <span class="material-icons" *ngIf="member.IsScreenClient">desktop_windows</span>
+                </a>
+                <span class="nameText">{{member.FullName}}</span>
+                <span class="nameText"
+                  *ngIf="member.IsScreenClient && member.VirtualEventUserId == mediaInfoService.getLocalPlayerId(sharedService.virtualEventUser.VirtualEventUserId.toString(), 'screen')">
+                  (Your
+                  Screen)
+                </span>
+              </span>
+              <span class="chip info"
+                *ngIf="presenters.length > 1 || member.hasVideo || (sharedService.isHostOrCoHost(sharedService.virtualEventUser) && (sharedService.virtualEventUser.VirtualEventUserId != member.VirtualEventUserId))"
+                [matMenuTriggerFor]="menu">
+                <span class="material-icons">more_vert</span>
+              </span>
+              <mat-menu #menu="matMenu" yPosition="above">
+                <button *ngIf="presenters.length > 1" (click)="pinUserToMainView(member)" mat-menu-item>
+                  <span class="useroptions_icons material-icons">
+                    {{member.PinText == 'Pin' ? 'push_pin' : 'replay'}}
+                  </span>
+                  <span class="option_text">{{member.PinText}} Screen</span>
+                </button>
+                <button *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser) && !member.IsScreenClient && !sharedService.isHostOrCoHost(member)
+                && (sharedService.virtualEventUser.VirtualEventUserId != member.VirtualEventUserId)"
+                  (click)="sharedService.broadcastMuteUnmuteCommand(member.hasAudio, member.VirtualEventUserId)"
+                  mat-menu-item>
+                  <span class="useroptions_icons material-icons">
+                    {{member.hasAudio ? 'mic' : 'mic_off'}}
+                  </span>
+                  <span class="option_text">{{(sharedService.isSelfUser(member) ?
+                    mediaInfoService.localTrackState.audioTrackEnabled : member.hasAudio) ? 'Mute' : 'Unmute'}}</span>
+                </button>
+                <button *ngIf="member.hasVideo || member.IsScreenClient" (click)="changeScreenFit(member)"
+                  mat-menu-item>
+                  <span class="useroptions_icons material-icons">
+                    {{member.FitScreenText == 'Fit' ? 'fit_screen' : 'fullscreen'}}
+                  </span>
+                  <span class="option_text">{{member.FitScreenText}} Frame</span>
+                </button>
+                <button (click)="removeUserFromRoom(member)"
+                  *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser) && (sharedService.virtualEventUser.VirtualEventUserId != member.VirtualEventUserId) && !member.IsScreenClient"
+                  mat-menu-item>
+                  <span class="useroptions_icons material-icons">
+                    remove_circle_outline
+                  </span>
+                  <span class="option_text">Remove</span>
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="roomSponsor" *ngIf="sharedService.roomMembers.length && roomData.GrandSponsorUrl">
+      <img *ngIf="roomData.GrandSponsorUrl" src="{{domainURl + roomData.GrandSponsorUrl}}">
+    </div>
+    <div class="roomTimer" *ngIf="sharedService.roomMembers.length">
+      <small>{{display}}</small>
+    </div>
+    <div *ngIf="!attendeesMaximized && sharedService.roomClientConnected" class="attendeesMinimized"
+      (click)="maximizeAttendeeView()">
+      <span class="material-icons">group</span>
+    </div>
+
+    <div class="standBy" *ngIf="sharedService.roomClientConnected && !sharedService.isHostOrCoHost(sharedService.virtualEventUser)
+    && !sharedService.isPresenter(sharedService.virtualEventUser) && !checkIfPresenterJoined()
+    && roomData.RoomType != 'privateroom'">
+      <img src="assets/images/fw-standby.png" class="standbyImg">
+      <h2 class="standbyHeading">Please standby...</h2>
+      <p>We are getting ready.</p>
+    </div>
+
+  </div>
+
+</div>
+
+<ng-container
+  *ngIf="roomData && roomData.MediaType.toLowerCase() == 'video' && roomData.VideoSource.toLowerCase() == 'eventcombo' &&  countdown <= 0 && (currentSchedule || sharedService.isHostOrCoHost(sharedService.virtualEventUser))">
+  <div class="roomEntrance" *ngIf="!sharedService.roomClientConnected">
+    <div class="entranceHeader">
+      <div class="titleOuter">
+        <div class="roomPrefix">You are in</div>
+        <div class="roomTitle">{{roomData.RoomName == 'privateroom' ? 'Private Room' : roomData.RoomName}}</div>
+      </div>
+      <div class="button-hand">
+        <div class="hands"></div>
+        <button mat-raised-button class="joinRoomButton" #joinRoomButton color="primary"
+          (click)="enableToJoinRTMChannel()">Join Room</button>
+      </div>
+    </div>
+    <div class="entranceDescription scroll" [innerHTML]="roomData.Description"></div>
+  </div>
+</ng-container>
+
+<div class="attendeeInfoOverlay" *ngIf="sharedService.displayattendeeInfoOverlay">
+  <div class="fw-attendee-info">
+    <div class="fw-attendee-info-inner">
+      <div class="fw-attendee-info-one">
+        <div class="fw-attendee-back-icon">
+          <a (click)="toggleDisplayattendeeInfoOverlay()"><span class="material-icons">keyboard_backspace</span></a>
+        </div>
+        <!-- <div class="fw-attendee-social-icon">
+          <div class="top-border">
+            <a><img src="assets/images/fw-facebook.svg" class="standbyImg"></a>
+            <a><img src="assets/images/fw-linkedin.svg" class="standbyImg"></a>
+            <a><img src="assets/images/fw-twitter.svg" class="standbyImg"></a>
+          </div>
+        </div> -->
+      </div>
+      <div class="fw-attendee-info-second">
+        <img *ngIf="sharedService.attendeeInfoOverlay && sharedService.attendeeInfoOverlay.UserProfileImage"
+          [src]="sharedService.attendeeInfoOverlay.UserProfileImage">
+        <img *ngIf="!sharedService.attendeeInfoOverlay.UserProfileImage"
+          src="./assets/images/fireworks-avatar-400x400.png" />
+      </div>
+      <div class="fw-attendee-info-last" style="padding-top: 15px;">
+        <ul style="display: none;" class="fw-attendee-follow-icon">
+          <li><a><span class="material-icons">person_add_alt</span> Follow</a></li>
+          <li><a><span class="material-icons">chat_bubble</span></a></li>
+          <li><a><span class="material-icons">share</span></a></li>
+        </ul>
+        <h2 *ngIf="sharedService.attendeeInfoOverlay.Title">{{sharedService.attendeeInfoOverlay.Title}}</h2>
+        <h3>{{sharedService.attendeeInfoOverlay.FullName}}</h3>
+        <div class="fw-attendee-info-followers">
+          <!-- <p>No Followers</p>
+          <p>No Following</p> -->
+          <!-- Don't show Email and Phone
+          <ul class="fw-attendee-featureList">
+            <li *ngIf="sharedService.attendeeInfoOverlay.Email"><span class="material-icons">local_post_office</span><a>{{sharedService.attendeeInfoOverlay.Email}}</a></li>
+            <li *ngIf="sharedService.attendeeInfoOverlay.Phone"><span class="material-icons">call</span><a>{{sharedService.attendeeInfoOverlay.Phone}}</a></li>
+          </ul>
+          -->
+          <div class="fw-attendee-info-about" *ngIf="sharedService.attendeeInfoOverlay.Description">
+            <h4>ABOUT ME</h4>
+            <p>{{sharedService.attendeeInfoOverlay.Description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div id="conferenceLayout" class="conferenceLayout">
+  <div class="videoBox" *ngFor="let attendee of ['AK','DS','SG','SK','UA','OC','SP','RY','PK','AK','C','S','HJ','R','S','D']">
+    <div style="background-color:aqua;">
+      <div class="avtar" title="Aditya" [attr.alt]="attendee"><img src="https://i.ibb.co/F3SfGsT/om2.png"></div>
+      <div class="videoOptions">
+        <span class="chip name"><a class="mic"><span class="material-icons">mic</span></a>Aditya Kumar</span>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+<div class="loaderOverlay inline" *ngIf="resourcesLoading">
+  <div class="printingSpotSpinner">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>

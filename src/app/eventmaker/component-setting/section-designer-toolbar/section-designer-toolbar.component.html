@@ -1,0 +1,129 @@
+<div class="formatEditToolbar" *ngIf="ngStyle">
+    <mat-button-toggle-group #group="matButtonToggleGroup" ngDefaultControl name="background" [(ngModel)]="ngStyle.changeBackground" >
+        <mat-button-toggle aria-label="color" (click)="resetBG()" value="reset" title="Reset Background">
+            <mat-icon>refresh</mat-icon>           
+        </mat-button-toggle>
+        <!-- <mat-button-toggle *ngIf="ngStyle.SectionName === 'countdown'"  mat-stroked-button class="textolor" aria-label="Text color" title="Text Color">
+            <mat-icon>format_color_text</mat-icon>
+            <input type="color" [(ngModel)]="textColor" ngDefaultControl name="textColor" id="" (change)="onTextColor()" />
+        </mat-button-toggle > -->
+        <mat-button-toggle aria-label="color" value="backgroundColor" title="Background Color">
+            <mat-icon>format_color_fill</mat-icon>
+            <input type="color" [(ngModel)]="bgColor" (change)="onBgColor()" name="bgColor" id="" />
+        </mat-button-toggle>
+        <mat-button-toggle aria-label="image" value="image" title="Background Image">
+            <mat-icon>image</mat-icon>
+            <input type="file"   (change)="onFileChange($event,'BGImage')" name="bgImage" id="imageId" />
+        </mat-button-toggle>
+        <mat-button-toggle aria-label="Padding" (click)="onPaddingOptions($event)" title="Padding">
+            <mat-icon>padding</mat-icon>           
+        </mat-button-toggle>
+        <mat-button-toggle aria-label="Border" (click)="onBorderOptions($event)" title="Border">
+            <mat-icon>border_all</mat-icon>        
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+
+<div class="paddingEditor" *ngIf="onPaddingOptionStatus">
+    <div>
+        <div class="paddingTitle">Top</div>
+        <div class="paddingOption">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button mat-stroked-button (click)="paddingIdTop = paddingIdTop-1"><span class="material-icons">remove</span></button>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]="paddingIdTop" value="0" aria-label="padding px" maxlength="3">
+                <div class="input-group-append">
+                    <button class="px" mat-stroked-button disabled>px</button>
+                </div>
+                <div class="input-group-append">
+                    <button mat-stroked-button (click)="paddingIdTop = paddingIdTop+1"><span class="material-icons">add</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="paddingTitle">Bottom</div>
+        <div class="paddingOption">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button mat-stroked-button (click)="paddingIdBottom = paddingIdBottom-1"><span class="material-icons">remove</span></button>
+                </div>
+                <input type="text" class="form-control" value="0" [(ngModel)]="paddingIdBottom" aria-label="padding px" maxlength="3">
+                <div class="input-group-append">
+                    <button class="px" mat-stroked-button disabled>px</button>
+                </div>
+                <div class="input-group-append">
+                    <button mat-stroked-button (click)="paddingIdBottom = paddingIdBottom+1"><span class="material-icons">add</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="paddingTitle">Left</div>
+        <div class="paddingOption">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button mat-stroked-button (click)="paddingIdLeft = paddingIdLeft-1"><span class="material-icons">remove</span></button>
+                </div>
+                <input type="text" class="form-control" value="0" [(ngModel)]="paddingIdLeft" aria-label="padding px" maxlength="3">
+                <div class="input-group-append">
+                    <button class="px" mat-stroked-button disabled>px</button>
+                </div>
+                <div class="input-group-append">
+                    <button mat-stroked-button (click)="paddingIdLeft = paddingIdLeft+1"><span class="material-icons">add</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <div class="paddingTitle">Right</div>
+        <div class="paddingOption">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button mat-stroked-button (click)="paddingIdRight = paddingIdRight-1"><span class="material-icons">remove</span></button>
+                </div>
+                <input type="text" class="form-control" [(ngModel)]="paddingIdRight" value="0" aria-label="padding px" maxlength="3">
+                <div class="input-group-append">
+                    <button class="px" mat-stroked-button disabled>px</button>
+                </div>
+                <div class="input-group-append">
+                    <button mat-stroked-button (click)="paddingIdRight = paddingIdRight+1"><span class="material-icons">add</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button mat-stroked-button class="mt-3" title="Save Padding" (click)="savePadding()">Save</button>
+    <button mat-stroked-button class="mt-3"  title="Reset Padding" (click)="resetPadding()"><mat-icon>refresh</mat-icon></button>
+</div>
+<div class="paddingEditor" *ngIf="onBorderOptionStatus">
+    <div class="paddingOption borderOption" title="Border Pixel">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button mat-stroked-button (click)="borderPixel = borderPixel-1"><span class="material-icons">remove</span></button>
+            </div>
+            <input type="text" class="form-control" [(ngModel)]="borderPixel" value="1" aria-label="border Pixel px"
+                maxlength="3">
+            <div class="input-group-append">
+                <button class="px" mat-stroked-button disabled>px</button>
+            </div>
+            <div class="input-group-append">
+                <button mat-stroked-button (click)="borderPixel = borderPixel+1"><span class="material-icons">add</span></button>
+            </div>
+        </div>
+    </div>
+    <button mat-stroked-button class="changeColorBtn"><input title="Change Color" type="color" [(ngModel)]="borderColor" ngDefaultControl name="borderColor" /></button>
+    <div class="borderStyleWrapper">
+        <p class="solid borderStyleBox" [ngClass]="{activeBorder:(border === 'solid')}" (click)="applyBorder('solid')"
+            [style.border-color]="borderColor">Solid</p>
+        <p class="dashed borderStyleBox" [ngClass]="{activeBorder:(border === 'dashed')}"
+            (click)="applyBorder('dashed')" [style.border-color]="borderColor">Dashed</p>
+        <p class="dotted borderStyleBox" [ngClass]="{activeBorder:(border === 'dotted')}"
+            (click)="applyBorder('dotted')" [style.border-color]="borderColor">Dotted</p>
+        <p class="double borderStyleBox" [ngClass]="{activeBorder:(border === 'double')}"
+            (click)="applyBorder('double')" [style.border-color]="borderColor">Double</p>
+        <p class="none borderStyleBox" [ngClass]="{activeBorder:(border === 'none')}" (click)="applyBorder('none')"
+            [style.border-color]="borderColor">No border</p>
+    </div>
+    <button mat-stroked-button class="mt-3 saveBtnStroked" title="Save Border" (click)="saveBorder()">Save</button>
+</div>

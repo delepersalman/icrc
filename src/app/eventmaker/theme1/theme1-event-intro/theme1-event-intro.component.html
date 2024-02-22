@@ -1,0 +1,104 @@
+<section class="pySec" (click)="ChangeDetect($event, eventIntro)" [ngClass]="{virtualEventSec:eventIntro.EditMode}"
+    [style]="getSectionStyleString(eventIntro)">
+    <section-designer-toolbar *ngIf="eventIntro.EditMode" [ngStyle]="ngStyle"
+        (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="col-12" cdkDropList (cdkDropListDropped)="drop($event)">
+            <div cdkDrag class="listItem" *ngFor="let prop of eventIntro.SectionProperties"
+                [cdkDragDisabled]="!eventIntro.EditMode">
+                <!-- <h3 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" *ngIf="prop.Name == 'EventType'" (click)="showHideToolbar($event,prop)" [style.text-decoration]="prop.TextDecoration"  [ngStyle]="{fontStyle: prop.TextFormat, fontWeight:prop.FontWeight, color: prop.Color, backgroundColor: prop.BGColor, textAlign:prop.TextAlignment}">({{eventIntro.VenueName}})
+              
+             </h3> -->
+             <h1 #appendItem class="titleH1" [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" *ngIf="prop.Name == 'EventTitle'" (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">{{eventIntro.EventTitle}}
+                
+             </h1>
+             <ng-container *ngIf="prop.Name == 'Address' && !IsVenueNameEnabled">   
+             <h4 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">
+                  {{eventIntro.Address }}
+            </h4>
+            </ng-container>
+            <ng-container *ngIf="prop.Name == 'VenueName' && !IsAddressEnabled">   
+            <h4 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" *ngIf="!IsAddressEnabled && IsVenueNameEnabled" (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">
+                {{eventIntro.VenueName }} 
+            </h4>
+            </ng-container>
+            <ng-container *ngIf="(prop.Name == 'VenueName') &&  IsVenueNameEnabled && IsAddressEnabled">   
+                <h4 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">
+                    {{eventIntro.VenueName }} {{eventIntro.Address }}
+                </h4>
+                </ng-container>
+
+                <div *ngIf="prop.Name == 'Price'" class="py-3">
+                    <div class="f5" #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}"
+                        (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">{{eventIntro.PriceRange}}
+
+                    </div>
+                </div>
+                <ng-container *ngIf="prop.Name == 'DateInfo'">
+                    <h4 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" *ngIf="IsDateEnabled"
+                        (click)="showHideToolbar($event, prop)" [style]="getStyleString(prop)">
+                        {{eventIntro.EventDateTimeInfoString}}</h4>
+
+                </ng-container>
+                <ng-container *ngIf="prop.Name == 'EndDateInfo' && !IsDateEnabled">
+
+                    <h4 #appendItem [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}"
+                        *ngIf="!IsDateEnabled && IsEndDateEnabled" (click)="showHideToolbar($event, prop)"
+                        [style]="getStyleString(prop)">
+                        {{eventIntro.EventDateTimeInfoString}}</h4>
+                </ng-container>
+                <div class="shareBtn" *ngIf="prop.Name == 'ShareAddShareBox'" [style.text-align]="prop.TextAlignment">
+                    <ng-container *ngFor="let sib of prop.SiblingList">
+                        <div class="position-relative" *ngIf="sib.Name == 'Share'">
+                            <a #appendItem (click)="showHideButtonToolbar($event, sib)" href="javascript:void(0)"
+                                class="mr-3 mat-stroked-button mdf-hide"
+                                [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}"
+                                [style]="getStyleString(sib)"><mat-icon>share</mat-icon>
+                                {{sib.CustomPropertyName}}
+                            </a>
+                        </div>
+                        <div class="position-relative" *ngIf="sib.Name == 'AddtoCalendar'">
+                            <a #appendItem href="javascript:void(0)" (click)="showHideButtonToolbar($event, sib)"
+                                [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}"
+                                class="mr-3 mat-stroked-button mdf-hide"
+                                [style]="getStyleString(sib)"><mat-icon>event</mat-icon> {{sib.CustomPropertyName}}
+
+                            </a>
+                        </div>
+                        <!-- href="{{ EditMode?'javascript:void(0)':addtoCalender}}" -->
+                    </ng-container>
+                </div>
+                <div *ngIf="prop.Name == 'Hashtags#'"
+                [style]="getStyleString(prop)">
+                  <div class="editorWrapper" *ngIf="eventIntro.EditMode"  [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" #appendItem
+                  (click)="showHideToolbar($event, prop)"></div>
+                  <ul class="hashtagList mb-0 d-sm-inline-flex" [style]="getStyleString(prop)">
+                    <li><a  [ngStyle]="{color: prop.Color, textDecoration:prop.TextDecoration, fontFamily:prop.FontStyle}"
+                        href="{{eventIntro.EditMode?'javascript:void(0)':(domainUrl+'/et/'+eventIntro.EventID+'/evc/ALL/page/lat/long/rel/none')}}"
+                        target="{{eventIntro.EditMode?'_self':'_blank'}}">{{eventIntro.EventType ? '#' + eventIntro.EventType
+                        :'' }}</a></li>
+                    <li><a [ngStyle]="{color: prop.Color, textDecoration:prop.TextDecoration,fontFamily:prop.FontStyle}"
+                        href="{{eventIntro.EditMode?'javascript:void(0)':(domainUrl+'/et/evt/'+eventIntro.EventCategoryId+'/ALL/page/lat/long/rel/none')}}"
+                        target="{{eventIntro.EditMode?'_self':'_blank'}}">{{eventIntro.EventCategory? '#'
+                        +eventIntro.EventCategory :'' }}</a></li>
+                    <li [ngStyle]="{color: prop.Color, textDecoration:prop.TextDecoration, fontFamily:prop.FontStyle}">
+                      {{eventIntro.EventSubCategory?eventIntro.EventSubCategory:'' }}</li>
+                  </ul>
+                </div>
+                <div class="position-relative editorLeft"
+                    *ngIf="TicketStateValue === 'Price' && !IsEventExpired && prop.Name == 'BookTicket'"
+                    [style.text-align]="prop.TextAlignment">
+                    <ng-container>
+                        <a #appendItem class="btnStyle1 mat-flat-button" (click)="showHideButtonToolbar($event, prop)"
+                            [ngClass]="{formatEditToolbarWrapper:eventIntro.EditMode}" href="javascript:void(0)"
+                            [style]="getStyleString(prop)">
+                            {{prop.CustomPropertyName}}</a>
+                    </ng-container>
+                    <ng-container *ngIf="(TicketStateValue !== 'Price')  && prop.Name == 'BookTicket'">
+                        <span class="btnStyle1 mat-flat-button">{{TicketStateValue}}</span>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

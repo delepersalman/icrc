@@ -1,0 +1,17 @@
+ <!-- Refund Policy -->
+    <section class="refundPolicy" (click)="ChangeDetect($event, eventPolicyDesc)" [ngClass]="{virtualEventSec:eventPolicyDesc.EditMode}" id="FAQ"  >
+        <section-designer-toolbar *ngIf="eventPolicyDesc.EditMode" [ngStyle]="ngStyle" (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container" >
+        <div class="row">
+            <div class="col-12 refundPolicyBox" [style]="getSectionStyleString(eventPolicyDesc)" >
+                <h2  class="titleH2 mb-4" #appendItem [ngClass]="{formatEditToolbarWrapper:eventPolicyDesc.EditMode}" (input)="onChange($event.target.innerHTML, heading)"   (click)="showHideToolbar($event,heading)" [style]="getStyleString(heading)" *ngIf="heading">{{heading.CustomPropertyName}}
+               
+                </h2>
+                <div *ngIf="eventPolicyDesc.EditMode && !eventPolicyDesc.EventPolicyDescription" class="blankDataMsgBox">
+                    Please add data in <span class="fw-bold">Edit Event page</span> or turn this <span class="fw-bold">section off.</span>
+                  </div>
+                <div #appendItem [ngClass]="{formatEditToolbarWrapper:eventPolicyDesc.EditMode}" *ngIf="description && eventPolicyDesc.EventPolicyDescription" (input)="onChange($event.target.innerHTML, description)"   (click)="showHideToolbar($event,description)" [style]="getStyleString(description)" [innerHTML]="eventPolicyDesc.EventPolicyDescription"></div>
+            </div>
+        </div>			 
+    </div>
+</section>

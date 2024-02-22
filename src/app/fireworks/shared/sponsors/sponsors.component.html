@@ -1,0 +1,9 @@
+<div class="sponsorsList" [hidden]="eventSponsors && eventSponsors.length < 1" #scrollMe>
+  <a class="sponsor" *ngFor="let item of eventSponsors" [attr.title]="item.MemberName" [attr.href]="item.WebsiteURL"
+    target="_blank">
+    <span class="fitAspectRatio">
+      <img src="assets/images/aspect-ratio-2by1.jpg">
+      <img [src]="sharedService.domainUrl + item.MemberImageInfo.ImagePath" style="background-color: white;">
+    </span>
+  </a>
+</div>

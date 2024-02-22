@@ -1,0 +1,158 @@
+<div class="checkoutPage" (click)="ChangeDetect($event, eventCheckOut)" [ngClass]="{virtualEventSec:eventCheckOut.EditMode}"
+[style]="getSectionStyleString(eventCheckOut)"
+[ngClass]="{virtualEventSec:eventCheckOut.EditMode}" id="checkout">
+<section-designer-toolbar *ngIf="eventCheckOut.EditMode" [ngStyle]="ngStyle"
+    (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+<section class="eventTicketPay">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 *ngIf="heading" #appendItem class="fs4 f-bold"
+                    [style]="getStyleString(heading)"
+                    [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                    (click)="showHideToolbar($event,heading)">
+                    {{heading.CustomPropertyName}}
+
+                </h2>
+            </div>
+            <div class="col-12" *ngIf="PaymentBox">
+                <div class="eventPaymentBox" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"  [ngStyle]="{backgroundColor: PaymentBox.BGColor, color:PaymentBox.Color}">
+                    <div class="editorWrapper" *ngIf="eventCheckOut.EditMode" #appendItem (click)="showHideButtonToolbar($event, PaymentBox)"></div>
+                    <form name="eventTicketPayment" class="row">
+                        <div class="col-md-6 ps-md-5 mt-4 mt-md-0 borderRight">
+                            <mat-radio-group [(ngModel)]="paymentMethod" aria-labelledby="paymentMethod"
+                                class="paymentMethod d-flex mb-3">
+                                <mat-radio-button value="1" aria-label="1">
+                                    <img src="https://www.eventcombo.com/Images/AMaterial/credit-card.jpg"
+                                        alt="credit-card">
+                                </mat-radio-button>
+                                <mat-radio-button value="2" aria-label="2">
+                                    <img src="https://www.eventcombo.com/Images/AMaterial/paypal.jpg" alt="paypal">
+                                </mat-radio-button>
+                            </mat-radio-group>
+                            <mat-form-field class="md-block">
+                                <mat-label>First Name</mat-label>
+                                <input matInput required name="firstName" [(ngModel)]="firstName">
+                            </mat-form-field>
+                            <mat-form-field class="md-block">
+                                <mat-label>Last Name</mat-label>
+                                <input matInput required name="lastName" [(ngModel)]="lastName">
+                            </mat-form-field>
+                            <mat-form-field class="md-block">
+                                <mat-label>Email</mat-label>
+                                <input matInput type="email" required name="email" [(ngModel)]="email">
+                            </mat-form-field>
+                            <mat-form-field class="md-block cardNumber">
+                                <mat-label>Card Number</mat-label>
+                                <input matInput name="checkoutCardNumber" type="text" [(ngModel)]="cardNumber"
+                                    minlength="15">
+                                <img class="cardType"
+                                    src="https://www.eventcombo.com/Images/AMaterial/master-card-icon.jpg">
+                            </mat-form-field>
+                            <div class="d-sm-flex">
+                                <mat-form-field class="md-block">
+                                    <mat-label>Expiration date</mat-label>
+                                    <input required type="tel" matInput name="expirationDate"
+                                        [(ngModel)]="expirationDate">
+                                </mat-form-field>
+                                <mat-form-field class="md-block ml-sm-4">
+                                    <mat-label>Security code</mat-label>
+                                    <input required matInput name="securityCode" [(ngModel)]="securityCode">
+                                </mat-form-field>
+                            </div>
+                            <mat-form-field class="md-block">
+                                <mat-label>Name on card</mat-label>
+                                <input required type="tel" matInput name="nameOnCard" [(ngModel)]="nameOnCard">
+                            </mat-form-field>
+                            <div class="position-relative saveCardCheckbox" *ngIf="CardInfo"  [style]="getStyleString(CardInfo)">
+                                <div class="editorWrapper" *ngIf="eventCheckOut.EditMode && CardInfo" #appendItem (click)="showHideButtonToolbar($event, CardInfo)" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"></div>
+                                <mat-checkbox class="mt-4" *ngIf="CardInfo"  [(ngModel)]="saveCardInfo" 
+                                        [ngStyle]="{backgroundColor: CardInfo.BGColor, color:CardInfo.Color, fontFamily:CardInfo.FontStyle}">
+                                        {{CardInfo.CustomPropertyName}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pe-md-5 mt-4">
+                            <div class="mb-4 f-bold z11" *ngIf="eventCheckOut.EditMode && BillingDetails" #appendItem  [style]="getStyleString(BillingDetails)"
+                            [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"
+                            (click)="showHideToolbar($event,BillingDetails)">
+                            {{BillingDetails.CustomPropertyName}}</div>
+                            <mat-form-field class="md-block">
+                                <mat-label>Country</mat-label>
+                                <input required matInput name="country" [(ngModel)]="country">
+                            </mat-form-field>
+                            <div class="d-sm-flex">
+                                <mat-form-field class="md-block">
+                                    <mat-label>Zip Code</mat-label>
+                                    <input required matInput name="zipcode" [(ngModel)]="zipcode">
+                                </mat-form-field>
+                                <mat-form-field class="md-block ml-sm-4">
+                                    <mat-label>City</mat-label>
+                                    <input required matInput name="city" [(ngModel)]="city">
+                                </mat-form-field>
+                            </div>
+                            <div class="d-flex">
+                                <mat-form-field md-no-float class="phoneNumExt">
+                                    <mat-select [(ngModel)]="ticketPaymentphoneNumExtentions">
+                                        <mat-option value="1">+1</mat-option>
+                                        <mat-option value="2">+91</mat-option>
+                                        <mat-option value="3">+21</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field md-no-float class="md-block ms-sm-4">
+                                    <input type="number" required matInput name="ticketPaymentphoneNumber"
+                                        [(ngModel)]="ticketPaymentphoneNumber" placeholder="Phone Number">
+                                </mat-form-field>
+                            </div>
+                            <mat-form-field class="md-block">
+                                <mat-label>Billing Street Address</mat-label>
+                                <textarea matInput name="billingStreetAddress" [(ngModel)]="billingStreetAddress"
+                                    cols="30" rows="1"></textarea>
+                            </mat-form-field>
+                            <mat-form-field class="md-block">
+                                <mat-label>Apt., Floor, Unit (optional)</mat-label>
+                                <input matInput name="billingOptionalAddress" [(ngModel)]="billingOptionalAddress">
+                            </mat-form-field>
+                        </div>
+                    </form>
+                    <div class="row z11">
+                        
+                        <div class="col-12 mt-4" *ngIf="CustomQuestionBox && eventCheckOut.PurchaseInfo && eventCheckOut.PurchaseInfo.UserQuestions.length>0">
+                            <mat-card class="my-3" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}" [ngStyle]="{backgroundColor: CustomQuestionBox.BGColor, color:CustomQuestionBox.Color}">
+                                <div class="editorWrapper" *ngIf="eventCheckOut.EditMode" #appendItem  (click)="showHideButtonToolbar($event, CustomQuestionBox)"></div>
+                                <mat-card-content class="fs6">
+                                    <div class="row px-3" *ngIf="eventCheckOut.PurchaseInfo">
+                                        <ng-container *ngFor="let quest of eventCheckOut.PurchaseInfo.UserQuestions">
+                                            <custom-question [quest]="quest"></custom-question>
+                                        </ng-container>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div class="col-12 mt-4 d-flex  tnCBlock" [ngClass]="{'align-items-center':!tnC.TextAlignment}"  *ngIf="tnC" [style.text-align]="tnC.TextAlignment">
+                            <div class="position-relative" [style.text-align]="tnC.TextAlignment">
+                                <div class="editorWrapper" *ngIf="eventCheckOut.EditMode" #appendItem (click)="showHideButtonToolbar($event, tnC)" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"></div>
+                                <mat-checkbox [(ngModel)]="iAgreeTerms" 
+                                        [style]="getStyleString(tnC)" class="vATop">
+                                        {{tnC.CustomPropertyName}}
+                                </mat-checkbox>
+                            </div>
+                            <div class="position-relative" [style]="getStyleString(tnCLink)" [style.text-align]="tnC.TextAlignment">
+                                <div class="editorWrapper" *ngIf="eventCheckOut.EditMode" #appendItem (click)="showHideButtonToolbar($event, tnCLink)" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"></div>
+                            <a *ngIf="tnCLink"   [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"  [style]="getStyleString(tnCLink)" class="ml-1">
+                                {{tnCLink.CustomPropertyName}} 
+                            </a></div>
+                        </div>
+                        <div class="col-12  my-4 position-relative" [ngClass]="{'text-right':!order.TextAlignment}" [style.text-align]="order.TextAlignment" *ngIf="order">
+                            <div class="editorWrapper" *ngIf="eventCheckOut.EditMode" #appendItem (click)="showHideButtonToolbar($event, order)" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"></div>
+                            <button  #appendItem class="btnStyle1 mat-flat-button me-0" (click)="showHideButtonToolbar($event, order)" [ngClass]="{formatEditToolbarWrapper:eventCheckOut.EditMode}"  [style]="getStyleString(order)">
+                                {{order.CustomPropertyName}}                   
+                            </button>                   
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>

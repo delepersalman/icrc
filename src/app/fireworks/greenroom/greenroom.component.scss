@@ -1,0 +1,11 @@
+.notificationSearch { width:240px; font-size:14px; float:right; margin-top:-10px;}
+.notificationTable { width:100%; padding:15px;
+  .mat-header-row { background:var(--theme-color);
+    .mat-header-cell { color:#fff; font-size:100%;}
+  }
+}
+.example-rate-limit-reached {
+  color: #980000;
+  max-width: 360px;
+  text-align: center;
+}

@@ -1,0 +1,42 @@
+<fireworks-splash-screen *ngIf="resourcesLoading"></fireworks-splash-screen>
+<div *ngIf="roomData">
+  <mat-card class="expoBox" [ngClass]="room.BoothSize" *ngFor="let room of roomData.VirtualEventBooths">
+    <mat-card-header class="expoHeader">
+      <div mat-card-avatar [style.background-image]="'url('+ domainUrl + room.VendorLogo.ImagePath +')'"
+        class="expoHeaderImage"></div>
+      <mat-card-title [attr.title]="room.VendorName" class="ellipsis">{{room.VendorName}}</mat-card-title>
+      <mat-card-subtitle [attr.title]="room.VendorHeadline" class="ellipsis">{{room.VendorHeadline}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="expoContent">
+      <div class="fitAspectRatio margin-1em-bottom">
+        <img src="assets/images/aspect-ratio-4by3.jpg">
+        <img *ngIf="room.ThumbnailImage" src="{{domainUrl + room.ThumbnailImage.ImagePath}}">
+        <img *ngIf="!room.ThumbnailImage" src="./assets/images/default_expo_image.png">
+      </div>
+      <div class="desc">{{room.VendorDescription}}</div>
+      <input type="checkbox" />
+      <div class="fullDesc">{{room.VendorDescription}}</div>
+      <a class="more" *ngIf="room.VendorDescription.length > 200">Read more..</a>
+      <a class="close" *ngIf="room.VendorDescription.length > 200"><span class="material-icons">close</span></a>
+    </mat-card-content>
+    <mat-card-actions class="socialAndBtn">
+      <div class="socialLinks">
+        <a *ngIf="room.WebsiteLink" href="{{room.WebsiteLink}}" target="_blank"><img
+            src="./assets/fireworks/icons/website.svg" alt="Website" title="Website"></a>
+        <a *ngIf="room.FacebookLink" href="{{room.FacebookLink}}" target="_blank"><img
+            src="./assets/fireworks/icons/facebook.svg" alt="Facebook" title="Facebook"></a>
+        <a *ngIf="room.TwitterLink" href="{{room.TwitterLink}}" target="_blank"><img
+            src="./assets/fireworks/icons/twitter.svg" alt="Twitter" title="Twitter"></a>
+        <a *ngIf="room.LinkedinLink" href="{{room.LinkedinLink}}" target="_blank"><img
+            src="./assets/fireworks/icons/linkedin.svg" alt="linkedin" title="linkedin"></a>
+        <a *ngIf="room.InstagramLink" href="{{room.InstagramLink}}" target="_blank"><img
+            src="./assets/fireworks/icons/instagram.svg" alt="Instagram" title="Instagram"></a>
+      </div>
+      <button (click)="joinExpoRoom(room)" mat-button>JOIN</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<fireworks-no-room-available *ngIf="noRoomAccess"></fireworks-no-room-available>
+<fireworks-no-room-available [roomData]="roomData" [isBoothNotAvailable]="true"
+  *ngIf="roomData && (!roomData.VirtualEventBooths || !roomData.VirtualEventBooths.length)">
+</fireworks-no-room-available>

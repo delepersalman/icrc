@@ -1,0 +1,81 @@
+<div class="formatButtonEditToolbar">
+    <ng-container *ngIf="ngStyle.PropertyName !== 'AgendaBox' && ngStyle.PropertyName !== 'TicketCheckoutBox' && ngStyle.PropertyName !== 'TicketBox'">
+    <mat-button-toggle aria-label="color" (click)="resetBG()" value="reset" title="Reset Current Field Design">
+        <mat-icon>refresh</mat-icon>           
+    </mat-button-toggle>
+    <button  mat-stroked-button class="toggleSameBtn" *ngIf="(ngStyle.PropertyName === 'Event_TicketPrice' && (ngStyle.TicketTypeId === 1 || ngStyle.TicketTypeId === 3)) && ngStyle.Editable"  (click)="openDialogAddNewPage($event)" aria-label="Text Edit">
+        <mat-icon>edit_note</mat-icon>
+    </button>
+    <button  mat-stroked-button class="toggleSameBtn" *ngIf="(ngStyle.PropertyName !== 'Event_TicketPrice') && ngStyle.Editable"  (click)="openDialogAddNewPage($event)" aria-label="Text Edit">
+        <mat-icon>edit_note</mat-icon>
+    </button>
+    <mat-button-toggle *ngIf="ngStyle.PropertyName === 'TncLink'" aria-label="add hyperlink" (click)="openDialogToAddLink($event)"  title="Add hyperlink">
+        <mat-icon>link</mat-icon>           
+    </mat-button-toggle>   
+    <mat-button-toggle class="toggleSameBtn" *ngIf="!ngStyle.PropertyName.includes('Box')" [ngClass]="{active: ngStyle.FontStyle}">
+        <select class="fontSizeSelect"  [(ngModel)]="fontStyle" (click)="onFontStyleChange()">
+            <option value=""  selected="selected">Font Style</option>
+            <option *ngFor="let font of ngStyle.FontStyleList" value="{{font.Name}}">{{font.Name}}</option>            
+        </select>
+    </mat-button-toggle> 
+    <mat-button-toggle class="toggleSameBtn" *ngIf="!ngStyle.PropertyName.includes('Box')" [ngClass]="{active: ngStyle.FontSize}">
+        <select class="fontSizeSelect"  [(ngModel)]="fontSize" (click)="onFontChange()">
+            <option value="0"  selected="selected">Font Size</option>
+            <option *ngFor="let size of numbers" value="{{size}}">{{size}}</option>            
+        </select>
+    </mat-button-toggle>  
+    <mat-button-toggle-group *ngIf="!ngStyle.PropertyName.includes('Box') && ngStyle.SectionName !== 'event-header'&& ngStyle.PropertyName !== 'CreateEventLink' && ngStyle.PropertyName !== 'ContactUsLink' && ngStyle.PropertyName !== 'Event_TicketQuantity' && ngStyle.PropertyName !== 'SeeOrganigerLink' && ngStyle.PropertyName !== 'MoreEventLink' && (ngStyle.SectionName !== 'event-footer' || ngStyle.PropertyName === 'GetTicketButton')" #group="matButtonToggleGroup" name="TextAlignment" (change)="onTextColor()" [(ngModel)]="ngStyle.TextAlignment" ngDefaultControl (change)="onTextFormatAlignment()">
+        <mat-button-toggle value="left" aria-label="Text align left">
+            <mat-icon>format_align_left</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="center" aria-label="Text align center">
+            <mat-icon>format_align_center</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="right" aria-label="Text align right">
+            <mat-icon>format_align_right</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="justify" aria-label="Text align justify">
+            <mat-icon>format_align_justify</mat-icon>
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+    <button mat-stroked-button class="toggleSameBtn" *ngIf="!ngStyle.PropertyName.includes('Box')"  [ngClass]="{active: ngStyle.FontWeight ==='bold'}"  aria-label="Text Weight" [(ngModel)]="ngStyle.FontWeight" name="fontWeight" ngDefaultControl (click)="onTextFormatWeight()">
+        <mat-icon>format_bold</mat-icon>
+    </button>
+    <button mat-stroked-button class="toggleSameBtn" *ngIf="!ngStyle.PropertyName.includes('Box')" [ngClass]="{active: ngStyle.TextFormat ==='italic'}" [(ngModel)]="ngStyle.TextFormat" name="textformat" ngDefaultControl (click)="onItalicColor()">
+        <mat-icon>format_italic</mat-icon>
+    </button>
+    <button mat-stroked-button class="toggleSameBtn" *ngIf="!ngStyle.PropertyName.includes('Box')" [ngClass]="{active: ngStyle.TextDecoration ==='underline'}" [(ngModel)]="ngStyle.TextDecoration" name="TextDecoration" ngDefaultControl  (click)="onUnderlineColor()">
+        <mat-icon>format_underlined</mat-icon>
+    </button>
+    <button *ngIf="ngStyle.PropertyName !== 'SpeakerBox' && ngStyle.PropertyName !== 'SponsorBox' &&  ngStyle.PropertyName !== 'OrganiserBox'" mat-stroked-button class="toggleSameBtn"  [ngClass]="{active: (ngStyle.textColor||ngStyle.textBtnColor)}" aria-label="Text color">
+        <mat-icon>format_color_text</mat-icon>
+        <input type="color" (change)="onTextColor()" ngDefaultControl [(ngModel)]="textBtnColor" name="textBtnColor" id="" />
+    </button>
+    <button mat-stroked-button class="toggleSameBtn" [ngClass]="{active: btnBgColor}" aria-label="Bg color" title="BG Color">
+        <mat-icon>format_color_fill</mat-icon>
+        <input type="color" (change)="onBgColor()" ngDefaultControl [(ngModel)]="btnBgColor" name="btnBgColor" id="" />
+    </button>
+    <button mat-stroked-button class="toggleSameBtn" [ngClass]="{active: btnHoverColor}"  *ngIf="ngStyle.SectionName == 'event-header'" aria-label="Hover color" title="Hover Color">
+        <mat-icon class="svgIcon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+       <path d="M2,24v-4h20v4H2z M5.5,17l5.2-14h2.5l5.2,14h-2.4l-1.2-3.6H9.2L7.9,17H5.5z M9.9,11.4h4.2l-2.1-5.8h-0.1L9.9,11.4z"/><polygon points="6.7,8.7 4,7.5 4.8,5.6 7.5,6.9 "/><polygon points="5.4,11.5 2.7,10.3 3.5,8.5 6.2,9.8 "/>
+       <polygon points="8,5.9 5.2,4.6 6.1,2.8 8.8,4.1 "/></svg></mat-icon>
+        <input type="color" (change)="onHoverColor()" ngDefaultControl [(ngModel)]="btnHoverColor" name="btnBgColor" id="" />
+    </button>
+    <mat-button-toggle aria-label="image"  *ngIf="ngStyle.PropertyName == 'OrganiserBox'" value="image" title="Background Image">
+        <mat-icon>image</mat-icon>
+        <input type="file"  (change)="onFileChange($event)" name="bgImage" id="" />
+    </mat-button-toggle>
+</ng-container>
+<ng-container *ngIf="ngStyle.PropertyName === 'TicketCheckoutBox' || ngStyle.PropertyName === 'TicketBox' || ngStyle.PropertyName === 'AgendaBox'">
+    <mat-button-toggle  aria-label="Settings" (click)="openDialogPageSettings(ngStyle.FieldId)"  title="Enable/Disable labels for this ticket.">
+        <mat-icon>settings</mat-icon>           
+    </mat-button-toggle>
+    <mat-button-toggle aria-label="color" (click)="resetBG()" value="reset" title="Reset Current Field Design">
+        <mat-icon>refresh</mat-icon>           
+    </mat-button-toggle>
+    <button mat-stroked-button class="toggleSameBtn" aria-label="Bg color">
+        <mat-icon>format_color_fill</mat-icon>
+        <input type="color" (change)="onBgColor(ngStyle.PropertyName+'_BGColor')" ngDefaultControl [(ngModel)]="checkBgColor" name="checkBgColor" id="" />
+    </button>
+</ng-container>
+</div>

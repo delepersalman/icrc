@@ -1,0 +1,26 @@
+{
+  "/api/eventmaker/*": {
+    "target": "http://localhost:57226/api/eventmaker/",
+    "secure": true,
+    "cookieDomainRewrite": "localhost",
+    "pathRewrite": {
+      "^/api/eventmaker": ""
+    }
+  },
+  "/TicketPurchase/*": {
+    "target": "http://localhost:10359/TicketPurchase/",
+    "secure": false,
+    "cookieDomainRewrite": "localhost",
+    "pathRewrite": {
+      "^/TicketPurchase": ""
+    }
+  },
+  "/eventmanagement/*": {
+    "target": "http://localhost:10359/eventmanagement/",
+    "secure": false,
+    "cookieDomainRewrite": "localhost",
+    "pathRewrite": {
+      "^/eventmanagement": ""
+    }
+  }
+}

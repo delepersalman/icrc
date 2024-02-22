@@ -1,0 +1,273 @@
+<section class="banner2st pageBanner"  (click)="ChangeDetect($event, eventTickets, 'SectionBanner')"
+  *ngIf="sectionBanner && isFullPage && eventTickets.eventTickets.length>0 && (State <2)"
+  [ngClass]="{tickets:eventTickets.EditMode}" [style]="getBannerSectionStyleString(eventTickets)">
+  <section-banner-designer-toolbar *ngIf="eventTickets.EditMode"
+    [ngStyle]="ngStyle" (eventTextFormatAlignment)="changeAlignment($event)"></section-banner-designer-toolbar>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 #appendItem *ngIf="sectionHeading" [style]="getStyleString(sectionHeading)"
+          [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}" (click)="showHideToolbar($event,sectionHeading)">
+          {{sectionHeading.CustomPropertyName}}
+        </h1>
+        <!-- <p>Explore the new era of events and the way forward with industry experts and thought leaders.</p> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENT TICKETS -->
+<section class="eventTickets position-relative" (click)="ChangeDetect($event, eventTickets)"
+  [style]="getSectionStyleString(eventTickets)" id="tickets" [ngClass]="{virtualEventSec:eventTickets.EditMode}">
+  <section-designer-toolbar *ngIf="eventTickets.EditMode" [ngStyle]="ngStyle"
+    (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+  <div class="container">
+    <div class="col-md-12" *ngIf="!isFullPage">
+      <h1 #appendItem *ngIf="heading" [style]="getStyleString(heading)"
+        [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}" (click)="showHideToolbar($event,heading)"
+        (input)="onChange($event.target.innerHTML, heading)">
+        {{heading.CustomPropertyName}}
+      </h1>
+      <!-- <p>Explore the new era of events and the way forward with industry experts and thought leaders.</p> -->
+    </div>
+    <div *ngIf="eventTickets.EditMode && eventTickets.eventTickets.length == 0" class="blankDataMsgBox">
+      Please add data in <span class="fw-bold">Edit Event page</span> or turn this <span class="fw-bold">section
+        off.</span>
+    </div>
+    <div class="row px-3 px-sm-0" *ngIf="eventTickets.eventTickets.length>0">
+      <div class="col-12">
+        <div class="ticketHeader">
+          <div class="w1">
+            <label class="mr-2" #appendItem *ngIf="TicketName" [style]="getStyleString(TicketName)"
+              [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}" (click)="showHideToolbar($event,TicketName)"
+              (input)="onChange($event.target.innerHTML, TicketName)">
+              {{TicketName.CustomPropertyName}}
+            </label>
+          </div>
+          <div class="w2">
+            <label class="mr-2" #appendItem *ngIf="Price" [style]="getStyleString(Price)"
+              [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}" (click)="showHideToolbar($event,Price)"
+              (input)="onChange($event.target.innerHTML, Price)">
+              {{Price.CustomPropertyName}}
+            </label>
+          </div>
+          <div class="w2">
+            <label class="mr-2" #appendItem *ngIf="Quantity" [style]="getStyleString(Quantity)"
+              [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}" (click)="showHideToolbar($event,Quantity)"
+              (input)="onChange($event.target.innerHTML, Quantity)">
+              {{Quantity.CustomPropertyName}}
+            </label>
+          </div>
+          <div class="w2">
+            <label class="mr-2" #appendItem *ngIf="TotalHeader" [style]="getStyleString(TotalHeader)"
+              [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}" (click)="showHideToolbar($event,TotalHeader)"
+              (input)="onChange($event.target.innerHTML, TotalHeader)">
+              {{TotalHeader.CustomPropertyName}}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 " *ngFor="let ticket of eventTickets.eventTickets">
+        <div class="eventTicketBox" *ngIf="TicketBox"
+          [ngStyle]="{backgroundColor: ticket.BGColor, color:ticket.TextColor}">
+          <div *ngIf="eventTickets.EditMode" class="editorWrapper" #appendItem
+            (click)="showHideButtonToolbar($event, TicketBox, ticket)"
+            [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"></div>
+          <div class="eventTicketRow">
+            <div class="w1">
+              <div class="pink" *ngIf="ticket.codeStatus">Code Applied!</div>
+              <div class="fs4 ticketEventTitle" *ngIf="getTicketProperty(ticket.TicketId, 'Event_TicketName')">
+
+                <p class="mt-1 z11" #appendItem [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+                  (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_TicketName'),ticket)"
+                  [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_TicketName'))">
+                  {{ticket.TicketName}}
+                </p>
+              </div>
+              <div class="d-flex justify-content-between mb-4 flex-wrap">
+                <div class="mb-2 mb-sm-0" *ngIf="getTicketProperty(ticket.TicketId, 'Event_VenueName')">
+
+                  <p class="mt-1 z11" #appendItem [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+                    (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_VenueName'),ticket)"
+                    [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_VenueName'))">
+                    {{ticket.VenueName}}
+                  </p>
+
+                </div>
+                <div *ngIf="getTicketProperty(ticket.TicketId, 'Event_IickateDate')" class="z11" #appendItem
+                  [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+                  (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_IickateDate'),ticket)"
+                  [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_IickateDate'))">
+                  {{ticket.StartDateFormatted}}</div>
+                <div class="end-date" *ngIf="ticket.DisplaySalesEnd">
+                  <div class="f1 z11" *ngIf="ticket.DateInfoString1" #appendItem
+                    [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+                    (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_IickateDate'),ticket)"
+                    [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_IickateDate'))">
+                    {{ticket.DateInfoString1}}</div>
+                </div>
+              </div>
+              <p *ngIf="!ticket.ShowMemberTicket" class="ticketMemberBadge">This is a members-only ticket! <a
+                  target="_blank"
+                  href="{{domainUrl}}/membership/joinmembership?orgId={{ticket.OrganizerMasterId}}">Become a Member</a>
+              </p>
+            </div>
+            <ng-container *ngIf="!ticket.SoldOut">
+              <div class="w2" [ngStyle]="{backgroundColor: ticket.BGColor}">
+                <ng-container
+                  *ngIf="getTicketProperty(ticket.TicketId, 'Event_TicketPrice') && ticket.TicketType === 'PAID'">
+                  <span *ngIf="ticket.SourcePrice != ticket.Price" class="f3 op6 price-sticked mr-1 z11" #appendItem
+                    [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+                    (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_TicketPrice'),ticket)"
+                    [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_TicketPrice'))">
+                    ${{ticket.SourcePrice}}</span>
+                  <span class="f4 z11" #appendItem [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+                    (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_TicketPrice'))"
+                    [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_TicketPrice'))">${{ticket.Price}}</span>
+                </ng-container>
+                <ng-container
+                  *ngIf="getTicketProperty(ticket.TicketId, 'Event_TicketPrice') && ticket.TicketType !== 'PAID'">
+                  <span class="z11" #appendItem [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+                    (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_TicketPrice'),ticket)"
+                    [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_TicketPrice'))">{{getTicketProperty(ticket.TicketId, 'Event_TicketPrice').CustomPropertyName}}</span>
+                </ng-container>
+              </div>
+              <ng-container *ngIf="ticket.TicketTypeId !==3">
+                <div class="ticketQuantity w2 z11" [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+                  (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_TicketQuantity'),ticket)"
+                  #appendItem *ngIf="getTicketProperty(ticket.TicketId, 'Event_TicketQuantity')">
+                  <span class="fs4 pointer" (click)="calculateTotalPrice($event,ticket, false)">-</span>
+                  <!-- <input matInput type="number" [disabled]="!ticket.ShowMemberTicket || !ticket.Available"
+                      [(ngModel)]="ticket.Quantity" placeholder="0" (change)="calculateTotalPrice($event,ticket)"
+                      class="md-block form-control"> -->
+                  <span class="z11"
+                    [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_TicketQuantity'))">{{ticket.Quantity}}</span>
+                  <!-- <div *ngIf="ticket.ShowRemaining && !ticket.SoldOut" class="remainingQuantity">
+                      <div class="f1">{{ticket.RemainingQuantity}} Remaining</div>
+                    </div> -->
+                  <span class="fs4 pointer" (click)="calculateTotalPrice($event,ticket,true)">+</span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="ticket.TicketTypeId === 3">
+                <div class="donationAmout">
+                  <input matInput type="number" (click)="clearAmount(ticket)" placeholder="$0"
+                    [(ngModel)]="ticket.Amount" (blur)="calculateTotalPrice($event,ticket)"
+                    class="md-block form-control">
+                </div>
+              </ng-container>
+              <div class="w2" [ngStyle]="{backgroundColor: ticket.BGColor, color:ticket.TextColor}">
+                <ng-container *ngIf="(ticket.TicketType === 'PAID' || eventTickets.EditMode) && !ticket.SoldOut">
+                  <span *ngIf="getTicketProperty(ticket.TicketId, 'Event_TicketTotalPrice')" class="z11" #appendItem
+                    [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+                    (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_TicketTotalPrice'),ticket.TicketId)"
+                    [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_TicketTotalPrice'))">${{ticket.TotalPrice}}</span>
+                </ng-container>
+              </div>
+            </ng-container>
+            <div *ngIf="ticket.SoldOut" class="fs5 soldOut">Sold Out</div>
+
+          </div>
+          <div *ngIf="getTicketProperty(ticket.TicketId, 'Event_ViewAgenda') && ticket.HasAgeda"
+            [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_ViewAgenda'))"
+            (click)="openViewAgenda(ticket.TicketId)" class="viewScheduleBtn mt-2 z11">
+            <span class="material-icons fs5 mr-1">event_available</span>
+            <span #appendItem [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+              (click)="showHideButtonToolbar($event, getTicketProperty(ticket.TicketId, 'Event_ViewAgenda'),ticket)">{{getTicketProperty(ticket.TicketId,
+              'Event_ViewAgenda').CustomPropertyName}}</span>
+          </div>
+          <div class="viewMore mt-3 mt-sm-0"
+            *ngIf="getTicketProperty(ticket.TicketId, 'Event_TicketDescription') && ticket.TicketDescription">
+            <p class="mt-1 z11" #appendItem [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+              (click)="showHideButtonToolbar($event,getTicketProperty(ticket.TicketId, 'Event_TicketDescription'),ticket)"
+              [style]="getStyleString(getTicketProperty(ticket.TicketId, 'Event_TicketDescription'))">
+              {{ticket.TicketDescription}}
+            </p>
+          </div>
+          <div *ngIf="ticket.ShowRemaining && !ticket.SoldOut" class="remainingQuantity">
+            <div class="f1">{{ticket.RemainingQuantity}} Remaining</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="eventTickets.eventDeals.length > 0" class="row">
+      <div class="col-12">
+        <div class="card border-0">
+          <div class="card-body" *ngIf="false">
+            <div class="media  align-items-start flex-column flex-sm-row">
+              <div class="media-body pr-4">
+                <h5 class="mt-0 f3 semiBold">
+                  Bundle Your Order And Save
+                  <span class="svg-icon icon-sm" data-toggle="modal" data-target="#bundleInfoModal">
+                    <svg class="info" xmlns="http://www.w3.org/2000/svg" width="4.262" height="11.366"
+                      viewBox="0 0 4.262 11.366">
+                      <path id="Icon_awesome-info" data-name="Icon awesome-info"
+                        d="M.444,9.417H.888V6.211H.444A.444.444,0,0,1,0,5.767V4.706a.444.444,0,0,1,.444-.444H2.93a.444.444,0,0,1,.444.444V9.417h.444a.444.444,0,0,1,.444.444v1.06a.444.444,0,0,1-.444.444H.444A.444.444,0,0,1,0,10.922V9.861A.444.444,0,0,1,.444,9.417ZM2.131,0a1.6,1.6,0,1,0,1.6,1.6A1.6,1.6,0,0,0,2.131,0Z"
+                        fill="#3b3b3b" />
+                    </svg>
+                  </span>
+                </h5>
+                <p class="f2">Buy together and save money! We have exclusive deals to make your event
+                  experience more convenient, cheaper and fun.</p>
+              </div>
+              <div class="ml-auto d-flex align-items-center mt-3 mt-sm-0">
+                <div *ngFor="let deal of eventDeals" class="addRemoveBundles mr-4">
+                  <img src="{{domainURL+ deal.LogoUrl}}" alt="{{deal.Name}}" class="dealIcon">
+                  <div class="bundleIcons d-flex align-items-center">
+                    <span class="infoIcon" data-toggle="tooltip" data-placement="bottom"
+                      title="{{deal.Description}}"><img src="assets/eventmaker/theme1/media/icons/info-bundle.svg"
+                        alt="" class="icon-md"></span>
+                    <span class="addIcon"><img src="assets/eventmaker/theme1/media/icons/add-bundle.svg" alt=""
+                        class="icon-md"></span>
+                    <span class="removeIcon"><img src="assets/eventmaker/theme1/media/icons/remove-bundle.svg" alt=""
+                        class="icon-md"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3" *ngIf="ApplyButton" [ngClass]="{'align-items-center':!ApplyButton.TextAlignment}"
+      [style.text-align]="ApplyButton.TextAlignment">
+      <div class="col-12 col-md-7">
+        <div [ngClass]="(PromoCode && Total)?'col-12': 'col-12'" class="md-block position-relative" *ngIf="PromoCode">
+          <label class="mr-2" #appendItem *ngIf="PromoCode" [style]="getStyleString(PromoCode)"
+            [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}" (click)="showHideToolbar($event,PromoCode)"
+            (input)="onChange($event.target.innerHTML, PromoCode)">
+            {{PromoCode.CustomPropertyName}}
+          </label>
+            <input matInput type="text" [(ngModel)]="promoCodeValue" [disabled]="promoCodeAapplied"
+            class="md-block accessCodeFeild md-auto-horizontal-margin">
+        <mat-icon title="Remove promo code" *ngIf="promoCodeApplied" (click)="removePromoCode()" matSuffix
+            class="icon-remove-promocode">close</mat-icon>
+          <a #appendItem class="btn mat-flat-button black ml-2" [ngClass]="{ 'promo-applied': promoCodeApplied }"
+            (click)="showHideButtonToolbar($event, ApplyButton)" href="javascript:void(0)" (click)="applyPromoCode()"
+            [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}" [style]="getStyleString(ApplyButton)">
+            {{ promoCodeApplied ? 'Applied' : ApplyButton.CustomPropertyName}}
+          </a>
+
+        </div>
+      </div>
+      <div class="col-12 col-md-3 mb-3 d-flex justify-content-between offset-md-2  font-w" *ngIf="Total"
+        [ngClass]="{'align-items-center':!Total.TextAlignment}" [style.text-align]="Total.TextAlignment"
+        [style]="getStyleString(Total)">
+        <div class="fs4" #appendItem *ngIf="Total" [style]="getStyleString(Total)"
+          [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}" (click)="showHideToolbar($event,Total)">
+          {{Total.CustomPropertyName}}
+        </div>
+        <span *ngIf="promoCodeApplied" class="f3 pl-3 op6 price-sticked">${{totalPriceWithoutDiscout}}</span>
+        <span  [style]="getStyleString(Total)" class="fs4">${{totalPrice}}</span>
+      </div>
+      <div class="col-12 position-relative mt-3" [style.text-align]="CheckoutButton.TextAlignment"
+        [ngClass]="{right:!CheckoutButton.TextAlignment}" *ngIf="CheckoutButton">
+        <button #appendItem (click)="showHideButtonToolbar($event, CheckoutButton)"
+          class="mat-flat-button btn checkoutBtn" [ngClass]="{formatEditToolbarWrapper:eventTickets.EditMode}"
+          [style]="getStyleString(CheckoutButton)" (click)="orderCheckout()">
+          {{CheckoutButton.CustomPropertyName}}
+        </button>
+
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+<section (click)="ChangeDetect($event, eventGalleryData)" [ngClass]="{virtualEventSec:eventGalleryData.EditMode}" id="gallery"  [style]="getSectionStyleString(eventGalleryData)" class="py-5">
+    <section-designer-toolbar ngDefaultControl *ngIf="eventGalleryData.EditMode" [ngStyle]="ngStyle" (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="row">
+            <div *ngIf="eventGalleryData.EditMode && !eventGalleryData.eventGallery || eventGalleryData.eventGallery.length == 0" class="blankDataMsgBox">
+                Please add gallery data in <span class="fw-bold">Edit Event page</span> or turn this <span class="fw-bold">section off.</span>
+            </div>
+            <div class="col-12">
+                <h2 class="titleH2" #appendItem [ngClass]="{formatEditToolbarWrapper:eventGalleryData.EditMode}"
+                  (click)="showHideToolbar($event,heading)" [style]="getStyleString(heading)" *ngIf="heading">
+                  {{heading.CustomPropertyName}}</h2>
+              </div>
+            <div class="col-12" id="gallerySwiper">
+                <div class="swiper-wrapper justify-content-center">
+                    <div class="swiper-slide" *ngFor="let gallery of eventGalleryData.eventGallery;">
+                        <figure class="hoverEffect3" (click)="openLightbox(gallery, domainUrl)">
+                            <img src="{{domainUrl+gallery.ImagePath}}" alt="{{gallery.Filename}}" class="img-fluid gallery-img">
+                            <img *ngIf="zoomButton" src="assets/eventmaker/theme1/media/icons/zoom-in.svg" alt="" class="icon-xl">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="lighboxWrapper" id="lighboxWrapper">
+    <button class="close-btn" mat-icon-button (click)="closeLightbox($event)"><mat-icon>close</mat-icon></button>
+    <button class="prev-btn" mat-icon-button id="prev-btn" (click)="prevBtn(domainUrl)"><mat-icon>chevron_left</mat-icon></button>
+    <button class="next-btn" mat-icon-button id="next-btn" (click)="nextBtn(domainUrl)"><mat-icon>chevron_right</mat-icon></button>
+</div>

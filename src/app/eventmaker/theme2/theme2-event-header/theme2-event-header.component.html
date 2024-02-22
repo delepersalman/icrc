@@ -1,0 +1,44 @@
+<!-- [ngClass]="{'stickyTop': headerFixed, virtualEventSec:page.EditMode}" -->
+<header [ngClass]="{'stickyTop': headerFixed, virtualEventSec:page.EditMode}" (click)="ChangeDetect($event, page)" [style]="getSectionStyleString(page)">
+  <section-designer-toolbar *ngIf="page.EditMode" [ngStyle]="ngStyle"
+    (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a *ngIf="logoDetails.LogoTypeId === 2 && logoDetails.Text" class="navbar-brand f4 " ><span  class="blue">{{logoDetails.Text}}</span></a>
+      <a *ngIf="logoDetails.LogoTypeId === 1 && logoDetails.ImageUrl" class="navbar-brand f4 resizeImage" id="resizeImage" (click)="onResizeLogo($event)"><img [ngStyle]="{'width':(logoDetails.LogoWidth>0?logoDetails.LogoWidth+'px':''),'height':(logoDetails.LogoHeight >0?logoDetails.LogoHeight+'px':'')}" src="{{logoDetails.ImageUrl}}"></a>
+      <a *ngIf="logoDetails.LogoTypeId === 0 && logoDetails.Image && logoDetails.Image.ImagePath" class="navbar-brand f4 resizeImage"(click)="onResizeLogo($event)" id="resizeImage"><img [ngStyle]="{'width':(logoDetails.LogoWidth>0?logoDetails.LogoWidth+'px':''),'height':(logoDetails.LogoHeight >0?logoDetails.LogoHeight+'px':'')}" src="{{domainUrl+logoDetails.Image.ImagePath}}"></a>
+              <a *ngIf="logoDetails.LogoTypeId !== 3 &&  (!logoDetails.Image || !logoDetails.Image.ImagePath) && !logoDetails.Text && !logoDetails.ImageUrl"  class="navbar-brand f4 resizeImage" id="resizeImage" (click)="onResizeLogo($event)"><img [ngStyle]="{'width':(logoDetails.LogoWidth>0?logoDetails.LogoWidth+'px':''),'height':(logoDetails.LogoHeight >0?logoDetails.LogoHeight+'px':'')}"
+                  src="assets/eventmaker/theme2/logo.svg"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon">
+          <span class="material-icons menuIcon">menu</span>
+          <span class="material-icons closeIcon">close</span>
+        </span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav  mb-2 mb-lg-0" cdkDropListOrientation="horizontal" cdkDropList
+          (cdkDropListDropped)="drop($event)">
+          <ng-container *ngFor="let menu of page.SectionProperties">
+
+            <li style="--custom_color: {{(menu.HoverColor?menu.HoverColor:'')}}" class="nav-item" aria-current="page" cdkDrag [ngClass]="{active: isActive(menu)}" (click)="select(menu)"
+              [cdkDragDisabled]="!page.EditMode">
+              <a  *ngIf="websiteType === 'Multiple'" class="nav-link example-box"
+                [routerLink]="[(page.EditMode?'eventmaker':'event'), eventId, menu.Name]" #appendItem
+                [style]="getStyleString(menu)"
+                [ngClass]="{formatEditToolbarWrapper:page.EditMode,active: isActiveRoute(menu)}"
+                (click)="showHideButtonToolbar($event, menu)">{{menu.CustomPropertyName}}</a>
+
+              <a  *ngIf="websiteType === 'Single'" class="nav-link example-box" #appendItem
+                [style]="getStyleString(menu)" [ngClass]="{formatEditToolbarWrapper:page.EditMode}"
+                (click)="showHideButtonToolbar($event, menu)">
+                {{menu.CustomPropertyName}}
+              </a>
+
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

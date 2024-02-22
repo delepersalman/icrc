@@ -1,0 +1,140 @@
+<mat-progress-bar [mode]="'indeterminate'" *ngIf="resourcesLoading">
+</mat-progress-bar>
+
+<mat-progress-bar [mode]="'indeterminate'" *ngIf="roomChatLoading">
+</mat-progress-bar>
+
+<div class="chatBody">
+  <div #chatButton class="roomButtons">
+    <button title="{{roomData.RoomName}}" *ngIf="roomData && (roomData.RoomName != 'privateroom')" [ngClass]="eventChatActive ? '' : 'active'"
+            (click)="onRoomTabButtonClick()">
+      {{roomData.RoomName}}
+    </button>
+    <button title="Private Room" *ngIf="roomData && roomData.RoomName == 'privateroom'" [ngClass]="eventChatActive ? '' : 'active'"
+            (click)="onRoomTabButtonClick()">
+      Private Room
+    </button>
+    <button title="Event" [ngClass]="eventChatActive ? 'active' : ''" (click)="onEventTabButtonClick()">Event</button>
+  </div>
+
+  <div style="width: 100%; padding:10px; display:none;">
+    <a style="float:left; cursor: pointer;"><span class="material-icons">arrow_back</span></a>
+    <a style="float:right; cursor: pointer;"><span class="material-icons">person_add_alt_1</span></a>
+    <a style="float:right; margin-right: 15px; cursor: pointer;"><span class="material-icons">local_phone</span></a>
+    <a style="float:right; margin-right: 15px; cursor: pointer;"><span class="material-icons">videocam</span></a>
+    <a style="float:right; margin-right: 15px; cursor: pointer;"><span class="material-icons">touch_app</span></a>
+  </div>
+
+  <div class="polling">
+    <div style="width: 100%; padding:10px; display:none;" *ngIf="!polling">
+      <a style="float:right; margin-right: 15px; cursor: pointer;" (click)="polling=true"><span
+          class="material-icons">touch_app</span></a>
+    </div>
+    <div style="width: 100%; padding:10px;" *ngIf="polling">
+      <a style="float:left; cursor: pointer;" (click)="polling=false"><span class="material-icons">arrow_back</span></a>
+    </div>
+    <ul class="pollMessages" *ngIf="polling">
+      <li class="pollBox">
+        <div class="avtar" alt="NK" title="Nand Kishor">
+          <img *ngIf="false">
+        </div>
+        <div class="pollInfo">
+          <span>Nand Kishor, 12:44 PM</span>
+        </div>
+        <div class="poll">
+          <div class="pollBubble">
+            <div class="pollQuestion">How are you all?</div>
+            <ul class="pollOptions">
+              <li class="pollOption"><input name="poll" type="radio"> <span>Option 1</span></li>
+              <li class="pollOption"><input name="poll" type="radio"> <span>Option 2</span></li>
+              <li class="pollOption"><input name="poll" type="radio"> <span>Option 3</span></li>
+            </ul>
+            <div class="pollExpires">Expires: Tomorrow at 8:30 PM</div>
+          </div>
+        </div>
+      </li>
+      <li class="pollBox self">
+        <div class="pollInfo">
+          <span>12:44 PM</span>
+        </div>
+        <div class="poll">
+          <div class="pollBubble">
+            <div class="pollQuestion">How are you all?</div>
+            <ul class="pollOptions">
+              <li class="pollOption" title="Option 1"><input name="poll" type="radio"> <span>Option 1</span></li>
+              <li class="pollOption" title="Option 2"><input name="poll" type="radio"> <span>Option 2</span></li>
+              <li class="pollOption" title="Option 3"><input name="poll" type="radio"> <span>Option 3</span></li>
+            </ul>
+            <div class="pollExpires">Expires: Tomorrow at 8:30 PM</div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <button mat-raised-button (click)="openPollDialog()" style="display:none;">Open poll popup</button>
+
+  <div class="chatOuterBox" *ngIf="roomChatActive && roomData && (roomData.IsEnabled || roomData.RoomType == 'privateroom')">
+    <ul class="chatMessages" infiniteScroll [scrollWindow]="false" (scrolledUp)="onRoomChatScrollUp()" #scrollMe
+      [scrollTop]="roomChatHistoryPageIndex == 0 ? scrollMe.scrollHeight : scrollMe.offsetHeight" appScrollDirective>
+      <li class="messageBox {{message.self ? 'self': ''}}" *ngFor="let message of roomMessages;  let i = index;">
+        <div
+          *ngIf="!(i > 0 && roomMessages[i-1].time==message.time && roomMessages[i-1].senderId == message.senderId) && !message.self"
+          class="avtar" [attr.alt]="message.alt" title="{{message.senderName}}">
+          <img *ngIf="message.profileImageUrl"
+            src="{{domainUrl + '/Images/Profile/Profile_Images/imagepath/'+ message.profileImageUrl}}">
+        </div>
+        <div class="messageInfo">
+          <span>{{ i > 0 && roomMessages[i-1].time==message.time && roomMessages[i-1].senderId == message.senderId ? ''
+            : message.time}}</span>
+        </div>
+        <div class="message"><span class="messageBubble"
+            [innerHTML]="message.rtmMessage.text | linky : { stripPrefix : false, className : 'autolink' }"></span>
+        </div>
+      </li>
+    </ul>
+    <div class="chatInputBox" #chatInputBox [ngClass]="disabledRoomChatTextbox ? 'disabled' : ''" [ngStyle]="{'pointer-events': disabledRoomChatTextbox ? 'none' : 'default'}">
+      <div class="inputWrapper">
+        <span class="inputTool"><span class="material-icons">mail</span></span>
+        <div #roomMessageBox class="inputBox" [textContent]="txtRoomMessage" (keydown)="sendRoomTextMessage($event)"
+          contenteditable [attr.placeholder]="disabledRoomChatTextbox ? 'Chat disabled' : 'Write something...'"></div>
+        <button class="sendMessage" [disabled]="!isUserLoggedIn || disabledRoomChatTextbox"
+          (click)="sendRoomMessage($event)">
+          <span class="material-icons">send</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="chatOuterBox" *ngIf="eventChatActive">
+    <ul class="chatMessages" infiniteScroll [scrollWindow]="false" [infiniteScrollThrottle]="100"
+      (scrolledUp)="onEventChatScrollUp()" #scrollMe
+      [scrollTop]="eventChatHistoryPageIndex == 0 ? scrollMe.scrollHeight : scrollMe.offsetHeight" appScrollDirective>
+      <li class="messageBox {{message.self ? 'self': ''}}" *ngFor="let message of eventMessages;  let i = index;">
+        <div
+          *ngIf="!(i > 0 && eventMessages[i-1].time==message.time && eventMessages[i-1].senderId == message.senderId) && !message.self"
+          class="avtar" [attr.alt]="message.alt" title="{{message.senderName}}">
+          <img *ngIf="message.profileImageUrl" src="{{domainUrl + '/Images/Profile/Profile_Images/imagepath/' +message.profileImageUrl}}">
+        </div>
+        <div class="messageInfo">
+          <span>{{ i > 0 && eventMessages[i-1].time==message.time && eventMessages[i-1].senderId == message.senderId ?
+            '' : message.time}}</span>
+        </div>
+        <div class="message"><span class="messageBubble"
+            [innerHTML]="message.rtmMessage.text | linky : { stripPrefix : false, className : 'autolink' }"></span>
+        </div>
+      </li>
+    </ul>
+    <div class="chatInputBox" #chatInputBox [ngClass]="disabledEventChatTextbox ? 'disabled' : ''" [ngStyle]="{'pointer-events': disabledEventChatTextbox ? 'none' : 'default'}">
+      <div class="inputWrapper">
+        <span class="inputTool"><span class="material-icons">mail</span></span>
+        <div #messageBox class="inputBox" [textContent]="txtEventMessage" (keydown)="sendEventTextMessage($event)"
+             contenteditable [attr.placeholder]="disabledEventChatTextbox ? 'Chat disabled' : 'Write something...'"></div>
+
+        <button class="sendMessage" [disabled]="!isUserLoggedIn || disabledEventChatTextbox"
+                (click)="sendEventMessage($event)">
+          <span class="material-icons">send</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

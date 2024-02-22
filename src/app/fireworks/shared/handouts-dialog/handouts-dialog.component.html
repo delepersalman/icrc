@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>
+  Handouts
+  <mat-form-field class="handoutsSearch">
+    <mat-label>Search</mat-label>
+    <input matInput (keyup)="applyDocumentFilter($event)" #searchinput>
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+</h2>
+
+<mat-dialog-content class="mat-typography" style=" min-height:450px">
+
+  <div id="handoutsData">
+
+    <table mat-table [dataSource]="docuemntsDataSource" class="handoutsTable fixed" matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+      <ng-container matColumnDef="FileName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header width="250">Name</th>
+        <td mat-cell *matCellDef="let row">
+          <div class="tdImgDeta">
+            <img *ngIf="row.Extension != null && imageExtensions.indexOf(row.Extension) !== -1" src="./assets/fireworks/icons/JPG.svg" width="25" />
+            <img *ngIf="row.Extension != null && (row.Extension == '.doc' || row.Extension == '.docx')" src="./assets/fireworks/icons/DOC.svg" width="25" />
+            <img *ngIf="row.Extension != null && row.Extension == '.pdf'" src="./assets/fireworks/icons/PDF.svg" width="25" />
+            <img *ngIf="row.Extension != null && row.Extension == '.txt'" src="./assets/fireworks/icons/TEXT.svg" width="25" />
+            <img *ngIf="row.Extension != null && (row.Extension == '.ppt' || row.Extension == '.pptx')" src="./assets/fireworks/icons/PPT.svg" width="25" />
+            <img *ngIf="row.Extension != null && (row.Extension == '.csv' || row.Extension == '.xls' || row.Extension == '.xlsx')" src="./assets/fireworks/icons/XLS.svg" width="25" />
+            {{row.FileName}}
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+        <td mat-cell *matCellDef="let row">{{row.Description}}</td>
+      </ng-container>
+      <ng-container matColumnDef="RoomType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Room(s)</th>
+        <td mat-cell *matCellDef="let row">{{row.RoomName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header width="300">Download</th>
+        <td mat-cell *matCellDef="let row" class="tdCenter">
+          <span *ngIf="!row.IsAccessible">Not accessible</span>
+          <a *ngIf="row.IsAccessible" class="downloadBtn" download="{{row.FileName}}" href="{{currentDownloadUrl}}" (click)="downloadDocument($event, row.FilePath)"><span class="material-icons">get_app</span></a>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data found</td>
+      </tr>
+    </table>
+    <mat-paginator [length]="totalRecords" [pageSize]="10" [pageSizeOptions]="[5, 10, 15, 20, 25, 50, 100]"></mat-paginator>
+
+    <mat-card *ngIf="resourcesLoading || isRateLimitReached" style="display: flex; justify-content: center; align-items: center">
+      <mat-progress-spinner color="primary" [diameter]="50"
+                            mode="indeterminate">
+      </mat-progress-spinner>
+    </mat-card>
+
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial>Close</button>
+</mat-dialog-actions>

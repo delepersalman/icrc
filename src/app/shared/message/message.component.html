@@ -1,0 +1,5 @@
+<div class="toastMessage" *ngIf="messageService.messages.length">
+  <div class="toastContent">{{messageService.message}}test</div>
+  <a class="toastClose" (click)="messageService.clear()"><span class="material-icons">close</span></a>
+</div>
+<h1>test message</h1>

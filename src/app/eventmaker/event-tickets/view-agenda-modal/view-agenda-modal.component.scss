@@ -1,0 +1,12 @@
+.viewAgendaModal ::ng-deep theme1-event-agenda section { padding-top:0; padding-bottom:0;
+    h2 { text-align:left; margin-bottom:0 }
+    .eventScheduleTabBox  { background-color:#f9f9f9 }
+    .col-sm-6 { max-width:33.33%; flex:0 0 33.333333% }
+    .eventScheduleTabBox { padding:24px 0 }
+}
+
+@media (max-width: 768px) {
+    .viewAgendaModal ::ng-deep theme1-event-agenda section { padding-top:0;
+        .col-sm-6 { max-width:50%; flex:0 0 50% }
+    }
+}

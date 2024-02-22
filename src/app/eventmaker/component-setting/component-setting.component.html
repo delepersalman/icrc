@@ -1,0 +1,30 @@
+<mat-dialog-content class="mat-typography modelContentPageSetting">    
+    <h2>Select Your Section</h2>
+    <label class="containerchecked">Select All
+        <input type="checkbox" [checked]="allChecked" (change)="setAll(allChecked)" >
+        <span class="checkmark"></span>
+    </label>
+       
+    <div class="eventMakerCheckPages">
+        <div class="row" >
+            <div class="col-md-3 margin-1em-top" *ngFor="let module of eventWebsiteDetail.EventPages">
+                <label class="containerchecked">{{module.PageTitle}}
+                    <input type="checkbox"  [checked]="exists(module.PageId, selectedComponents)" (click)="checked(module.PageId, selectedComponents)" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>                        
+            <div class="col-md-3 margin-1em-top">
+                <div class="addNewPage"  (click)="modalAddPage()">
+                    <span class="icon">
+                        <mat-icon class="icon">add</mat-icon>
+                    </span>
+                    Add Custom Section
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close class="btn">Cancel</button>
+    <button mat-raised-button  cdkFocusInitial color="primary" (click)="saveSelectedComponents()" class="btn">Save</button>
+</mat-dialog-actions>   

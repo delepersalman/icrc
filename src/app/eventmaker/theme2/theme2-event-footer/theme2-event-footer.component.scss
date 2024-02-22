@@ -1,0 +1,30 @@
+@import '../../../../variable.scss';
+.formatEditToolbarWrapper { position:relative; border:2px dashed transparent; transition:all .3s }
+.formatEditToolbarWrapper:hover { border-color:#888 }
+.container { position:relative; border:2px dashed transparent; transition:all .3s }
+.virtualEventSec:hover { border-color:#00ff95 }
+
+designer-toolbar { position:absolute; top:-51px; display:none }
+button-designer-toolbar { display:none }
+// section-designer-toolbar { position:absolute; top:-51px; right:16px; display:none; z-index:9999 }
+.formatEditToolbarWrapper.Clicked ~ designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.formatEditToolbarWrapper.Clicked button-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+// .container:hover section-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.editorWrapper { position:absolute; left:0; top:0; z-index:9; height:100%; width:100% }
+
+.formatButtonEditToolbar input[type='color'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+
+footer {
+    ul { display:block;}
+    ul li { padding:0.5rem .75rem; display:inline-block;}
+    ul li a { color:#151515 }
+    ul li a:hover { color:$theme-colour1 }
+}
+
+.poweredBy { font:normal normal 22px/27px Inter; letter-spacing:0px; color:#B3B9BD; padding:30px 0; text-align:center }
+
+.cdk-drag-preview { box-sizing:border-box; border-radius:4px; box-shadow:0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12) }
+.cdk-drag-placeholder { opacity:0 }
+.cdk-drag-animating { transition:transform 250ms cubic-bezier(0, 0, 0.2, 1)  }
+.example-box:last-child { border:none }
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) { transition:transform 250ms cubic-bezier(0, 0, 0.2, 1) }

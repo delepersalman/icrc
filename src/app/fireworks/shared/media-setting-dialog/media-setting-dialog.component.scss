@@ -1,0 +1,51 @@
+@import "~src/app/fireworks/shared/fw-room/fw-room.component.scss";
+
+.streamLayout { width:100%; height:250px; position:relative; background-color:#333;
+  .videoBox { width:100%; height:100%; float:left; position:relative; background-color:#000;
+    .avtar { width:80px; height:80px; display:inline-block; background-color:rgba(255,255,255,.25); border-radius:50%; position:absolute; left:calc(50% - 40px); top:calc(50% - 40px); z-index:11; overflow:hidden;
+      img { width:80px; height:80px; background-color:#e5e5e5; position:relative;}
+      &:before { content:attr(alt); width:100%; height:100%; color:var(--theme-color); font-size:18px; font-weight:bold; line-height:80px; text-align:center; position:absolute; left:0; top:0;}
+    }
+  }
+}
+
+.fwActionBox { width:100%; left:0; z-index:11; text-align:center; bottom:0px;
+  ul { margin:0; padding:0;
+    li { list-style:none; display:inline-block;
+      a { width:48px; height:48px; margin:5px; border-radius:5px; display:inline-block; background-color:rgba(255,255,255,.9); color:#000; text-decoration:none; cursor:pointer; user-select:none;
+        .material-icons { line-height:48px;}
+      }
+      &:first-child { position:absolute; left:45px;}
+    }
+  }
+}
+
+/*.center {
+  Audio Video Setting Modal
+}*/
+.audioVideoSetting { margin: 0;
+   h2 { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-left: -25px; padding-left: 30px; margin-right: -22px; font-weight: bold; font-size: 24px;}
+   .audioVideoMain { display:flex;
+    .audioVideoLeft { width:365px; max-width:100%; padding:0 15px; display:inline-block; position:relative; 
+      .videoIcon { margin-bottom: 0; position: relative;
+        a { display: flex; cursor: pointer; font-size: 16px; font-weight: 600;}
+         p { padding:0; margin: 2px 6px;}
+          .material-icons { font-size: 24px;}
+      }
+      .troubleshoot { right: 0; position: absolute; top: 10px; font-size: 14px; color: rgb(23, 43, 77);}
+    }
+    .audioVideoRight { width:365px; max-width:100%; padding:0 15px; display:inline-block;
+      .videoIcon { margin-bottom: 0; position: relative;
+        a { display: flex; cursor: pointer; font-size: 16px; font-weight: 600;}
+         p { padding:0; margin: 2px 6px;}
+          .material-icons { font-size: 24px;}
+      }
+      .troubleshoot { right: 0; position: absolute; top: 10px; font-size: 14px; color: rgb(23, 43, 77);}
+       .playBtn a { color: #e62e64; display: flex; text-decoration: none; align-items: center; margin-bottom: 30px;}
+         .progress { margin: 0px 0 30px; padding: 0; width: 100%; height: 12px; overflow: hidden; background: #e5e5e5; border-radius: 20px;
+           .bar { position:relative; float:left; min-width:1%; height:100%; background:#E62E6F;}
+          }        
+    }    
+  }
+}
+  

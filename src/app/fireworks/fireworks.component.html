@@ -1,0 +1,483 @@
+<fireworks-splash-screen *ngIf="resourcesLoading"></fireworks-splash-screen>
+<div [ngClass]="{'navbarExpanded': sidebarExpended, 'chatCollapsed' : chatToggle}"
+  *ngIf="userAllowed && sharedService.virtualEventUser && sharedService.virtualEventUser.VirtualEvent">
+  <header [ngClass]="{'roomClientConnected' : sharedService.roomClientConnected}">
+    <img *ngIf="sharedService.virtualEventUser.VirtualEvent.Image" class="eventImage"
+      src="{{domainURl}}{{sharedService.virtualEventUser.VirtualEvent.Image.ImagePath}}">
+    <img
+      *ngIf="!sharedService.virtualEventUser.VirtualEvent.Image || !sharedService.virtualEventUser.VirtualEvent.Image.ImagePath"
+      class="eventImage" src="./assets/images/eventcombo-event-image.jpg">
+    <h1 class="eventTitle">{{sharedService.virtualEventUser.VirtualEvent.EventTitle}}</h1>
+    <div class="eventOrg">
+      <span class="orgBy">Organized by</span>
+      <span>{{sharedService.virtualEventUser.VirtualEvent.OrganizerName}}</span>
+    </div>
+    <ul class="fwActionBox">
+      <li *ngIf="sharedService.enableChatRoom && sharedService.currentRoomData" [ngClass]="{'currentRoomOnly': sharedService.enableChatRoom}"
+        class="currentRoomName"><span>You're in
+          <strong>{{sharedService.currentRoomData.RoomName == 'privateroom' ?
+            'Private Room' : sharedService.currentRoomData.RoomName}}</strong></span>
+      </li>
+
+      <ng-container *ngIf="sharedService.roomClientConnected">
+        <li
+          *ngIf="sharedService.currentRoomData && sharedService.currentRoomData.RoomType.toLowerCase() == 'privateroom'">
+          <a [matMenuTriggerFor]="peopleToAdd" tooltip="Invite"><span class="material-icons">person_add_alt_1</span></a>
+          <mat-menu #peopleToAdd="matMenu" [hasBackdrop]="true" style="height:35vh; max-height:35vh;">
+            <div>
+              <span style="float:right; cursor:pointer; font-size:15px; padding-right:8px;"
+                class="material-icons">close</span>
+            </div>
+            <div id="people" *ngIf="sharedService.currentRoomData" (click)="$event.stopPropagation()"
+              (keydown)="$event.stopPropagation()">
+              <form>
+                <mat-form-field class="inviteSearch">
+                  <mat-label>Search</mat-label>
+                  <input [(ngModel)]="txtSearchPeople" matInput name="txtSearchPeople">
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+              </form>
+              <ul class="invitePeople scroll">
+                <li mat-menu-item class="attendee"
+                  *ngFor="let member of sharedService.fwRoom.getInviteMembers() | people_search:txtSearchPeople | orderBy:'FirstName'">
+                  <div class="avtar" [attr.alt]="member.Alt" title="{{member.FullName}}">
+                    <img *ngIf="member.ProfileImageUrl"
+                      src="{{domainURl + '/Images/Profile/Profile_Images/imagepath/' + member.ProfileImageUrl}}">
+                    <div class="status-circle {{member.Online ? 'online' : ''}}">
+                    </div>
+                  </div>
+                  {{member.FullName}}
+                  <span class="actions">
+                    <button (click)="sharedService.fwRoom.sendVideoChatGroupInvite(member)"
+                      class="invite">Invite</button>
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </mat-menu>
+        </li>
+        <li>
+          <mat-menu #roomMembers="matMenu" [hasBackdrop]="true" style="height:35vh; max-height:35vh;">
+            <div>
+              <span style="float:right; cursor:pointer; font-size:15px; padding-right:8px;"
+                class="material-icons">close</span>
+            </div>
+            <div id="roomMembers" *ngIf="sharedService.currentRoomData" (click)="$event.stopPropagation()"
+              (keydown)="$event.stopPropagation()">
+              <form>
+                <mat-form-field class="inviteSearch">
+                  <mat-label>Search</mat-label>
+                  <input [(ngModel)]="txtSearchRoomMembers" matInput name="txtSearchRoomMembers">
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+              </form>
+              <ul class="invitePeople scroll">
+                <li mat-menu-item class="attendee"
+                  *ngFor="let member of sharedService.roomMembers | people_search:txtSearchRoomMembers | orderBy:'FirstName'">
+                  <div class="avtar" [attr.alt]="member.Alt" title="{{member.FullName}}">
+                    <img *ngIf="member.ProfileImageUrl"
+                      src="{{domainURl + '/Images/Profile/Profile_Images/imagepath/' + member.ProfileImageUrl}}">
+                    <div class="status-circle {{member.Online ? 'online' : ''}}">
+                    </div>
+                  </div>
+                  {{member.FullName}}
+                </li>
+              </ul>
+            </div>
+          </mat-menu>
+        </li>
+        <li *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser)
+  || sharedService.isPresenter(sharedService.virtualEventUser)
+  || sharedService.allowUnmuteMyself
+  || sharedService.currentRoomData.RoomType == 'privateroom' || sharedService.currentRoomData.RoomType == 'breakout'">
+          <a *ngIf="hasAudio()" (click)="sharedService.fwRoom.muteAudio()"
+            tooltip="Mute Mic">
+            <span class="material-icons">mic</span>
+          </a>
+          <a *ngIf="!hasAudio()" (click)="sharedService.fwRoom.unMuteAudio()"
+            tooltip="Unmute Mic">
+            <span class="material-icons">mic_off</span>
+          </a>
+        </li>
+        <li *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser)
+  || sharedService.isPresenter(sharedService.virtualEventUser)
+  || sharedService.currentRoomData.RoomType == 'privateroom' || sharedService.currentRoomData.RoomType == 'breakout'">
+          <a *ngIf="mediaInfoService.localTrackState.videoTrackEnabled" (click)="sharedService.fwRoom.muteVideo()"
+            tooltip="Hide Video">
+            <span class="material-icons">videocam</span>
+          </a>
+          <a *ngIf="!mediaInfoService.localTrackState.videoTrackEnabled" (click)="sharedService.fwRoom.unmuteVideo()"
+            tooltip="Show Video">
+            <span class="material-icons">videocam_off</span>
+          </a>
+        </li>
+        <li
+          *ngIf="(!sharedService.isHostOrCoHost(sharedService.virtualEventUser)) &&
+      (sharedService.checkUserRole(enumerationUserRole.Attendee,sharedService.virtualEventUser) && !sharedService.allowUnmuteMyself)">
+          <a (click)="sharedService.fwRoom.raiseHand()" tooltip="Raise Hand">
+            <span class="material-icons">pan_tool</span>
+            <span *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser)"
+              class="count">{{sharedService.raiseHandMemberList.length}}</span>
+          </a>
+          <div class="raiseHandList" *ngIf="sharedService.fwRoom.showRaiseHandList">
+            <div class="raiseHandHeading">
+              <span class="raiseHandTitle">Raised Hands</span>
+              <a *ngIf="sharedService.raiseHandMemberList.length > 0" title="Allow all requests"
+                (click)="sharedService.fwRoom.approveOrRejectRaiseHandRequest(null,true,true)" class="raiseHandAll">
+                <span class="material-icons">done_all</span>
+              </a>
+              <a *ngIf="sharedService.raiseHandMemberList.length > 0" title="Reject all requests"
+                (click)="sharedService.fwRoom.approveOrRejectRaiseHandRequest(null,false,true)" class="raiseHandAll">
+                <span class="material-icons">delete_outline</span>
+              </a>
+              <a (click)="sharedService.fwRoom.showRaiseHandList=false" class="raiseHandClose"><span
+                  class="material-icons">close</span></a>
+            </div>
+            <div class="raiseHandBody" *ngIf="sharedService.raiseHandMemberList.length > 0">
+              <div class="attendee" *ngFor="let attendee of sharedService.raiseHandMemberList">
+                <div class="avtar" title="{{attendee.FullName}}" [attr.alt]="attendee.Alt" style="overflow:initial">
+                  <img *ngIf="attendee.ProfileImageUrl"
+                    src="{{domainURl + '/Images/Profile/Profile_Images/imagepath/' + attendee.ProfileImageUrl}}">
+                  <div class="status-circle {{attendee.Online ? 'online' : ''}}">
+                  </div>
+                </div>
+                {{attendee.FullName}}
+                <span class="actions">
+                  <a (click)="sharedService.fwRoom.approveOrRejectRaiseHandRequest(attendee,true,false)">
+                    <mat-icon class="infoButton">done</mat-icon>
+                  </a>
+                  <a (click)="sharedService.fwRoom.approveOrRejectRaiseHandRequest(attendee,false,false)">
+                    <mat-icon class="infoButton">delete</mat-icon>
+                  </a>
+                </span>
+              </div>
+            </div>
+            <div class="noRaiseHands" *ngIf="sharedService.raiseHandMemberList.length <= 0">
+              No one raised hands yet.
+            </div>
+          </div>
+        </li>
+        <li>
+          <a *ngIf="sharedService.currentRoomData.RoomType != 'breakout'" (click)="sharedService.fwRoom.leaveClient()"
+            tooltip="Leave Room" style="background-color:red; color:#fff;">
+            <span class="material-icons">call_end</span>
+          </a>
+          <a *ngIf="(sharedService.currentRoomData.RoomType == 'breakout' && (sharedService.isHostOrCoHost(this.sharedService.virtualEventUser) || showBreakoutLeaveButton))"
+            (click)="sharedService.fwRoom.leaveBreakoutRoom()" tooltip="Leave Room"
+            style="background-color:red; color:#fff;">
+            <span class="material-icons">call_end</span>
+          </a>
+        </li>
+
+        <li
+          *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser)
+  || sharedService.isPresenter(sharedService.virtualEventUser) || sharedService.currentRoomData.RoomType == 'privateroom' || sharedService.currentRoomData.RoomType == 'breakout'">
+          <a (click)="sharedService.fwRoom.startScreenSharing()"
+            [attr.tooltip]="sharedService.fwRoom.screenClientConnected ? 'Stop Screen Share' : 'Screen Share'">
+            <span class="material-icons">{{ sharedService.fwRoom.screenClientConnected ? 'desktop_access_disabled' :
+              'desktop_windows'}}</span>
+          </a>
+        </li>
+
+        <li *ngIf="(sharedService.isHostOrCoHost(sharedService.virtualEventUser))">
+          <a (click)="sharedService.fwRoom.raiseHand()" tooltip="Raise Hand">
+            <span class="material-icons">pan_tool</span>
+            <span *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser)"
+              class="count">{{sharedService.raiseHandMemberList.length}}</span>
+          </a>
+          <div class="raiseHandList" *ngIf="sharedService.fwRoom.showRaiseHandList">
+            <div class="raiseHandHeading">
+              <span class="raiseHandTitle">Raised Hands</span>
+              <a *ngIf="sharedService.raiseHandMemberList.length > 0" title="Allow all requests"
+                (click)="sharedService.fwRoom.approveOrRejectRaiseHandRequest(null,true,true)" class="raiseHandAll">
+                <span class="material-icons">done_all</span>
+              </a>
+              <a *ngIf="sharedService.raiseHandMemberList.length > 0" title="Reject all requests"
+                (click)="sharedService.fwRoom.approveOrRejectRaiseHandRequest(null,false,true)" class="raiseHandAll">
+                <span class="material-icons">delete_outline</span>
+              </a>
+              <a (click)="sharedService.fwRoom.showRaiseHandList=false" class="raiseHandClose"><span
+                  class="material-icons">close</span></a>
+            </div>
+            <div class="raiseHandBody" *ngIf="sharedService.raiseHandMemberList.length > 0">
+              <div class="attendee" *ngFor="let attendee of sharedService.raiseHandMemberList">
+                <div class="avtar" title="{{attendee.FullName}}" [attr.alt]="attendee.Alt" style="overflow:initial">
+                  <img *ngIf="attendee.ProfileImageUrl"
+                    src="{{domainURl + '/Images/Profile/Profile_Images/imagepath/' + attendee.ProfileImageUrl}}">
+                  <div class="status-circle {{attendee.Online ? 'online' : ''}}">
+                  </div>
+                </div>
+                {{attendee.FullName}}
+                <span class="actions">
+                  <a (click)="sharedService.fwRoom.approveOrRejectRaiseHandRequest(attendee,true,false)">
+                    <mat-icon class="infoButton">done</mat-icon>
+                  </a>
+                  <a (click)="sharedService.fwRoom.approveOrRejectRaiseHandRequest(attendee,false,false)">
+                    <mat-icon class="infoButton">delete</mat-icon>
+                  </a>
+                </span>
+              </div>
+            </div>
+            <div class="noRaiseHands" *ngIf="sharedService.raiseHandMemberList.length <= 0">
+              No one raised hands yet.
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <a [matMenuTriggerFor]="menu" tooltip="Settings"><span class="material-icons">settings</span></a>
+          <mat-menu #menu="matMenu" xPosition="before" [hasBackdrop]="true">
+            <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+              <button mat-menu-item (click)="openManageAttendeePopup()"
+                *ngIf="sharedService.isFeatureEnabled(enumerationFeatures.ManageAttendee)">
+                <mat-icon>groups</mat-icon>
+                <span>Manage Attendees</span>
+              </button>
+              <button mat-menu-item
+                (click)="sharedService.enableAlertNotificationSound = !sharedService.enableAlertNotificationSound">
+                <mat-icon>{{sharedService.enableAlertNotificationSound ? 'notifications' : 'notifications_off'}}
+                </mat-icon>
+                <span>{{sharedService.enableAlertNotificationSound ? 'Disable' : 'Enable'}} Alerts</span>
+              </button>
+              <button mat-menu-item (click)="openAudioVideoSettingPopup()" *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser)
+        || sharedService.isPresenter(sharedService.virtualEventUser) || sharedService.allowUnmuteMyself">
+                <mat-icon>{{sharedService.enableAudioVideo ? 'videocam' : 'videocam_off'}}</mat-icon>
+                <span>Manage Audio/Video</span>
+              </button>
+              <button
+                *ngIf="sharedService.virtualEventUser.VirtualEvent.EnableBreakoutRooms && sharedService.isFeatureEnabled(enumerationFeatures.BreakoutRoom)"
+                (click)="openAddBreakoutRoomsPopup()" mat-menu-item>
+                <mat-icon>view_module</mat-icon>
+                <span>Breakout Rooms</span>
+              </button>
+            </div>
+          </mat-menu>
+        </li>
+      </ng-container>
+    </ul>
+
+    <ng-container *ngIf="!sharedService.roomClientConnected">
+      <ul class="fwActionBox">
+        <li>
+          <a [matMenuTriggerFor]="menu" tooltip="Settings"><span class="material-icons">settings</span></a>
+          <mat-menu #menu="matMenu" xPosition="before" [hasBackdrop]="true">
+            <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+              <button mat-menu-item (click)="openManageAttendeePopup()"
+                *ngIf="sharedService.isFeatureEnabled(enumerationFeatures.ManageAttendee)">
+                <mat-icon>groups</mat-icon>
+                <span>Manage Attendees</span>
+              </button>
+              <button mat-menu-item
+                (click)="sharedService.enableAlertNotificationSound = !sharedService.enableAlertNotificationSound">
+                <mat-icon>{{sharedService.enableAlertNotificationSound ? 'notifications' : 'notifications_off'}}
+                </mat-icon>
+                <span>{{sharedService.enableAlertNotificationSound ? 'Disable' : 'Enable'}} Alerts</span>
+              </button>
+              <button mat-menu-item (click)="openAudioVideoSettingPopup()" *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser)
+            || sharedService.isPresenter(sharedService.virtualEventUser) || sharedService.allowUnmuteMyself">
+                <mat-icon>{{sharedService.enableAudioVideo ? 'videocam' : 'videocam_off'}}</mat-icon>
+                <span>Manage Audio/Video</span>
+              </button>
+              <button
+                *ngIf="sharedService.virtualEventUser.VirtualEvent.EnableBreakoutRooms && sharedService.isFeatureEnabled(enumerationFeatures.BreakoutRoom)"
+                (click)="openAddBreakoutRoomsPopup()" mat-menu-item>
+                <mat-icon>view_module</mat-icon>
+                <span>Breakout Rooms</span>
+              </button>
+            </div>
+          </mat-menu>
+        </li>
+      </ul>
+    </ng-container>
+
+  </header>
+  <div class="leftSidebar">
+    <div class="fwLogo"><img src="assets/images/ec-fireworks-logo.png"></div>
+    <nav>
+      <ul>
+        <li *ngIf="sharedService.isHostOrCoHost(sharedService.virtualEventUser)">
+          <a [attr.tooltip]="adminRoomName"
+            routerLink="/fireworks/{{sharedService.virtualEventUser.VirtualEvent.EventId}}/{{sharedService.virtualEventUser.EventAccessToken}}/warroom"
+            routerLinkActive="active">
+            <span class="icon-War-Room"></span>
+            <span class="roomName">War Room</span>
+            <span class="arrow"></span>
+          </a>
+        </li>
+        <li *ngFor="let item of sharedService.virtualEventUser.VirtualEvent.Rooms">
+          <a *ngIf="item.IsEnabled && item.RoomType != 'customroom' && item.RoomType != 'handouts' && item.RoomType != 'greenroom' && item.RoomType != 'reception' "
+            routerLink="/fireworks/{{sharedService.virtualEventUser.VirtualEvent.EventId}}/{{sharedService.virtualEventUser.EventAccessToken}}/{{item.RoomType}}"
+            routerLinkActive="active" [attr.tooltip]="item.RoomName">
+            <span class={{getRoomIconFromRoomType(item.RoomType)}}></span>
+            <span class="roomName">{{item.RoomName}}</span>
+            <span class="arrow"></span>
+          </a>
+          <a *ngIf="item.IsEnabled && item.RoomType == 'reception' "
+          routerLink="/fireworks/{{sharedService.virtualEventUser.VirtualEvent.EventId}}/{{sharedService.virtualEventUser.EventAccessToken}}/lobby"
+          routerLinkActive="active" [attr.tooltip]="item.RoomName">
+          <span class={{getRoomIconFromRoomType(item.RoomType)}}></span>
+          <span class="roomName">{{item.RoomName}}</span>
+          <span class="arrow"></span>
+        </a>
+          <a *ngIf="item.IsEnabled && item.RoomType == 'handouts'" (click)="openHandoutsDialog()"
+            [attr.tooltip]="item.RoomName">
+            <span class={{getRoomIconFromRoomType(item.RoomType)}}></span>
+            <span class="roomName">{{item.RoomName}}</span>
+          </a>
+          <a *ngIf="item.IsEnabled && item.RoomType == 'greenroom' && sharedService.isHostOrCoHost(sharedService.virtualEventUser)"
+            routerLink="/fireworks/{{sharedService.virtualEventUser.VirtualEvent.EventId}}/{{sharedService.virtualEventUser.EventAccessToken}}/{{item.RoomType}}"
+            routerLinkActive="active" [attr.tooltip]="item.RoomName">
+            <span class={{getRoomIconFromRoomType(item.RoomType)}}></span>
+            <span class="roomName">{{item.RoomName}}</span>
+          </a>
+        </li>
+        <li
+          *ngIf="sharedService.virtualEventUser.VirtualEvent.EnableSilentAuction">
+          <a tooltip="Silent Auction" (click)="openSilentAuctionDialog()">
+            <span class="icon-Silent-Auction"></span>
+            <span class="roomName">Silent Auction</span>
+          </a>
+        </li>
+        <li *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowDonationButton">
+          <a tooltip="Donate" target="_blank" [href]="sharedService.virtualEventUser.VirtualEvent.ButtonLink">
+            <span class="icon-donation"></span>
+            <span class="roomName">{{sharedService.virtualEventUser.VirtualEvent.ButtonText}}</span>
+          </a>
+        </li>
+        <li *ngIf="checkCustomRoomExist()">
+          <a [matMenuTriggerFor]="menu" tooltip="Explore">
+            <mat-icon>more_horiz</mat-icon>
+            <span class="roomName">Explore</span>
+          </a>
+          <mat-menu #menu="matMenu" [overlapTrigger]="false">
+            <ng-container
+              *ngFor="let room of sharedService.virtualEventUser.VirtualEvent.Rooms | customRoomfilter:customRoomFilterargs">
+              <a mat-menu-item *ngIf="room.IsEnabled" (click)="joinRoom(room)">
+                <span class={{getRoomIconFromRoomType(room.RoomType)}}></span>
+                <span class="roomName">{{room.RoomName}}</span>
+              </a>
+            </ng-container>
+          </mat-menu>
+        </li>
+      </ul>
+    </nav>
+    <div class="userSection">
+      <ul>
+        <li>
+          <a [attr.count]="totalNotifications" (click)="showAlertBox = !showAlertBox">
+            <mat-icon>{{sharedService.enableAlertNotificationSound ? 'notifications' : 'notifications_off'}}</mat-icon>
+            <span class="menuName">Notifications</span>
+          </a>
+          <div class="alertBox" *ngIf="showAlertBox">
+            <div class="alertbox-heading">
+              <span class="alertTitle">Notifications</span>
+              <a class="allAlerts" (click)="openNotificationsDialog()">View all</a>
+              <a class="alertsClose" (click)="showAlertBox=false"><span class="material-icons">close</span></a>
+            </div>
+            <div class="alertbox-outer" *ngIf="notificationMessages.length > 0">
+              <a (click)="notificationItemClick(notification)" class="userAlert unread"
+                *ngFor="let notification of notificationMessages">
+                <img *ngIf="notification.ProfileImageUrl"
+                  src="{{domainURl + '/Images/Profile/Profile_Images/imagepath/' +notification.ProfileImageUrl}}">
+                <img *ngIf="!notification.ProfileImageUrl" class="eventImage"
+                  src="./assets/images/fireworks-avatar-400x400.png">
+                <div class="username">
+                  <span class="name">{{notification.FullName}}</span> <span
+                    class="light">{{notification.NotificationDate | amFromUtc | amTimeAgo}}</span>
+                </div>
+                <div class="description {{notification.IsMarkedAsRead ? 'unread' : ''}}"
+                  [innerHTML]="notification.NotificationContent"></div>
+              </a>
+            </div>
+            <div class="alertbox-empty" *ngIf="notificationMessages.length == 0">No new notification(s) available!</div>
+          </div>
+        </li>
+        <li style="display:none;">
+          <a tooltip="Settings">
+            <mat-icon>settings</mat-icon>
+            <span class="menuName">Settings</span>
+          </a>
+        </li>
+        <li>
+          <a (click)="openUserinfoDialog()">
+            <span class="avtar" title="{{ sharedService.virtualEventUser.FullName}}"
+              [attr.alt]="sharedService.getUserShortName(sharedService.virtualEventUser.FullName)">
+              <img *ngIf="sharedService.virtualEventUser.ProfileImageUrl"
+                src="{{domainURl + '/Images/Profile/Profile_Images/imagepath/' +sharedService.virtualEventUser.ProfileImageUrl}}">
+            </span>
+            <span class="menuName">{{sharedService.virtualEventUser.FullName}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <a class="toggleButton" (click)="openLeftPannel()"><span class="material-icons">keyboard_arrow_{{sidebarExpended ?
+        'left' : 'right'}}</span></a>
+  </div>
+
+  <div class="centerContainer" #centerContainer>
+    <router-outlet *ngIf="rtmClient && sharedService.eventMembers && sharedService.eventMembers.length > 0">
+    </router-outlet>
+  </div>
+
+  <div class="rightSidebar">
+    <!-- [ngStyle]="{display: chatToggle ? 'none' : 'block'}" -->
+    <div class="tabButtonOuter">
+      <div class="rightSidebarTabs ">
+        <a title="Chat" [ngClass]="{'active': sharedService.selectedTab == 'Chat'}" (click)="changeTab('Chat')" *ngIf="sharedService.enableChatRoom && sharedService.currentRoomData && sharedService.currentRoomData.AllowGroupChat"><span class="material-icons">chat_bubble_outline</span></a>
+        <a title="{{sharedService.virtualEventUser.VirtualEvent.AttendeeLabel}}" [ngClass]="{'active': sharedService.selectedTab == 'People', 'unreadMessages': privateMessageMembers.length > 0}" (click)="changeTab('People')" *ngIf="sharedService.enableChatRoom && (sharedService.virtualEventUser.VirtualEvent.DisplayPeopleSectionToAttendees || sharedService.isHostOrCoHost(sharedService.virtualEventUser))"><span class="material-icons">person_outline</span></a>
+        <a title="Handouts" [ngClass]="{'active': sharedService.selectedTab == 'Handouts'}" (click)="changeTab('Handouts')" *ngIf="sharedService.currentRoomData && sharedService.currentRoomData.AllowHandouts"><span class="icon-handout"></span></a>
+        <a title="{{sharedService.virtualEventUser.VirtualEvent.SpeakerLabel}}" [ngClass]="{'active': sharedService.selectedTab == 'Speakers'}" (click)="changeTab('Speakers')" *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowSpeakers"><span class="icon-speakers"></span></a>
+        <a title="{{sharedService.virtualEventUser.VirtualEvent.SponsorLabel}}" [ngClass]="{'active': sharedService.selectedTab == 'Sponsors'}" (click)="changeTab('Sponsors')" *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowSponsors"><span class="icon-sponsors"></span></a>
+        <a title="{{sharedService.virtualEventUser.VirtualEvent.ScheduleLabel}}" [ngClass]="{'active': sharedService.selectedTab == 'Schedule'}" (click)="changeTab('Schedule')" *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowSchedules"><span class="material-icons">schedule</span></a>
+        <a title="Matches" [ngClass]="{'active': sharedService.selectedTab == 'MyMatches'}" (click)="changeTab('MyMatches')" *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowMyMatches"><span class="material-icons">insert_link</span></a>
+      </div>
+    </div>
+
+    <div *ngIf="sharedService.enableChatRoom" [ngStyle]="{display:calculateStyles('Chat')}">
+      <fireworks-chat *ngIf="rtmClient && sharedService.eventMembers && sharedService.eventMembers.length > 0">
+      </fireworks-chat>
+    </div>
+
+    <div *ngIf="sharedService.enableChatRoom && (sharedService.virtualEventUser.VirtualEvent.DisplayPeopleSectionToAttendees || sharedService.isHostOrCoHost(sharedService.virtualEventUser))"
+         [ngStyle]="{display:calculateStyles('People')}">
+      <fireworks-people *ngIf="rtmClient && sharedService.eventMembers && sharedService.eventMembers.length > 0"
+                        [tabIndex]="rightSidebarTabIndex" (onPrivateMessage)="showPrivateMessageIndicator($event)"></fireworks-people>
+    </div>
+
+    <div *ngIf="sharedService.currentRoomData && sharedService.currentRoomData.AllowHandouts"
+         [ngStyle]="{display:calculateStyles('Handouts')}">
+      <fireworks-room-handouts *ngIf="rtmClient && sharedService.eventMembers && sharedService.eventMembers.length > 0">
+      </fireworks-room-handouts>
+    </div>
+
+    <div *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowSpeakers"
+         [ngStyle]="{display:calculateStyles('Speakers')}">
+      <event-speakers [tabIndex]="rightSidebarTabIndex"></event-speakers>
+    </div>
+
+    <div *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowSponsors"
+         [ngStyle]="{display:calculateStyles('Sponsors')}">
+      <event-sponsors [tabIndex]="rightSidebarTabIndex"></event-sponsors>
+    </div>
+
+    <div [ngStyle]="{display:sharedService.virtualEventUser.VirtualEvent.ShowSchedules ? calculateStyles('Schedule') : 'none'}">
+      <event-schedules [tabIndex]="rightSidebarTabIndex"></event-schedules>
+    </div>
+
+    <div *ngIf="sharedService.virtualEventUser.VirtualEvent.ShowMyMatches"
+        [ngStyle]="{display:calculateStyles('MyMatches')}">
+      <app-matches [tabIndex]="rightSidebarTabIndex"></app-matches>
+    </div>
+
+    <div class="chatToggle" (click)="openRightPannel()">
+      <span class="material-icons">
+        keyboard_arrow_{{
+chatToggle
+        ? 'left' : 'right'
+        }}
+      </span>
+    </div>
+  </div>
+</div>
+
+<toast-message></toast-message>

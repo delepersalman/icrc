@@ -1,0 +1,3 @@
+<app-dynamic-selector  *ngIf="componentName" 
+[componentSelector]="componentName"  [inputs]="{page: headerSection,logoDetails:logoDetails,headerFixed:headerFixed,State:State, bookTicketUrl:bookTicketUrl,eventId:eventId,websiteType: websiteType,IsEventExpired:IsEventExpired, websiteDetails: websiteDetails}" [moduleLoaderFunction]="getModuleLoader()"
+></app-dynamic-selector>

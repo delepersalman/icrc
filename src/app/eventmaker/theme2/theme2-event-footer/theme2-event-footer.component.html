@@ -1,0 +1,39 @@
+
+<footer >
+  <event-contactus id="event-contactus" (click)="ChangeDetect($event, eventFooter)" *ngIf="websiteDetails && eventDescPage" [eventCustomPages]="eventDescPage" [websiteDetails]="websiteDetails" [themeName]="websiteDetails.TemplateId"></event-contactus>
+  <div class="container pt-5" [style]="getSectionStyleString(eventFooter)" [ngClass]="{virtualEventSec:eventFooter.EditMode}" id="event-footer">
+    <section-designer-toolbar *ngIf="eventFooter.EditMode" [ngStyle]="ngStyle"
+      (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="row pb-5 pt-5">
+      <div class="col-md-12 mb-5">
+        <h2 #appendItem [ngClass]="{formatEditToolbarWrapper:eventFooter.EditMode}" (click)="showHideToolbar($event,heading)"
+        [style]="getStyleString(heading)"
+        *ngIf="heading">{{heading.CustomPropertyName}}</h2>
+        <p class="fs5" #appendItem [ngClass]="{formatEditToolbarWrapper:eventFooter.EditMode}" (click)="showHideToolbar($event,description)"
+        [style]="getStyleString(description)"
+        *ngIf="description">{{description.CustomPropertyName}}
+        </p>
+        <div class="col-md-12" *ngIf="getTicketButton" [style.text-align]="getTicketButton.TextAlignment">
+        <a  href="javascript:void(0)" #appendItem [ngClass]="{formatEditToolbarWrapper:eventFooter.EditMode}" (click)="showHideToolbar($event,getTicketButton,true)" [style]="getStyleString(getTicketButton)" class="mat-flat-button btn m-0" >{{getTicketButton.CustomPropertyName}}</a>
+      </div>
+      </div>
+      <div class="col-md-12" >
+        <ul cdkDropList  (cdkDropListDropped)="drop($event)" cdkDropListOrientation="horizontal" class="navbar-nav">
+          <ng-contianer *ngFor="let menu of menuList">
+          <li *ngIf="menu.Type !=='FooterComponentProperty'" cdkDrag [cdkDragDisabled]="!eventFooter.EditMode"><a  [style]="getStyleString(menu)" [routerLink]="[(eventFooter.EditMode?'eventmaker':'event'), eventId, menu.Name]" #appendItem
+            [ngClass]="{formatEditToolbarWrapper:eventFooter.EditMode,active: isActiveRoute(menu)}"
+            (click)="showHideButtonToolbar($event, menu)">{{menu.CustomPropertyName}}</a></li>
+        </ng-contianer>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <p class="poweredBy">Powered by Eventcombo</p>
+      </div>
+    </div>
+  </div>
+</footer>

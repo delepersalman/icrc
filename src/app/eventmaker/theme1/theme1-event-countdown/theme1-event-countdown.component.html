@@ -1,0 +1,33 @@
+<section [ngClass]="{virtualEventSec:eventCountdown.EditMode}" (click)="ChangeDetect($event, eventCountdown)"   class="timerSection" id="countdown" >
+    <section-designer-toolbar ngDefaultControl *ngIf="eventCountdown.EditMode" [ngStyle]="ngStyle" (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="col-12 text-center timerDiv" [style]="getSectionStyleString(eventCountdown)">
+            <ng-container *ngFor="let prop of eventCountdown.SectionProperties">
+                <div class="timeBox" *ngIf="prop.Name == 'Countdown_Days'" [style]="getStyleString(prop)">
+                  <div class="editorWrapper" *ngIf="eventCountdown.EditMode" #appendItem (click)="showHideToolbar($event, prop)"
+                    [ngClass]="{formatEditToolbarWrapper:eventCountdown.EditMode}"></div>
+                  <div class="title" id="days">{{timerData.days}}</div>
+                  <div class="timerP">{{prop.CustomPropertyName}}</div>
+                </div>
+                <div class="timeBox" *ngIf="prop.Name == 'Countdown_Hours'" [style]="getStyleString(prop)">
+                  <div class="editorWrapper" *ngIf="eventCountdown.EditMode" #appendItem (click)="showHideToolbar($event, prop)"
+                    [ngClass]="{formatEditToolbarWrapper:eventCountdown.EditMode}"></div>
+                  <div class="title" id="hours">{{timerData.hours}}</div>
+                  <div class="timerP">Hours</div>
+                </div>
+                <div class="timeBox" *ngIf="prop.Name == 'Countdown_Minutes'" [style]="getStyleString(prop)">
+                  <div class="editorWrapper" *ngIf="eventCountdown.EditMode" #appendItem (click)="showHideToolbar($event, prop)"
+                    [ngClass]="{formatEditToolbarWrapper:eventCountdown.EditMode}"></div>
+                  <div class="title" id="minutes">{{timerData.minutes}}</div>
+                  <div class="timerP">minutes</div>
+                </div>
+                <div class="timeBox" *ngIf="prop.Name == 'Countdown_Seconds'" [style]="getStyleString(prop)">
+                  <div class="editorWrapper" *ngIf="eventCountdown.EditMode" #appendItem (click)="showHideToolbar($event, prop)"
+                    [ngClass]="{formatEditToolbarWrapper:eventCountdown.EditMode}"></div>
+                  <div class="title" id="seconds">{{timerData.seconds}}</div>
+                  <div class="timerP">seconds</div>
+                </div>
+              </ng-container>
+        </div>
+    </div>
+</section>

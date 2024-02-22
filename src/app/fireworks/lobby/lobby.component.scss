@@ -1,0 +1,122 @@
+
+  .lobyWrapper { display:flex; background:#333; width:100%; height:calc(100vh - 70px); padding:15px; overflow:hidden;
+    ::-webkit-scrollbar { width:8px; opacity:0 }
+    ::-webkit-scrollbar-track { background-color:transparent }
+    ::-webkit-scrollbar-thumb { background-color:#535353; opacity:0; border-radius:20px; border:3px solid transparent; background-clip:content-box }
+    ::-webkit-scrollbar-thumb:hover { background-color:#a8bbbf }
+
+    ::ng-deep {
+      .lobyTitle { font-size:18px; font-weight:normal; line-height:20px; margin-top:10px; margin-bottom:10px; color:#fff;}
+      .singleColumn {
+        .lobbyCol1Outer, .lobbyCol2Outer, .lobbyCol3Outer { flex:1 auto; margin:0 0.5rem }
+        &.lobyCol1, &.lobyCol2, &.lobyCol3  { display:flex }
+      }
+    .lobyCol1 { width:33%; flex:1 auto; height:100%; padding:0 15px; float:left; max-height:calc(100vh - 96px); overflow:auto; max-width:50%;
+      .lobyCol1Imgbox { height:calc(50% - 50px); margin-bottom:20px; border-radius:4px; overflow:hidden; position:relative;
+        img { width:100%; min-height:100%; background:#434343; border-radius:4px }
+      }
+      .lobyCol1Action { display:inline-block; background:var(--theme-color) !important; color:#fff; font-size:13px; text-transform:uppercase; padding:5px 7px; border-radius:4px; position:absolute; right:10px; bottom:10px;
+        &.status { text-transform:capitalize; white-space:nowrap;}
+      }
+      ::-webkit-scrollbar-thumb { opacity:1 }
+    }
+    .lobyCol2 { width:40%; max-width:50%; height:100%; padding:0 15px; float:left; max-height:calc(100vh - 96px); overflow:auto; flex:1 auto;
+      .lobyCol2Box { background:#434343; display:flex; margin-bottom:20px; border-radius:4px; overflow:hidden; position:relative;
+        .lobyCol2Imgbox { width:45%; overflow:hidden; position:relative;
+          img { width:100%; height:140px; min-height:100%; object-fit:cover;}
+        }
+        .lobyCol2BoxInfo { width:55%; float:left; padding:15px 15px 48px;
+          .text-right { position:absolute; right:1rem; bottom:1rem; }
+          .lobyCol2BoxTitle { font-size:16px; color:#fff; margin-bottom:5px;}
+          .lobyCol2BoxDesc { font-size:16px; color:#fff; opacity:.7;  display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical; overflow: hidden;}
+          .lobyCol2BoxAction { display:inline-block; background:var(--theme-color); color:#fff; font-size:14px; text-transform:uppercase; margin-top:10px; padding:7px 10px; border-radius:4px; cursor:pointer;
+            &.status { text-transform:capitalize; padding:4px 6px; position:absolute; left:15px; bottom:15px }
+          }
+        }
+      }
+      .lobyPagination { text-align:center;
+        .lobyPager { display:inline-block;
+          a { display:inline-block; width:24px; height:24px; line-height:24px; margin:0 5px; float:left; border-radius:50%; background:#666; text-align:center; color:#fff; cursor:pointer;
+            &.active { background:var(--theme-color); cursor:default;}
+            &.disabled { opacity:.3; cursor:default;}
+            &:first-child { background:none;}
+            &:last-child { background:none;}
+          }
+        }
+      }
+    }
+    .lobyCol3 { width:27%; max-width:50%; height:100%; padding:0 15px; float:left; max-height:calc(100vh - 96px); overflow:auto; flex:1 auto;
+      .lobbyArrows { display:inline-block; position:absolute; right:0; top:-31px;
+        a { display:inline-block; width:24px; height:24px; line-height:24px; margin:0 5px; float:left; text-align:center; color:#fff; cursor:pointer;
+          &.disabled { opacity:.3; cursor:default;}
+        }
+      }
+      .lobbySpeakers { margin-bottom:19px; position: relative;
+        .lobbySpeakerBox { padding:10px 10px 10px 68px; min-height:68px; position:relative;
+          .lspImg { width:48px; height:48px; display:inline-block; border-radius:50%; position:absolute; left:10px; top:10px; object-fit:cover;}
+          .lspName { font-size:16px; color:#fff; margin-bottom:5px;}
+          .lspLink { font-size:16px; color:#fff; opacity:.7;}
+        }
+      }
+      .lobbyPartners { position:relative;
+        .lobbyPartner { width:calc(50% - 15px); height:100px; display:inline-block; overflow:hidden; margin-right:15px; border-radius:4px; margin-bottom:19px;
+          img { width:100%; height:100%; object-fit:cover;}
+        }
+      }
+      .lobbyHandouts { position:relative;
+        .lobbyHandout { width:calc(50% - 15px); height:100px; display:inline-block; overflow:hidden; padding:34px 10px 10px 10px; margin-right:15px; margin-bottom:15px; border-radius:4px; background-color:#434343; background-repeat:no-repeat; background-position:10px 10px; background-image:url(/s/assets/fireworks/icons/File.svg); color:#fff;
+          .lhDownload { width:24px; height:24px; display:inline-block; margin-top:10px; background:#fff; color:#333; text-align:center; border-radius:50%; cursor:pointer;
+            span { font-size:18px; line-height:24px;}
+          }
+          &[file="PDF"] { background-image:url(/s/assets/fireworks/icons/PDF.svg);}
+          &[file="XLS"] { background-image:url(/s/assets/fireworks/icons/XLS.svg);}
+          &[file="DOC"] { background-image:url(/s/assets/fireworks/icons/DOC.svg);}
+          &[file="JPG"] { background-image:url(/s/assets/fireworks/icons/JPG.svg);}
+          &[file="TXT"] { background-image:url(/s/assets/fireworks/icons/TEXT.svg);}
+          &[file="PPT"] { background-image:url(/s/assets/fireworks/icons/PPT.svg);}
+        }
+      }
+    }
+  }
+  }
+
+
+  @media screen and (max-width:800px) {
+    .lobyWrapper { flex-direction:column;
+      .lobyCol1, .lobyCol2, .lobyCol3 { max-height:inherit; max-width:100% }
+    }
+    .singleColumn {
+      &.lobyCol1, &.lobyCol2, &.lobyCol3  { flex-direction:column }
+    }
+  }
+
+  @media screen and (max-width:767px) {
+    .lobyWrapper { overflow-y:auto; flex-direction:column;
+      .lobyCol1 { width:100%; height:auto; max-height:inherit;
+        .lobyCol1Imgbox { height:250px;}
+      }
+      ::ng-deep .lobyCol2 { width:100%; height:auto; max-height:inherit;
+        .lobyCol2Imgbox, .lobyCol2BoxInfo { width:100% !important }
+        .lobyCol2Box { flex-direction:column;}
+        .lobyCol2BoxAction.status { bottom:inherit !important; top:124px }
+      }
+      .lobyCol3 { width:100%; height:auto; max-height:inherit;
+      }
+    }
+  }
+  @media screen and (min-width:768px) and (max-width:1279px) {
+    .lobyWrapper { overflow-y:auto;
+      .lobyCol1 { width:100%; height:auto;
+        .lobbyCol1Outer { width:48%; margin-right:2%; float:left;
+            .lobyCol1Imgbox { height:200px;
+            &:last-child { margin-left:2%; margin-right:0;}
+          }
+        }
+      }
+      .lobyCol2 { width:100%; height:auto;
+        .lobyCol2Box { height:160px;}
+      }
+      .lobyCol3 { width:100%; height:auto;
+      }
+    }
+  }

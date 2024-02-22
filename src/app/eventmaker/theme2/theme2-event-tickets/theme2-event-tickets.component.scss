@@ -1,0 +1,98 @@
+@import '../../../../variable.scss';
+.dealIcon{ height:100px; width:auto }
+.ticketCard { border:1px solid #eee; height:100%; background:#fff }
+.card-body { min-height:130px }
+.card-footer { background-color:rgba($color: #000000, $alpha: 0.02); min-height:68px }
+
+.addRemoveBundles { position:relative }
+.addRemoveBundles .bundleIcons { position:absolute; right:-1rem; bottom:-1rem; z-index:9 }
+.addRemoveBundles .bundleIcons span { cursor:pointer; transition:all .3s }
+.addRemoveBundles .bundleIcons span:hover { transform:scale(1.05) }
+.addRemoveBundles .bundleIcons .removeIcon { display:none }
+
+.formatEditToolbarWrapper { position:relative; border:2px dashed transparent; transition:all .3s }
+.formatEditToolbarWrapper:hover { border-color:#888 }
+section { position:relative; border:2px dashed transparent; transition:all .3s }
+section.tickets:hover { border-color:#00ff95 }
+.ticketSection::ng-deep designer-toolbar { right:0; top:40px }
+button-designer-toolbar { display:none }
+// section-designer-toolbar { position:absolute; top:-51px; right:16px; display:none; z-index:9999 }
+section-banner-designer-toolbar { position:absolute; top:-51px; right:16px; display:none; z-index:9999 }
+section:hover section-banner-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.formatEditToolbarWrapper.Clicked ~ designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.formatEditToolbarWrapper.Clicked ~ button-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+// section:hover section-designer-toolbar{ display:block; animation:slide-in 0.1s ease-in }
+section:hover section-banner-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+
+.formatButtonEditToolbar input[type='color'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+
+.ticketSection { background-color:$theme-colour5 }
+.accessCodeFeild { height:40px; width:140px; border:1px solid rgba(0,0,0,.15); padding-left:6px; padding-right:34px; transition:all .3s; background:transparent }
+.accessCodeFeild:focus, .accessCodeFeild:focus-visible { border-color:rgba(0,0,0,1); outline:none }
+
+.viewScheduleBtn { display:flex; align-items:center; font-weight:500; font-size:14px; margin-top:3px; cursor:pointer; transition:all .3s }
+.viewScheduleBtn:hover { color:$theme-colour1 }
+
+input.form-control { min-height:auto }
+
+.ticketDescriptionStatus { position:relative; display:inline-block;
+    p { display:none; width:300px; line-height:20px; padding:1rem; margin:0; background:#fff; border-radius:4px; position:absolute; top:20px; left:20px; max-height:500px; overflow:auto; box-shadow:0 0 14px rgba(0,0,0,0.1); animation:slide-in 0.1s ease-in; z-index:9 }
+    &:hover p { display:block }
+    .mat-icon { vertical-align:sub }
+}
+.remainingQuantity { position:absolute; right:1rem; top:100px }
+.soldOut { color:#f00; font-weight:500 }
+.donationAmout { width:100px;
+    input { width:100%; padding-right:6px; border-color:rgba(0,0,0,.15); background:transparent; color:inherit }
+}
+select.form-control { border-color:rgba(0,0,0,.15); color:inherit }
+
+.iframe-checkout-popup{
+    width: 100%;
+    height: 100%;
+    padding:0 !important;
+    overflow: hidden !important;
+    iframe {
+        border: none !important;
+    }
+}
+.promo-applied { background-color:#eeffef; border:1px solid #45ff4c }
+
+.icon-remove-promocode {
+    top: 7px;
+    position: absolute;
+    right:116px;
+    cursor: pointer;
+}
+
+.price-sticked { text-decoration: line-through }
+.ticketMemberBadge { font-size:12px; background:rgba(0,0,0,0.1); border-radius:10px; display:inline-block; padding:2px 8px; margin-bottom:8px;
+    a { font-weight:bold; color:inherit }
+}
+.editorWrapper { position:absolute; left:0; top:0; z-index:9; height:100%; width:100% }
+
+.refundPolicyInTickets refund-policy::ng-deep{ 
+    .refundPolicyBox { padding:0; text-align:left }
+    .refundPolicy { padding:0; color:#3b3b3f }
+    h2 { font-size:1rem; text-align:left; margin-bottom:0.5rem !important }
+}
+.checkoutBtn.mat-flat-button { text-align:center !important; font-size:1rem; min-width:300px; height:auto; width:auto }
+
+@keyframes slide-in {
+    from {
+      transform: translate(0, -5px);
+      opacity: 0;
+    }
+  }
+
+@media screen and (max-width:767px){
+    .remainingQuantity { position:relative; right:0; top:0; margin-top:10px }
+}
+
+@media screen and (max-width:479px){
+    .ticketCard .w-75 { width:100%!important }
+    .ticketCard .ticketDescriptionStatus mat-icon { display:none }
+    .ticketCard .ticketDescriptionStatus p { display:block; position:relative; width:100%; padding:0; background:transparent; top:0; left:0; max-height:auto; box-shadow:none }
+}
+
+.z11 { z-index:11 } 

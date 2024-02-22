@@ -1,0 +1,46 @@
+@import '../../../../variable.scss';
+#gallerySwiper .swiper-slide { text-align:center; font-size:18px; background:transparent; display:-webkit-box; display:-ms-flexbox; display:-webkit-flex; display:flex; -webkit-box-pack:center; -ms-flex-pack:center; -webkit-justify-content:center; justify-content:center; -webkit-box-align:center; -ms-flex-align:center; -webkit-align-items:center; align-items:center}
+.hoverEffect3 { position:relative; transition:all .3s; z-index:1; cursor:pointer; overflow:hidden }
+.hoverEffect3:before { content:''; position:absolute; left:0; top:0; width:100%; height:100%; background-color:rgba(72,91,255,.8); z-index:2; transition:all .3s; opacity:0 }
+.hoverEffect3:hover:before { opacity:1 }
+.hoverEffect3 img:first-child { transition:all .8s }
+.hoverEffect3:hover img:first-child { transform:scale(1.05) rotate(2deg) }
+#gallerySwiper .icon-xl { position:absolute; left:calc(50% - 36px); top:calc(50% - 36px); z-index:2; transition:all .3s; transform:scale(0.9); opacity:0 }
+#gallerySwiper .hoverEffect3:hover .icon-xl { opacity:1; transform:scale(1) }
+.fixed-top{position: relative !important;}
+
+.formatEditToolbarWrapper { position:relative; border:2px dashed transparent; transition:all .3s }
+.formatEditToolbarWrapper:hover { border-color:#888 }
+section { position:relative; border:2px dashed transparent; transition:all .3s }
+section.virtualEventSec:hover { border-color:#00ff95 }
+button-designer-toolbar { display:none }
+// section-designer-toolbar { position:absolute; top:-51px; right:16px; display:none; z-index:9999 }
+.formatEditToolbarWrapper.Clicked ~ designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+.formatEditToolbarWrapper.Clicked button-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+section:hover section-designer-toolbar { display:block; animation:slide-in 0.1s ease-in }
+
+.formatButtonEditToolbar input[type='color'] { position:absolute; left:0; top:0; width:100%; height:100%; opacity:0 }
+
+#gallerySwiper { overflow-x:hidden }
+
+.modal, .lighboxWrapper { position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0, 0, 0, 0.8); display:none; justify-content:center; align-items:center; z-index:999 }
+
+.modal.open { display:flex }
+
+.modal img { max-width:90%; max-height:90% }
+
+.prev-btn, .next-btn, .close-btn { position:absolute; top:50%; transform:translateY(-50%); font-size:2rem; background-color:rgba(255, 255, 255, 0.5); border:none; padding:0; cursor:pointer; outline:none; z-index:99999; background:#000; color:#fff; width:50px; height:50px; line-height:20px; border-radius:0 }
+.prev-btn.disabled, .next-btn.disabled { cursor:default; pointer-events:none; opacity:0.5 }
+.prev-btn { left:0 }
+.next-btn { right:0 }
+.close-btn { top:34px; right:20px }
+.lighboxWrapper { display:none; background:transparent }
+.lighboxWrapper.active { display:block; animation:slide-in 0.3s ease-in }
+
+.swiper-slide .carousel-inner img { display:block; width:100%; height:100%; object-fit:cover }
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+  }
+}

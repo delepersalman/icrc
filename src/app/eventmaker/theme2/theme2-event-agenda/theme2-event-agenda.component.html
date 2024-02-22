@@ -1,0 +1,129 @@
+    <!-- HERO SECTION -->
+    <section class="banner2st pageBanner" *ngIf="isFullPage && sectionBanner"  [ngClass]="{virtualEventSec:eventAgenda.EditMode}"
+    [style]="getBannerSectionStyleString(eventAgenda)" id="Schedule">
+    <section-banner-designer-toolbar *ngIf="eventAgenda.EditMode" (click)="ChangeDetect($event, eventAgenda,'SectionBanner')" [ngStyle]="ngStyle"
+        (eventTextFormatAlignment)="changeAlignment($event)"></section-banner-designer-toolbar>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h1 *ngIf="sectionHeading" #appendItem 
+              [style]="getStyleString(sectionHeading)"
+              [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}"
+              (click)="showHideToolbar($event,sectionHeading)" (input)="onChange($event.target.innerHTML, sectionHeading)">
+              {{sectionHeading.CustomPropertyName}}
+          </h1>
+              <!-- <p>Explore the new era of events and the way forward with industry experts and thought leaders.</p> -->
+            </div>
+          </div>
+        </div>
+      </section>
+  
+      <!-- Event Schedule -->
+      <section class="eventSchedulePage" [ngClass]="{homepageView: !isFullPage}" (click)="ChangeDetect($event, eventAgenda)" [ngClass]="{virtualEventSec:eventAgenda.EditMode}"
+      [style]="getSectionStyleString(eventAgenda)" id="Schedule">
+      <section-designer-toolbar *ngIf="eventAgenda.EditMode" [ngStyle]="ngStyle"
+          (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h1 *ngIf="!isFullPage &&  heading" #appendItem 
+              [style]="getStyleString(heading)"
+              [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}"
+              (click)="showHideToolbar($event,heading)" (input)="onChange($event.target.innerHTML, heading)">
+              {{heading.CustomPropertyName}}
+          </h1>
+              <div ng-cloak>
+                <div *ngIf="eventAgenda.EditMode && groupArr.length == 0" class="blankDataMsgBox">
+                  Please add data in <span class="fw-bold">Edit Event page</span> or turn this <span class="fw-bold">section off.</span>
+              </div>
+              <mat-tab-group *ngIf="groupArr.length>0" md-dynamic-height md-border-bottom md-left-tabs md-stretch-tabs md-swipe-content>
+                <ng-container *ngFor="let item of groupArr;trackBy:trackBysFn">
+                    <mat-tab label="{{item.StartDate | date:'MMMM dd'}}">                                      
+                        <div class="eventScheduleTab"  >
+                          <div class="eventScheduleTabBox"   *ngFor="let value of item.groupItem;trackBy: trackByFn"    [ngStyle]="{backgroundColor: value.BGColor}">
+                            <ng-container *ngIf="AgendaBox">
+                            <div *ngIf="eventAgenda.EditMode" class="editorWrapper" #appendItem
+                              (click)="showHideButtonToolbar($event, AgendaBox, value)"
+                              [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}"></div>
+                            <span class="z11" #appendItem *ngIf="getTicketProperty(value.ScheduleId, 'AgendaTime')" [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaTime'))"
+                            [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}"
+                            (click)="showHideToolbar($event,getTicketProperty(value.ScheduleId, 'AgendaTime'),value)">{{value.Time}} -
+                            {{value.EndTime}} {{value.TimeZoneName}}</span>
+
+                        <h4 class="z11" #appendItem [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}"
+                            *ngIf="getTicketProperty(value.ScheduleId, 'AgendaTitle')" (click)="showHideToolbar($event,getTicketProperty(value.ScheduleId, 'AgendaTitle'),value)"
+                            [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaTitle'))">
+                            {{value.Title}}</h4>
+
+                        <p class="z11" #appendItem [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}"
+                            *ngIf="getTicketProperty(value.ScheduleId, 'AgendaDescription')" (click)="showHideToolbar($event,getTicketProperty(value.ScheduleId, 'AgendaDescription'), value)"
+                            [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaDescription'))"
+                            [innerHTML]="value.Description">
+
+                        </p>
+                        <div class="d-flex " [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}" *ngIf="getTicketProperty(value.ScheduleId, 'AgendaTickets') && value.TicketList.length>0" [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaTickets'))">
+                          <div *ngIf="getTicketProperty(value.ScheduleId, 'AgendaTickets') && eventAgenda.EditMode" class="editorWrapper" #appendItem
+                          (click)="showHideButtonToolbar($event, getTicketProperty(value.ScheduleId, 'AgendaTickets'),value)"
+                          [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}"></div>
+                          <div class="z11" [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaTickets'))">
+                            <ng-container *ngFor="let tick of value.TicketList">
+                                <a style="font-family:inherit;font-size:inherit;font-style:inherit;text-decoration:inherit;font-weight:inherit" href="javascript:void(0)">{{tick}}</a>
+                            </ng-container>
+                          </div>
+                        </div>
+
+                        <div class="d-flex" [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}" *ngIf="(value.RoomName|| value.VenueName) && getTicketProperty(value.ScheduleId, 'AgendaVenue')" [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaVenue'))">
+                          <div *ngIf="getTicketProperty(value.ScheduleId, 'AgendaVenue') && eventAgenda.EditMode" class="editorWrapper" #appendItem
+                          (click)="showHideButtonToolbar($event, getTicketProperty(value.ScheduleId, 'AgendaVenue'), value)"
+                          [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}"></div>
+                          <div class="z11" [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaVenue'))">
+                            <a style="font-family:inherit;font-size:inherit;font-style:inherit;text-decoration:inherit;font-weight:inherit" href="javascript:void(0)">{{value.RoomName?value.RoomName:value.VenueName}}</a>
+                            </div>  
+                        </div>
+                        <div class="row mt-2" [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}" *ngIf="value.Speakers.length>0 && getTicketProperty(value.ScheduleId, 'AgendaSpeaker')" [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaSpeaker'))">
+                          <div *ngIf="getTicketProperty(value.ScheduleId, 'AgendaSpeaker') && eventAgenda.EditMode" class="editorWrapper z11" #appendItem
+                          (click)="showHideButtonToolbar($event, getTicketProperty(value.ScheduleId, 'AgendaSpeaker'), value)"
+                          ></div>
+                          <div class="z11" [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaSpeaker'))">
+                          <div  class="col-sm-6 col-md-4 col-lg-3 d-flex align-items-center mb-4"
+                              *ngFor="let spk of value.Speakers" [style]="getStyleString(getTicketProperty(value.ScheduleId, 'AgendaSpeaker'))">
+                              <img alt="user image" *ngIf="spk.ImagePath"
+                                  class="user60 rounded-circle" src="{{domainUrl+spk.ImagePath}}">
+                              <div class="ml-3">
+                                  <h5 style="font-family:inherit;font-size:inherit;font-style:inherit;text-decoration:inherit;font-weight:inherit;color:inherit" class="fs4 fw-bold mb-1 speakerTitle">
+                                      {{spk.SpeakerName}}</h5>
+                                  <div class="fs7" *ngIf="spk.Title">{{spk.Title}}</div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      <br *ngIf="value.Sponsors.length>0 && getTicketProperty(value.ScheduleId, 'AgendaSponsor')">
+                      <div class="row " *ngIf="value.Sponsors.length>0 && getTicketProperty(value.ScheduleId, 'AgendaSponsor')">
+                       
+                          <div class="col-sm-6 col-md-3 d-flex align-items-center"
+                              *ngFor="let sps of value.Sponsors">
+                              
+                              <div class="eventSponsorsBox mt-2">
+                                  <a *ngIf="sps.ImagePath && sps.SponsorUrl" target="_blank" href="{{sps.SponsorUrl}}"> 
+                                      <img alt="user image" src="{{domainUrl+sps.ImagePath}}"> 
+                                  </a>
+                                  <img alt="user image" *ngIf="sps.ImagePath && !sps.SponsorUrl" src="{{domainUrl+sps.ImagePath}}">
+                              </div>
+                          </div>
+                      </div>
+                    </ng-container>
+                          </div>
+                        </div>
+                    
+                  </mat-tab>
+                  </ng-container>
+                  </mat-tab-group>
+                  <div class="col-md-12" [style]="getStyleString(SeeAllBtn)">
+                    <a *ngIf="SeeAllBtn && !isFullPage && eventAgenda.AgendaList.length>5" class="text-uppercase text-underline fs4 w-100" #appendItem  [style]="getStyleString(SeeAllBtn)"
+                    [ngClass]="{formatEditToolbarWrapper:eventAgenda.EditMode}" (click)="showHideToolbar($event,SeeAllBtn)" href="{{eventAgenda.EditMode?'javascript:void(0)':eventUrl}}">{{SeeAllBtn.CustomPropertyName}}</a>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>

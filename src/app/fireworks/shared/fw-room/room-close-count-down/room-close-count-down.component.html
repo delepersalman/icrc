@@ -1,0 +1,15 @@
+<div class="roomTimerRemainingWrapper" [ngStyle]="{'display': showTimer ? 'flex' : 'none'}">
+    <div class="roomTimerRemaining">
+        <div><mat-icon class="warningIcon">warning_rounded</mat-icon> This room will close in</div>
+        <div class="time">
+            <countdown #countdwn
+                [config]="{leftTime: roomCloseCountdown, format: roomCloseFormat, notify: 0, prettyText:makeTextToHtml }"
+                (event)="onCountdownFinish($event)">
+            </countdown>
+        </div>
+        <div> because the session is scheduled to end.</div>
+        <div (click)="hideTimer()" class="closeTimer">
+            <mat-icon>close</mat-icon>
+        </div>
+    </div>
+</div>

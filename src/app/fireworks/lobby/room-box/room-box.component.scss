@@ -1,0 +1,30 @@
+
+a{
+  text-decoration: none;
+}
+
+.button {
+  left: 10px !important;
+  max-width: 72px !important;
+  width: 100%;
+  margin-right: 20px;
+  background: transparent !important;
+  font-size: 12px !important;
+  border-radius: 20px;
+  padding: 3px !important;
+  text-align: center;
+}
+@keyframes glowing {
+  0% {
+    box-shadow: 0 0 5px #ff0000;
+  }
+  50% {
+    box-shadow: 0 0 15px #ff0000;
+  }
+  100% {
+    box-shadow: 0 0 5px #ff0000;
+  }
+}
+.glow {
+  animation: glowing 2000ms infinite;
+}

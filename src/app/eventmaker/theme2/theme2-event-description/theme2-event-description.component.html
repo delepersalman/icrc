@@ -1,0 +1,58 @@
+<!-- HERO SECTION -->
+<section class="banner2st pageBanner "  [style]="getBannerSectionStyleString(eventDesc)" *ngIf="isFullPage && sectionBanner" [ngClass]="{virtualEventSec:eventDesc.EditMode, 'col-sm-12': isFullPage || (!eventDesc.ImageUrl && image?.Name !== 'Flyer')}">
+  <section-banner-designer-toolbar *ngIf="eventDesc.EditMode" (click)="ChangeDetect($event, eventDesc, 'SectionBanner')" [ngStyle]="ngStyle"
+    (eventTextFormatAlignment)="changeAlignment($event)"></section-banner-designer-toolbar>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1  #appendItem [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}" (click)="showHideToolbar($event,sectionHeading)"
+        [style]="getStyleString(sectionHeading)"
+        *ngIf="sectionHeading">{{sectionHeading.CustomPropertyName}}</h1>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Virtual Event -->
+<div class="row">
+  <section class=" col-sm-7 pt-5 "  [style]="getSectionStyleString(eventDesc)" [ngClass]="{virtualEventSec: eventDesc.EditMode, 'col-sm-12': isFullPage || (!eventDesc.ImageUrl || image?.Name !== 'Flyer')}" id="About">
+    <section-designer-toolbar *ngIf="eventDesc.EditMode" (click)="ChangeDetect($event, eventDesc, 'Section')" [ngStyle]="ngStyle"
+    (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+      <div>
+        <ng-container *ngIf="isFullPage && introDetails">
+          <ng-container *ngFor="let prop of eventDesc.SectionProperties">
+          <h3 #appendItem [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}" *ngIf="prop.Name == 'Desc_EventType'"
+          (click)="showHideToolbar($event, prop)"
+          [style]="getStyleString(prop)">
+          ({{introDetails.EventType}})</h3>
+          <h2 #appendItem [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}" *ngIf="prop.Name == 'Desc_EventTitle'"
+          (click)="showHideToolbar($event, prop)"
+          [style]="getStyleString(prop)">{{introDetails.EventTitle}}</h2>
+          <h4 #appendItem [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}" *ngIf="prop.Name == 'Desc_EventDate'"
+          (click)="showHideToolbar($event, prop)"
+          [style]="getStyleString(prop)">{{introDetails.EventDateTimeInfoString}}</h4>
+        </ng-container>
+        </ng-container>
+        <h2 class="mb-4" #appendItem [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}"
+          (input)="onChange($event.target.innerHTML, heading)" (click)="showHideToolbar($event,heading)"
+          [style]="getStyleString(heading)"
+          *ngIf="heading">{{heading.CustomPropertyName}}
+        </h2>
+        <div *ngIf="prop && prop.Name === 'Description'" class="position-relative">
+          <div *ngIf="eventDesc.EditMode" class="editorWrapper" #appendItem
+            [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}" (click)="showHideToolbar($event,prop)"></div>
+          <p [style]="getStyleString(prop)" [innerHTML]="transform(eventDesc.EventDescription )"
+            class="mb-0" [ngClass]="{ lineClamp16: !isFullPage}">
+          </p>
+        </div>
+      </div>
+    </div>
+  </section> 
+  <div class="col-sm-5 pt-5 pr-4" [ngClass]="{ 'col-sm-12': isFullPage}" *ngIf="eventDesc.ImageUrl && image?.Name == 'Flyer'">
+    <img src="{{domainUrl+eventDesc.ImageUrl}}" class="img-fluid setImgHeight">
+  </div>
+  <div class="col-sm-7 mt-3" [ngClass]="{'col-sm-12': isFullPage || (!eventDesc.ImageUrl || image?.Name !== 'Flyer')}">
+    <event-countdown *ngIf="eventCountdownPage" [eventId]="websiteDetails.Event.EventId"
+      [eventCustomPages]="eventCountdownPage" [themeName]="websiteDetails.TemplateId" [websiteDetails]="websiteDetails"></event-countdown>
+  </div>
+</div>

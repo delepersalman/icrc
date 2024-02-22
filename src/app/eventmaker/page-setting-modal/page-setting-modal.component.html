@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{pageInfo.PageTitle}} <span *ngIf="sectionProperties.length>0">(You can show/hide the below fields in your event site)</span> </h2>
+
+<mat-dialog-content>
+	<mat-checkbox [checked]="allChecked" (change)="setAll(allChecked)" *ngIf="sectionProperties.length>1">Select All</mat-checkbox>
+	 
+	<div class="row ml-3" >
+		<ng-container *ngFor="let module of sectionProperties">
+			<ng-container  *ngIf="eventWebsiteDetail.OnlineEvent && module.Name !=='Address'">
+		<div class="col-sm-4 margin-1em-top" *ngIf="module.Name !=='AllowCheckoutinPopup' && module.Name !== 'Heart' && !module.Name.includes('Box') ">
+			<mat-checkbox [checked]="exists(module.EventmakerPagePropertyId, selectedComponents)" (change)="checked(module.EventmakerPagePropertyId, selectedComponents)">{{module.LabelName}}</mat-checkbox>
+		</div>  
+	</ng-container>  
+	<ng-container  *ngIf="!eventWebsiteDetail.OnlineEvent">
+		<div class="col-sm-4 margin-1em-top" *ngIf="module.Name !=='AllowCheckoutinPopup' && module.Name !== 'Heart' && !module.Name.includes('Box') ">
+			<mat-checkbox [checked]="exists(module.EventmakerPagePropertyId, selectedComponents)" (change)="checked(module.EventmakerPagePropertyId, selectedComponents)">{{module.LabelName}}</mat-checkbox>
+		</div>  
+	</ng-container>  
+	</ng-container>                    
+	</div>
+	
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<div class="mr-auto flex" *ngIf="allowPopup" [ngClass]="{input50Override:sectionProperties.length>0}">
+		<div mat-line class="font1 pr-3">{{allowPopup.LabelName}}</div>
+		<mat-slide-toggle [(ngModel)]="allowChecked" (change)="checked(allowPopup.EventmakerPagePropertyId, selectedComponents,true)"></mat-slide-toggle>
+	</div>
+  	<button mat-button mat-dialog-close class="btn">Cancel</button>
+  	<button mat-raised-button cdkFocusInitial color="primary" (click)="saveSectionData()" class="btn">Save</button>
+</mat-dialog-actions>   

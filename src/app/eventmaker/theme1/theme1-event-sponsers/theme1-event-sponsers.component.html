@@ -1,0 +1,44 @@
+<section class="pySec" (click)="ChangeDetect($event, eventSponsors)" [ngClass]="{virtualEventSec:eventSponsors.EditMode}"
+[style]="getSectionStyleString(eventSponsors)"
+[ngClass]="{virtualEventSec:eventSponsors.EditMode}" id="Sponsors">
+<section-designer-toolbar *ngIf="eventSponsors.EditMode" [ngStyle]="ngStyle"
+	(eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<h2 #appendItem *ngIf="heading" class="titleH2" [style]="getStyleString(heading)"
+                    [ngClass]="{formatEditToolbarWrapper:eventSponsors.EditMode}" (click)="showHideToolbar($event,heading)"
+                    (input)="onChange($event.target.innerHTML, heading)">
+                    {{heading.CustomPropertyName}}
+
+                </h2>
+               
+				</div>
+			</div>
+			<ng-container *ngFor="let grpSponsor of groupArr;trackBy:trackBysFn">
+				<div class="row">
+					<div class="col-12">
+						<h3 class="groupCategoryName mt-4" #appendItem *ngIf="grpSponsor.CategoryName && Category"
+						[style]="getStyleString(Category)"
+						[ngClass]="{formatEditToolbarWrapper:eventSponsors.EditMode}"
+						(click)="showHideToolbar($event,Category)">{{grpSponsor.CategoryName}}</h3>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div *ngIf="eventSponsors.EditMode && eventSponsors.eventSponsors.length == 0" class="blankDataMsgBox">
+						Please add data in <span class="fw-bold">Edit Event page</span> or turn this <span class="fw-bold">section off.</span>
+					</div>
+					<div class="col-md-3 mb-4 mt-3" *ngFor="let sponsor of grpSponsor.groupItem;trackBy: trackByFn;">
+						<div class="eventSponsorsBox" title="{{sponsor.SponsorName}}" *ngIf="SponsorBox" 
+						[ngStyle]="{backgroundColor: sponsor.BGColor, color:sponsor.TextColor}">
+							<div #appendItem *ngIf="eventSponsors.EditMode" class="editorWrapper" (click)="showHideButtonToolbar($event, SponsorBox, sponsor)"
+							[ngClass]="{formatEditToolbarWrapper:eventSponsors.EditMode}"
+								></div>
+							<a *ngIf="sponsor.SponsorUrl" href="{{sponsor.SponsorUrl}}" target="_blank"><img src="{{domainUrl+sponsor.ImagePath}}"  alt="{{sponsor.SponsorName}}"></a>
+							<img *ngIf="!sponsor.SponsorUrl" src="{{domainUrl+sponsor.ImagePath}}"  alt="{{sponsor.SponsorName}}">
+						</div>
+					</div>			
+				</div>
+			</ng-container>	
+		</div>
+	</section>

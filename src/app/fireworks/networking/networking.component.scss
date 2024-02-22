@@ -1,0 +1,9 @@
+.sessionBox { width:320px; margin:15px; float:left;
+    .sessionHeaderImage { background-size:cover; background-repeat:no-repeat;}
+    ::ng-deep.mat-card-header-text { display:grid;}
+    .fitAspectRatio { width:calc(100% + 32px); margin:-16px -16px 16px -16px;
+      img + img { left:16px;}
+    }
+    .sessionContent { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; height:50px;}
+    .mat-button { color:#fff; background:var(--theme-color);}
+  }

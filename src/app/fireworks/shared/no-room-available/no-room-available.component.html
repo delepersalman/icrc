@@ -1,0 +1,14 @@
+<div class="centralizeScreen" style="color:black !important" *ngIf="!isBoothNotAvailable">
+  <h2 style="margin: 0;"><span style="font-size: 35px;" class="material-icons">report</span></h2>
+  <p style="margin: 0;">You don't have access to this room.</p>
+  <p>Please contact the host or book the appropriate ticket.</p>
+  <p></p>
+</div>
+
+<div class="centralizeScreen" style="color:black !important" *ngIf="isBoothNotAvailable">
+  <h2 style="margin: 0;"><span style="font-size: 35px;" class="material-icons">report</span></h2>
+  <p *ngIf="roomData && roomData.RoomType != 'networking'" style="margin: 0;">Booths not available.</p>
+  <p *ngIf="roomData && roomData.RoomType == 'networking'" style="margin: 0;">Interest Rooms not available</p>
+  <p></p>
+</div>
+

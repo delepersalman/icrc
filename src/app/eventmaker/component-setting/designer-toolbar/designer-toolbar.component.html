@@ -1,0 +1,56 @@
+<div class="formatEditToolbar">
+        <mat-button-toggle aria-label="color" (click)="resetBG()" value="reset" title="Reset Current Field Design">
+        <mat-icon>refresh</mat-icon>           
+    </mat-button-toggle>
+    <button *ngIf="ngStyle.Editable" mat-stroked-button class="toggleSameBtn" (click)="openDialogAddNewPage($event)" aria-label="Text Edit">
+        <mat-icon>edit_note</mat-icon>
+    </button> 
+    <mat-button-toggle>
+        <select class="fontSizeSelect"  [(ngModel)]="fontStyle" (click)="onFontStyleChange()">
+            <option value=""  selected="selected">Font Style</option>
+            <option *ngFor="let font of ngStyle.FontStyleList" value="{{font.Name}}">{{font.Name}}</option>            
+        </select>
+    </mat-button-toggle> 
+    <mat-button-toggle>
+        <select class="fontSizeSelect"  [(ngModel)]="fontSize" (click)="onFontChange()">
+            <option value="0"  selected="selected">Font Size</option>
+            <option *ngFor="let size of numbers" value="{{size}}">{{size}}</option>            
+        </select>
+    </mat-button-toggle>  
+    <button *ngIf="ngStyle.IsDateFormateEnabled" mat-stroked-button class="toggleSameBtn" (click)="openDialogEventFormat($event)" aria-label="Text Edit">
+        <mat-icon>calendar_today</mat-icon>
+    </button>
+    <button mat-stroked-button class="toggleSameBtn"  [ngClass]="{active: ngStyle.FontWeight ==='bold'}"  aria-label="Text Weight" [(ngModel)]="ngStyle.FontWeight" name="fontWeight" ngDefaultControl (click)="onTextFormatWeight()">
+        <mat-icon>format_bold</mat-icon>
+    </button>
+    <button mat-stroked-button class="toggleSameBtn" [ngClass]="{active: ngStyle.TextFormat ==='italic'}" [(ngModel)]="ngStyle.TextFormat" name="textformat" ngDefaultControl (click)="onItalicColor()">
+        <mat-icon>format_italic</mat-icon>
+    </button>
+    <button mat-stroked-button class="toggleSameBtn" [ngClass]="{active: ngStyle.TextDecoration ==='underline'}" [(ngModel)]="ngStyle.TextDecoration" name="TextDecoration" ngDefaultControl  (click)="onUnderlineColor()">
+        <mat-icon>format_underlined</mat-icon>
+    </button>
+    <mat-button-toggle-group  #group="matButtonToggleGroup" name="TextAlignment" (change)="onTextColor()" [(ngModel)]="ngStyle.TextAlignment" ngDefaultControl (change)="onTextFormatAlignment()">
+        <mat-button-toggle value="left" aria-label="Text align left">
+            <mat-icon>format_align_left</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="center" aria-label="Text align center">
+            <mat-icon>format_align_center</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="right" aria-label="Text align right">
+            <mat-icon>format_align_right</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="justify" aria-label="Text align justify">
+            <mat-icon>format_align_justify</mat-icon>
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+    <button mat-stroked-button class="toggleSameBtn" [ngClass]="{active: ngStyle.textColor}" aria-label="Text color">
+        <mat-icon>format_color_text</mat-icon>
+        <input type="color" [(ngModel)]="ngStyle.textColor" ngDefaultControl name="textColor" id="" (change)="onTextColor()" />
+    </button>
+    <button mat-stroked-button class="toggleSameBtn" [ngClass]="{active: ngStyle.bgColor}" aria-label="Bg color">
+        <mat-icon>format_color_fill</mat-icon>
+        <input type="color" [(ngModel)]="ngStyle.bgColor" ngDefaultControl name="bgColor" id="" (change)="onBgColor()" />
+    </button>
+</div>
+
+

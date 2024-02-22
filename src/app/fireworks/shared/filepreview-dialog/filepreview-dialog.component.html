@@ -1,0 +1,21 @@
+
+<div mat-dialog-title style="display:flex">
+  <h4>Preview</h4>
+  <button mat-button class="close-icon" [mat-dialog-close]="true">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content appearance="fill">
+  
+  <iframe *ngIf="dialogData.IsOfficeDoc" src="{{currentPreviewDocumentUrl | urlsafe:'resourceUrl'}}" style="width:100%; height:500px;" frameborder="0"></iframe>
+
+  <object *ngIf="dialogData.IsPdfDoc" style="width:100%; height:500px" type="application/pdf" data="{{currentPreviewDocumentUrl | urlsafe:'resourceUrl'}}"></object>
+
+  <img *ngIf="dialogData.IsImageDoc" style="width:100%; height:auto" src="{{currentPreviewDocumentUrl | urlsafe:'resourceUrl'}}" />
+
+  <div class="clear clearfix"></div>
+
+</div>
+<div mat-dialog-actions style="padding:15px;" align="end">
+  <button mat-raised-button color="primary" (click)="confirm()" cdkFocusInitial>Ok</button>
+</div>

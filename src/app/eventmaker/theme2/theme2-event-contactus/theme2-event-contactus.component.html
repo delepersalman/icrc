@@ -1,0 +1,20 @@
+
+<section (click)="ChangeDetect($event,eventDesc)"  [style]="getSectionStyleString(eventDesc)"  [ngClass]="{virtualEventSec:eventDesc.EditMode}" class="spaceY contactUsCTA">
+    <section-designer-toolbar *ngIf="eventDesc.EditMode" [ngStyle]="ngStyle" (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="w-75 mx-auto" >     
+            <ng-container  *ngFor="let prop of eventCustomPages.EventmakerPagePropertyDesigns">    
+            <h2 class="mb-0 titleH2" #appendItem [style]="getStyleString(prop)"  [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}" *ngIf="prop.Name === 'ContactUSHeading'" (click)="showHideToolbar($event,prop)" (input)="onChange($event.target.innerHTML,prop)" >                  
+                {{prop.CustomPropertyName}}
+            </h2>
+            <p class="f3 py-3" *ngIf="prop.Name === 'ContactUSDescription'" #appendItem [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}" (click)="showHideToolbar($event,prop)" [style]="getStyleString(prop)"  >
+                {{prop.CustomPropertyName}}
+            </p>
+            <!-- <p >Engage with your audience like never before. Increase your reach and interaction with Eventcombo's experience based solutions.</p> -->
+            <div class="position-relative" [ngClass]="{'align-items-center':!prop.TextAlignment}" *ngIf="prop.Name === 'ContactusBTN'" [style.text-align]="prop.TextAlignment" >
+                <a class="mat-flat-button btn m-0" [ngClass]="{formatEditToolbarWrapper:eventDesc.EditMode}" #appendItem    [style]="getStyleString(prop)" [attr.disabled]="submitted" (click)="openContactusModal($event, prop)">{{prop.CustomPropertyName}}</a>
+            </div>
+            </ng-container>   
+        </div>
+    </div>
+</section>

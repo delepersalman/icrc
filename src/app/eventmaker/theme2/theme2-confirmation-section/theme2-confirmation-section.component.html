@@ -1,0 +1,140 @@
+<section class="confirmationSection" (click)="ChangeDetect($event,confirmationSection)" [ngClass]="{virtualEventSec:confirmationSection.EditMode}"
+[style]="getSectionStyleString(confirmationSection)"
+[ngClass]="{virtualEventSec:confirmationSection.EditMode}" id="confirmation">
+<section-designer-toolbar *ngIf="confirmationSection.EditMode" [ngStyle]="ngStyle"
+    (eventTextFormatAlignment)="changeAlignment($event)"></section-designer-toolbar>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="red-heading" *ngIf="SuccessMessage" #appendItem 
+                [style]="getStyleString(SuccessMessage)"
+                [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"
+                (click)="showHideToolbar($event,SuccessMessage)">
+                {{SuccessMessage.CustomPropertyName}}</h3>
+                <div class="orderDetails position-relative"  *ngIf="ConfirmationBox" [ngStyle]="{backgroundColor: ConfirmationBox.BGColor, color:ConfirmationBox.Color}">
+                    <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem  (click)="showHideButtonToolbar($event, ConfirmationBox)"
+                    [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"
+                        ></div>
+                    <div class="orderId p-3" >
+                        <div class="orderNumber z11 position-relative"  *ngIf="OrderNumber"  >
+                            <div *ngIf="OrderNumber" class="fs4 f-bold"
+                            [style]="getStyleString(OrderNumber)"  (input)="onChange($event.target.innerHTML, OrderNumber)" >{{OrderNumber.CustomPropertyName}} T000139704
+                            </div> 
+                            <div #appendItem *ngIf="confirmationSection.EditMode" class="editorWrapper" 
+                            (click)="showHideToolbar($event, OrderNumber)" 
+                            [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"></div>        
+                        </div>
+                        <div class="orderSbuline" *ngIf="TicketEmailed" [style.text-align]="TicketEmailed.TextAlignment">
+                            <span  *ngIf="TicketEmailed" #appendItem 
+                            [style]="getStyleString(TicketEmailed)" 
+                            [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"  (input)="onChange($event.target.innerHTML, TicketEmailed)" >
+                            <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem 
+                            (click)="showHideToolbar($event, TicketEmailed)"></div>
+                            {{TicketEmailed.CustomPropertyName}} 
+                            <span  [style]="getStyleString(TicketEmailed)" 
+                            class="semiBold">username@example.com</span>
+                        </span>
+                     
+                        <span class="z11" [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"  *ngIf="YourPurchageLink" >
+                            <a  [style]="getStyleString(YourPurchageLink)" class="evtLink semiBold" href="{{confirmationSection.EditMode?'javascript:void(0)':'#'}}">{{YourPurchageLink.CustomPropertyName}}</a>
+                            <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem (click)="showHideButtonToolbar($event, YourPurchageLink)" (input)="onChange($event.target.innerHTML, YourPurchageLink)"></div>
+                        </span>
+                    </div>
+                        
+                    </div>
+                    <div class="orderList">
+                        <div class="orderBox bgLight">
+                            <div class="orderTitle z11 position-relative" *ngIf="TicketName"  [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"
+                            [style]="getStyleString(TicketName)">
+                            <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem (click)="showHideToolbar($event, TicketName)"></div>
+                               {{TicketName.CustomPropertyName}}</div>
+                            <div class="orderSbuline " *ngIf="ShareEventBox" [ngClass]="{'d-flex align-items-center':!ShareEventBox.TextAlignment }" [style.text-align]="ShareEventBox.TextAlignment" >
+                                <ng-container *ngFor="let prop of ShareEventBox.SiblingList">                                
+                                <span class="margin-2em-right z11 position-relative" *ngIf="prop.Name === 'CN_VenueName'"
+                                 [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}" [style]="getStyleString(prop)">
+                                <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem (click)="showHideToolbar($event, prop)"></div>
+                                   {{prop.CustomPropertyName}}</span>
+                                <span class="margin-1em-right z11 position-relative" *ngIf="prop.Name === 'TicketDate'"  [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"
+                                [style]="getStyleString(prop)">
+                                <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem (click)="showHideToolbar($event, prop)"></div>
+                                   {{prop.CustomPropertyName}}</span>
+                                <span class="semiBold  position-relative" *ngIf="prop.Name === 'ShareEventLink'" [style]="getStyleString(prop)">
+                                   {{prop.CustomPropertyName}}
+                                   <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"
+                (click)="showHideToolbar($event,prop)"></div>
+                                    <a  [style]="getStyleString(prop)" href="javascript:void(0)" title="Share Test 130423 via Email" class="shareLink"><img [ngStyle]="{'width':(prop.FontSize>0?prop.FontSize+'px':'16px')}"
+                                            alt="Share Test 130423 via Email"
+                                            src="https://www.eventcombo.com/Images/AMaterial/mail-square.svg"></a>
+                                    <a [style]="getStyleString(prop)" href="javascript:void(0)" class="shareLink"
+                                        title="Share Test 130423 on Facebook"><img [ngStyle]="{'width':(prop.FontSize>0?prop.FontSize+'px':'16px')}"
+                                            alt="Share Test 130423 on Facebook"
+                                            src="https://www.eventcombo.com/Images/AMaterial/square-facebook.svg"></a>
+                                    <a [style]="getStyleString(prop)" class="shareLink" href="javascript:void(0)"
+                                        title="Share Test 130423 on Twitter"><img [ngStyle]="{'width':(prop.FontSize>0?prop.FontSize+'px':'16px')}"
+                                            alt="Share Test 130423 on Twitter"
+                                            src="https://www.eventcombo.com/Images/AMaterial/square-twitter.svg"></a>
+                                    <a [style]="getStyleString(prop)" class="shareLink" href="javascript:void(0)"
+                                        title="Share Test 130423 on LinkedIn"><img [ngStyle]="{'width':(prop.FontSize>0?prop.FontSize+'px':'16px')}"
+                                            alt="Share Test 130423 on LinkedIn"
+                                            src="https://www.eventcombo.com/Images/AMaterial/square-linkedin.svg"></a>
+
+                                </span>
+                            </ng-container>
+                            </div>
+                            <span class="flRightN" *ngIf="TicketCountNo" [style]="getStyleString(TicketCountNo)">
+                                <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"
+                                (click)="showHideButtonToolbar($event, TicketCountNo)"></div>
+                                {{TicketCountNo.CustomPropertyName}}</span>
+                        </div>                     
+                    </div>
+                    <ng-container *ngIf="GoToAllPurchageLink"> 
+                        <div class="col-md-12" [style.text-align]="GoToAllPurchageLink.TextAlignment">
+                        <a class="nextLink position-relative z11 purchaseLink" #appendItem [style]="getStyleString(GoToAllPurchageLink)"  href="javascript:void(0)">
+                            <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"
+                            (click)="showHideButtonToolbar($event, GoToAllPurchageLink)"></div>
+                            {{GoToAllPurchageLink.CustomPropertyName}}</a>      
+                            </div>              
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col-12 mt-4  position-relative" *ngIf="AddtoCalendar" 
+            [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"
+            >
+            <div *ngIf="confirmationSection.EditMode" class="editorWrapper" #appendItem (click)="showHideToolbar($event,AddtoCalendar)"></div>
+                <h4 class="fs5 mb-0 py-2" [style]="getStyleString(GoToAllPurchageLink)" [style]="getStyleString(AddtoCalendar)" >{{AddtoCalendar.CustomPropertyName}}</h4>
+                <ul class="ocAdd2CalList py-2" [style]="getStyleString(AddtoCalendar)" >
+                    <li><a [ngStyle]="{'font-size':(AddtoCalendar.FontSize>0?AddtoCalendar.FontSize+'px':'')}"  [style.color]="AddtoCalendar.Color" [style.text-decoration]="AddtoCalendar.TextDecoration" href="javascript:void(0)"><img src="https://www.eventcombo.com/Images/AMaterial/windows.png"> Microsoft Outlook</a></li>
+                    <li><a [ngStyle]="{'font-size':(AddtoCalendar.FontSize>0?AddtoCalendar.FontSize+'px':'')}" [style.color]="AddtoCalendar.Color" [style.text-decoration]="AddtoCalendar.TextDecoration" href="javascript:void(0)" target="_blank" rel="nofollow"><img src="https://www.eventcombo.com/Images/AMaterial/google.png"> Google Calendar</a></li>
+                    <li><a [ngStyle]="{'font-size':(AddtoCalendar.FontSize>0?AddtoCalendar.FontSize+'px':'')}" [style.color]="AddtoCalendar.Color" [style.text-decoration]="AddtoCalendar.TextDecoration" href="javascript:void(0)"><img src="https://www.eventcombo.com/Images/AMaterial/apple.png"> Apple iCal</a></li>
+                </ul>
+            </div>
+            <div class="col-12 mt-4" *ngIf="WhatsNext" [ngStyle]="{textAlign:WhatsNext.TextAlignment}" [style.text-decoration]="WhatsNext.TextDecoration">                
+                <div class="position-relative"><h4 class="fs5 mb-1" #appendItem [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"
+                    (click)="showHideToolbar($event,WhatsNext)"
+                    [style]="getStyleString(WhatsNext)" >{{WhatsNext.CustomPropertyName}}</h4></div>
+                <div class="whatsNext d-flex" [ngStyle]="{textAlign:WhatsNext.TextAlignment}">
+                    <ng-container *ngIf="CreateEventLink"> 
+                        <div class="position-relative mr-1">
+                            <a #appendItem  (click)="showHideButtonToolbar($event, CreateEventLink)"  [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}" [style]="getStyleString(CreateEventLink)" class="nextLink px-2" href="javascript:void(0)">{{CreateEventLink.CustomPropertyName}}</a>
+                        </div>
+                </ng-container>  
+                <ng-container *ngIf="ContactUsLink">    
+                    <div class="position-relative mr-1">
+                        <a #appendItem  (click)="showHideButtonToolbar($event, ContactUsLink)"  [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}" [style]="getStyleString(ContactUsLink)"  class="nextLink px-2" href="javascript:void(0)">{{ContactUsLink.CustomPropertyName}}</a>
+                    </div>
+                </ng-container>   
+                <ng-container *ngIf="SeeOrganigerLink">  
+                    <div class="position-relative mr-1">
+                        <a #appendItem  (click)="showHideButtonToolbar($event, SeeOrganigerLink)"  [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}"  [style]="getStyleString(SeeOrganigerLink)"  class="nextLink px-2" href="javascript:void(0)">{{SeeOrganigerLink.CustomPropertyName}}</a>
+                    </div>
+                </ng-container>  
+                <ng-container *ngIf="MoreEventLink">  
+                    <div class="position-relative mr-1">  
+                        <a #appendItem  (click)="showHideButtonToolbar($event, MoreEventLink)"  [ngClass]="{formatEditToolbarWrapper:confirmationSection.EditMode}" [style]="getStyleString(MoreEventLink)"  class="nextLink px-2" href="javascript:void(0)">{{MoreEventLink.CustomPropertyName}}</a>
+                    </div>
+                </ng-container>     
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

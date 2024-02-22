@@ -1,0 +1,115 @@
+<div class="attendee {{member.IsBlocked ? 'user-blocked': ''}}"
+  [ngClass]="{'hasUnreadMessages': haveUnreadMessage(member.VirtualEventUserId)}" *ngIf="member && !gridView">
+  <div (click)="openPrivateChatWindow(member)" class="avtar" [attr.alt]="member.Alt" title="{{member.FullName}}">
+    <img *ngIf="member.ProfileImageUrl"
+      src="{{sharedService.domainUrl + '/Images/Profile/Profile_Images/imagepath/' +member.ProfileImageUrl}}">
+    <div class="status-circle" [ngClass]="{'online': member.Online}">
+    </div>
+  </div>
+  <div (click)="openPrivateChatWindow(member)">
+    {{member.FullName}} {{ member.VirtualEventUserId == sharedService.virtualEventUser.VirtualEventUserId ?
+    '(you)': ''}}
+  </div>
+  <span class="actions">
+    <a class="peopleVoiceIndicator" *ngIf="sharedService.roomClientConnected && sharedService.currentView == 'room'"
+      (click)="sharedService.broadcastMuteUnmuteCommand(member.hasAudio, member.VirtualEventUserId)">
+      <mat-icon *ngIf="(sharedService.isSelfUser(member) ? !mediaInfoService.localTrackState.audioTrackEnabled : !member.hasAudio)" class="off">mic_off</mat-icon>
+      <mat-icon *ngIf="(sharedService.isSelfUser(member) ? mediaInfoService.localTrackState.audioTrackEnabled : member.hasAudio) && !member.IsSpeaking" class="off">mic</mat-icon>
+      <mat-icon *ngIf="(sharedService.isSelfUser(member) ? mediaInfoService.localTrackState.audioTrackEnabled : member.hasAudio) && member.IsSpeaking" class="on">mic_none</mat-icon>
+      <mat-icon *ngIf="(sharedService.isSelfUser(member) ? mediaInfoService.localTrackState.audioTrackEnabled : member.hasAudio) && member.IsSpeaking" class="bola">mic</mat-icon>
+    </a>
+    <a [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </a>
+  </span>
+</div>
+
+<div class="attendeeTile {{ member.IsSpeaking ? 'tileVoiceIndicator' : ''}} {{ member.IsBlocked ? 'user-blocked' : ''}}"
+  [ngClass]="{'hasUnreadMessages': haveUnreadMessage(member.VirtualEventUserId),'online': member.Online}"
+  *ngIf="member && gridView">
+  <div class="avtar" (click)="openPrivateChatWindow(member)" [attr.alt]="member.Alt" title="{{member.FullName}}">
+    <img *ngIf="member.ProfileImageUrl"
+      src="{{sharedService.domainUrl + '/Images/Profile/Profile_Images/imagepath/' + member.ProfileImageUrl}}">
+    <a class="tileActions" (click)="$event.stopPropagation();" [matMenuTriggerFor]="menu"><span
+        class="material-icons">more_horiz</span></a>
+  </div>
+  <div class="attendeeName ellipsis">{{member.FullName}} {{member.VirtualEventUserId ==
+    sharedService.virtualEventUser.VirtualEventUserId ? '(you)': ''}}</div>
+  <div *ngIf="member.Title" class="attendeeTitle ellipsis">{{member.Title}}</div>
+</div>
+
+<mat-menu #menu="matMenu">
+
+  <a mat-menu-item *ngIf="sharedService.isFeatureEnabled(enumerationFeatures.ViewProfile)" target="_blank"
+    [attr.href]="getProfileViewUrl(member.VirtualEventUserId)">
+    <mat-icon>remove_red_eye</mat-icon>
+    <span>View Profile</span>
+  </a>
+
+  <span *ngIf="(member.VirtualEventUserId != sharedService.virtualEventUser.VirtualEventUserId.toString()
+            && sharedService.isHostOrCoHost(sharedService.virtualEventUser))">
+    <button
+      *ngIf="!member.IsBlocked && sharedService.isFeatureEnabled(enumerationFeatures.ManageBlockUser) && sharedService.currentView == 'room'"
+      (click)="blockUser(member)" mat-menu-item>
+      <mat-icon>block</mat-icon>
+      <span>Block This Person</span>
+    </button>
+    <button
+      *ngIf="member.IsBlocked && sharedService.currentView == 'room' && member.AllowUnblock && sharedService.isFeatureEnabled(enumerationFeatures.ManageBlockUser)"
+      (click)="unblockUser(member)" mat-menu-item>
+      <mat-icon>block</mat-icon>
+      <span>Unblock This Person</span>
+    </button>
+
+    <button
+      *ngIf="!sharedService.isHostOrCoHost(member) && sharedService.isFeatureEnabled(enumerationFeatures.ManageCoHost)"
+      (click)="manageUserRole(member, true, enumerationUserRole.Co_Host, 1)" mat-menu-item>
+      <mat-icon>update</mat-icon>
+      <span>Make Co Host</span>
+    </button>
+    <button
+      *ngIf="sharedService.isHostOrCoHost(member) && sharedService.isFeatureEnabled(enumerationFeatures.ManageCoHost)"
+      (click)="manageUserRole(member, false, enumerationUserRole.Co_Host, 0)" mat-menu-item>
+      <mat-icon>clear</mat-icon>
+      <span>Remove Co Host</span>
+    </button>
+    <button *ngIf="sharedService.checkUserRole(enumerationUserRole.Attendee, member)
+          && sharedService.isFeatureEnabled(enumerationFeatures.ManageCoHost) && !sharedService.isHostOrCoHost(member)"
+      (click)="manageUserRole(member, true, enumerationUserRole.Presenter, 1)" mat-menu-item>
+      <mat-icon>update</mat-icon>
+      <span>Make Presenter</span>
+    </button>
+    <button *ngIf="sharedService.checkUserRole(enumerationUserRole.Presenter, member)
+        && sharedService.isFeatureEnabled(enumerationFeatures.ManageCoHost) && !sharedService.isHostOrCoHost(member)"
+      (click)="manageUserRole(member, true, enumerationUserRole.Attendee, 0)" mat-menu-item>
+      <mat-icon>update</mat-icon>
+      <span>Make Attendee</span>
+    </button>
+  </span>
+
+  <ng-container
+    *ngIf="member.VirtualEventUserId != sharedService.virtualEventUser.VirtualEventUserId.toString()
+          && (sharedService.isHostOrCoHost(sharedService.virtualEventUser) || sharedService.currentRoomData?.AllowPrivateChat)">
+    <button (click)="openPrivateChatWindow(member)" mat-menu-item>
+      <mat-icon>chat</mat-icon>
+      <span>Private Chat</span>
+    </button>
+    <button (click)="sendVideoCallLink(member)" mat-menu-item>
+      <mat-icon>insert_invitation</mat-icon>
+      <span>Invite to Private Room</span>
+    </button>
+  </ng-container>
+
+  <span
+    *ngIf="member.VirtualEventUserId == sharedService.virtualEventUser.VirtualEventUserId.toString() && sharedService.currentView == 'room'">
+    <button *ngIf="sharedService.isFeatureEnabled(enumerationFeatures.ManageAttendee)"
+      (click)="showHideOnDisplay(member)" mat-menu-item>
+      <mat-icon>update</mat-icon>
+      <span>
+        {{
+        sharedService.checkUserRole(enumerationUserRole.Attendee, member) ? 'Display on Screen' : 'Remove from Screen'
+        }}
+      </span>
+    </button>
+  </span>
+</mat-menu>

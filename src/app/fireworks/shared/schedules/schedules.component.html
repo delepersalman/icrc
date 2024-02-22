@@ -1,0 +1,39 @@
+<form>
+  <mat-form-field class="sidebarSearch">
+    <mat-label>Filter schedule</mat-label>
+    <mat-select [(value)]="selectedScheduleFilter" (selectionChange)="filterSchedule()">
+      <mat-option value="All">All Rooms</mat-option>
+      <ng-container *ngFor="let room of rooms">
+        <mat-option *ngIf="room.RoomType != 'handouts' && room.RoomType != roomType.Networking && room.RoomType !=  roomType.Session && room.RoomType != roomType.Expo"
+          [value]="room.RoomName">
+          {{room.RoomName}}</mat-option>
+      </ng-container>
+      <ng-container *ngFor="let sroom of rooms">
+        <mat-optgroup
+          *ngIf="sroom.RoomType != roomType.Handouts && (sroom.RoomType == roomType.Session || sroom.RoomType == roomType.Expo || sroom.RoomType == roomType.Networking) && sroom.VirtualEventBooths.length > 0"
+          [label]="sroom.RoomName">
+          <mat-option *ngFor="let childRoom of sroom.VirtualEventBooths" [value]="childRoom.RoomName">
+            {{childRoom.RoomName}}</mat-option>
+        </mat-optgroup>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+</form>
+<div class="schedualBoxOuter" [hidden]="!sharedService.currentRoomData" #scrollMe>
+  <div class="schedualBox" *ngFor="let schedual of eventSchedules">
+    <div class="shdTitle">{{schedual.Title}}</div>
+    <div class="shdDate">{{schedual.StartDateUtc | amFromUtc | date: 'medium'}}</div>
+    <div class="shdArea"><strong>Area: </strong>{{schedual.RoomName}}</div>
+    <div class="shdDescription">{{schedual.Description}}</div>
+    <!-- <div class="text-right"
+      *ngIf="sharedService.currentRoomData && sharedService.currentRoomData.RoomType == schedual.RoomType">
+      <span class="shdYouHere">You are here</span>
+    </div> -->
+    <div class="text-right">
+      <a class="shdJoin" (click)="joinSchedule(schedual)">{{sharedService.scheduleStatus[schedual.ScheduleStatus]}}</a>
+    </div>
+  </div>
+  <div class="Handouts" style="padding:5%" *ngIf="!eventSchedules || !eventSchedules.length">
+    No schedule available!
+  </div>
+</div>

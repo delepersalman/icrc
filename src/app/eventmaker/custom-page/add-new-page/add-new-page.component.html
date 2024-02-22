@@ -1,0 +1,111 @@
+<div mat-dialog-title>{{customPageInfo.PageTitle}}<span *ngIf="customPageInfo.PageSystemName !== 'event-video'"> (Custom Section)</span></div>
+<mat-dialog-content class="mat-typography modelContentPageSetting">
+	<!-- <mat-checkbox [checked]="allChecked" (change)="setAll(allChecked)">Select All</mat-checkbox> -->
+	<div class="contentEditableWrapper">
+		<form name="addNewPageForm">
+			<div class="row">
+				<div class="col-12 d-flex" *ngIf="customPageInfo.EventmakerWebsiteComponentId">				
+					<mat-form-field class="col-12">						
+						<mat-label>Enter Section Name</mat-label>
+						<input name="title" matInput placeholder="Page Title" [(ngModel)]="customPageInfo.PageTitle" >
+					</mat-form-field>
+				</div>
+				<ng-container *ngFor="let module of sectionProperties">				
+					<div class="col-12 d-flex" *ngIf="module.Name === 'Heading'">
+						<mat-checkbox [checked]="exists(module.EventmakerPagePropertyId, selectedComponents)"
+							(change)="checked(module.EventmakerPagePropertyId, selectedComponents)"></mat-checkbox>
+						<mat-form-field class="col-12">
+							<mat-label>Enter Section Heading</mat-label>
+							<input [(ngModel)]="customPageInfo.CustomSectionName" name="heading" matInput
+								placeholder="Page Heading">
+						</mat-form-field>
+					</div>
+					<div class="col-12 d-flex mt-4" *ngIf="module.Name === 'Image_Video'">
+						<ng-container *ngIf="customPageInfo.PageSystemName === 'event-video'">
+							<mat-checkbox [checked]="exists(module.EventmakerPagePropertyId, selectedComponents)"
+								(change)="checked(module.EventmakerPagePropertyId, selectedComponents)"></mat-checkbox>
+							<div class="col-12">
+								<div class="mb-3 fw-bold">Video</div>
+								<mat-form-field class="w-100">
+									<mat-label>Enter Video URL</mat-label>
+									<input matInput name="uploadVideoUrl" [(ngModel)]="customPageInfo.VideoUrl"
+										pattern="(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)"
+										placeholder="Enter Video URL">
+								</mat-form-field>
+							</div>
+						</ng-container>
+						<ng-container *ngIf="customPageInfo.PageSystemName !== 'event-video'">
+							<mat-checkbox [checked]="exists(module.EventmakerPagePropertyId, selectedComponents)"
+								(change)="checked(module.EventmakerPagePropertyId, selectedComponents)"></mat-checkbox>
+							<div class="col-12">
+								<div class="mb-3 fw-bold">Upload Type</div>
+								<mat-radio-group class="mb-2 d-block" [(ngModel)]="uploadType" name="uploadType">
+									<mat-radio-button class="pr-5" *ngFor="let type of uploadTypeList"
+										[checked]="type.checked" [value]="type.Name" (change)="setRadioValue(type.Name)"
+										name="uploadTypeList">
+										{{type.Name}}
+									</mat-radio-button>
+								</mat-radio-group>
+								<div *ngIf="uploadType === 'Image'">
+									<file-upload (onImageSelect)="selectImage($event)"
+										[inputImageList]="customPageInfo.PageImages">
+									</file-upload>
+								</div>
+								<div *ngIf="uploadType === 'Video'">
+									<mat-form-field class="w-100">
+										<mat-label>Enter Video URL</mat-label>
+										<input matInput name="uploadVideoUrl" [(ngModel)]="customPageInfo.VideoUrl"
+											pattern="(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)"
+											placeholder="Enter Video URL">
+									</mat-form-field>
+								</div>
+							</div>
+						</ng-container>
+					</div>
+					<div class="col-12 d-flex mt-4" *ngIf="module.Name === 'Description'">
+						<mat-checkbox [checked]="exists(module.EventmakerPagePropertyId, selectedComponents)"
+							(change)="checked(module.EventmakerPagePropertyId, selectedComponents)"></mat-checkbox>
+						<div class="col-12">
+							<mat-label class="mb-3 d-block fw-bold">Enter Description </mat-label>
+							<ckeditor [editor]="editor" name="Description" matInput
+								[(ngModel)]="customPageInfo.Description" [data]="customPageInfo.Description"></ckeditor>
+						</div>
+					</div>
+					<div class="col-12 d-flex mt-4"
+						*ngIf="module.Name === 'Button' && customPageInfo.PageSystemName !== 'event-video'">
+						<mat-checkbox [checked]="exists(module.EventmakerPagePropertyId, selectedComponents)"
+							(change)="checked(module.EventmakerPagePropertyId, selectedComponents)"></mat-checkbox>
+						<div>
+							<div class="col-12 fw-bold">Button </div>
+							<mat-form-field class="col-sm-6 mt-3">
+								<mat-label>Button Name</mat-label>
+								<input [(ngModel)]="customPageInfo.ActionLinkName" name="ActionLinkName" matInput
+									placeholder="Button Name">
+							</mat-form-field>
+							<mat-form-field class="col-sm-6 mt-3">
+								<mat-label>Button url</mat-label>
+								<input [(ngModel)]="customPageInfo.ActionLinkUrl" name="ActionLinkUrl" matInput
+									placeholder="Button url">
+							</mat-form-field>
+							<mat-form-field class="col-12" appearance="fill">
+								<mat-label>Button Target</mat-label>
+								<mat-select [(ngModel)]="customPageInfo.ActionLinkTarget" name="ActionLinkTarget">
+									<mat-option value="_blank">New Tab</mat-option>
+									<mat-option value="_self">Self</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+				</ng-container>
+			</div>
+		</form>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+	<!-- <div class="mr-auto flex">
+		<div mat-line class="font1 pr-3">Show as Link in Header</div>
+		<mat-slide-toggle [(ngModel)]="customPageInfo.ShowOnHeader" name="ShowOnHeader"></mat-slide-toggle>
+	</div> -->
+	<button mat-button mat-dialog-close class="btn">Cancel</button>
+	<button mat-raised-button (click)="saveCustomPage()" cdkFocusInitial color="primary" class="btn">Save</button>
+</mat-dialog-actions>

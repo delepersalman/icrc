@@ -1,0 +1,7 @@
+<mat-dialog-content class="mat-typography viewAgendaModal">
+    <app-dynamic-selector [componentSelector]="componentName" [inputs]="{eventAgenda: eventAgenda}" [moduleLoaderFunction]="getModuleLoader()"></app-dynamic-selector>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+	<button mat-button mat-dialog-close class="btn">Close</button>
+</mat-dialog-actions>

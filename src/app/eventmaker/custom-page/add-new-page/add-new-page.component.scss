@@ -1,0 +1,20 @@
+@import '../../../../variable.scss';
+
+.mat-dialog-title { font-size:18px;
+    span { font-size:14px; opacity:0.7 }
+}
+.mat-dialog-actions { padding:16px 0 }
+.mat-form-field-wrapper { max-width:320px }
+
+.modelContentPageSetting { overflow-x:hidden }
+.page-setting-style { display:flex; display:-ms-flexbox; -ms-flex-wrap:wrap; flex-wrap:wrap }
+.card { border:1px solid #eee; border-radius:4px; padding:1rem; flex-basis:0; flex-grow:1; max-width:100%; -ms-flex-preferred-size:0; -ms-flex-positive:1; margin:.5rem; transition:all .3s }
+.card:hover, .card.active { border-color:$primary }
+.card img { max-width:100% }
+.card .card-title { font-weight:500; transition:all .3s }
+.card:hover .card-title, .card.active { color:$primary }
+
+.contentEditableWrapper { padding:1.5rem 1rem }
+.contentEditableWrapper form { width:100% }
+
+.mat-dialog-actions { padding:16px 0 }

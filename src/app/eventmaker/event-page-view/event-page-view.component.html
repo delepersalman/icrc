@@ -1,0 +1,62 @@
+<div class="fixed">
+    <event-header *ngIf="eventHeaderPage" [websiteDetails]="eventWebsiteDetail" [componentname]="componentname"  [State]="State"
+        [eventId]="eventId" [logoDetails]="logoDetails" [eventHeaderPage]="eventHeaderPage" [themeName]="themeName"
+        [Url]="Url" [headerFixed]="eventWebsiteDetail.HeaderFixed"
+        [websiteType]="eventWebsiteDetail.WebsiteType "></event-header>
+    <section class="banner1st" *ngIf="IsBannerEnabled && eventWebsiteDetail.BannerType !=='No Banner'">
+        <div [ngClass]="{container:eventWebsiteDetail.BannerSize === 0}">
+            <div class="row">
+                <div class="col-12">
+                    <img *ngIf="eventWebsiteDetail.BannerType !=='No Banner' && eventWebsiteDetail.BannerDetails.ImageUrl && !eventWebsiteDetail.BannerDetails.Image"
+                        src="{{eventWebsiteDetail.BannerDetails.ImageUrl}}" class="image">
+                    <img *ngIf="eventWebsiteDetail.BannerType !=='No Banner' && !eventWebsiteDetail.BannerDetails.ImageUrl && (eventWebsiteDetail.BannerDetails.Image && eventWebsiteDetail.BannerDetails.Image.ImagePath)"
+                        src="{{domainUrl+eventWebsiteDetail.BannerDetails.Image.ImagePath}}" class="image">
+                    <img *ngIf="eventWebsiteDetail.BannerType !=='No Banner' && !eventWebsiteDetail.BannerDetails.ImageUrl && !eventWebsiteDetail.BannerDetails.Image"
+                        src="assets/eventmaker/theme1/media/banner.png" class="image">
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="maindiv" *ngIf="eventWebsiteDetail">
+        <ng-container *ngIf="!componentname">
+            <theme2-intro-rendor *ngIf="(eventWebsiteDetail.WebsiteType === 'Multiple')" (outputEvent)="sychValue($event)" [State]="State" [isFullPage]="false" [websiteDetails]="eventWebsiteDetail" [IsEditMode]="IsEditMode" [eventId]="eventId" [eventSelectedpages]="eventSelectedpages" [themeName]="themeName"> </theme2-intro-rendor>
+            
+            <ng-container *ngFor="let page of eventSelectedpages">
+                <ng-container *ngIf="eventWebsiteDetail.WebsiteType === 'Single'">
+                    <app-dynamic-selector *ngIf="page.IsSystemModule" id="{{page.PageSystemName}}"
+                        (outputEvent)="sychValue($event)" [componentSelector]="page.PageSystemName"
+                        [inputs]="{eventId: eventId, eventCustomPages:page,themeName:themeName,IsEditMode:IsEditMode,bookTicketUrl:bookTicketUrl,websiteDetails: eventWebsiteDetail,State:State, isFullPage: false, Discount: discount}"
+                        [moduleLoaderFunction]="getModuleLoader()"></app-dynamic-selector>
+                    <custom-page *ngIf="!page.IsSystemModule" id="{{page.PageSystemName}}" [eventCustomPages]="page"
+                        [websiteDetails]="eventWebsiteDetail" [State]="State" [IsEditMode]="IsEditMode"
+                        [themeName]="themeName"></custom-page>
+                </ng-container>
+                <ng-container *ngIf="eventWebsiteDetail.WebsiteType === 'Multiple'">                 
+                    <app-dynamic-selector
+                        *ngIf="(page.IsSystemModule && (page.HomePageActive) && (page.PageSystemName !== 'event-intro' && page.PageSystemName !== 'event-countdown' && page.PageSystemName !== 'event-organiser'  && page.PageSystemName !== 'event-description' && page.PageSystemName !== 'event-contactus'))"
+                        id="{{page.PageSystemName}}" (outputEvent)="sychValue($event)"
+                        [componentSelector]="page.PageSystemName"
+                        [inputs]="{eventId: eventId, eventCustomPages:page,themeName:themeName,IsEditMode:IsEditMode,bookTicketUrl:bookTicketUrl,websiteDetails: eventWebsiteDetail, State:State, isFullPage: false, Discount: discount}"
+                        [moduleLoaderFunction]="getModuleLoader()"></app-dynamic-selector>
+                    <custom-page *ngIf="!page.IsSystemModule && (page.HomePageActive)" id="{{page.PageSystemName}}"
+                        [eventCustomPages]="page" [websiteDetails]="eventWebsiteDetail" [State]="State" [IsEditMode]="IsEditMode"
+                        [themeName]="themeName"></custom-page>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let page of eventSelectedpages">
+            <app-dynamic-selector   *ngIf="componentname && page.Selected && page.IsSystemModule && page.PageSystemName === componentname"
+            id="{{page.PageSystemName}}" (outputEvent)="sychValue($event)"
+            [componentSelector]="page.PageSystemName"
+            [inputs]="{eventId: eventId, eventCustomPages:page,themeName:themeName,IsEditMode:IsEditMode,bookTicketUrl:bookTicketUrl,websiteDetails: eventWebsiteDetail, State:State, isFullPage: true, Discount: discount}"
+            [moduleLoaderFunction]="getModuleLoader()"></app-dynamic-selector>    
+            <custom-page *ngIf="!page.IsSystemModule && componentname && page.Selected  && page.PageSystemName === componentname" id="{{page.PageSystemName}}"
+            [eventCustomPages]="page" [websiteDetails]="eventWebsiteDetail" [IsEditMode]="IsEditMode"
+            [themeName]="themeName"></custom-page>  
+            <event-footer *ngIf="page.Selected && page.PageSystemName === 'event-footer'" [websiteDetails]="eventWebsiteDetail"
+            [eventCustomPages]="page" [themeName]="themeName"></event-footer>     
+        </ng-container>
+       
+       
+    </div>
+</div>
